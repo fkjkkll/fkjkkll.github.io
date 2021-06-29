@@ -6,17 +6,17 @@
   
   <title>Bitcpy | Lee的个人博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="1. 显示数据bits12345678910111213141516171819#define HALF_WORD   uint16_t#define WORD        uint32_tvoid showBits(void* d, int len) &amp;#123;	int bytes &#x3D; len &#x2F; 8;	unsigned char* p &#x3D; (unsigned char*)d;	for (i">
+  <meta name="description" content="两种bitcpy的实现方式">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Bitcpy">
 <meta property="og:url" content="http://example.com/2021/06/24/Bitcpy/index.html">
 <meta property="og:site_name" content="Lee的个人博客">
-<meta property="og:description" content="1. 显示数据bits12345678910111213141516171819#define HALF_WORD   uint16_t#define WORD        uint32_tvoid showBits(void* d, int len) &amp;#123;	int bytes &#x3D; len &#x2F; 8;	unsigned char* p &#x3D; (unsigned char*)d;	for (i">
+<meta property="og:description" content="两种bitcpy的实现方式">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/2021/06/24/Bitcpy/result.png">
 <meta property="og:image" content="http://example.com/2021/06/24/Bitcpy/result.png">
 <meta property="article:published_time" content="2021-06-24T12:17:20.000Z">
-<meta property="article:modified_time" content="2021-06-28T07:05:41.691Z">
+<meta property="article:modified_time" content="2021-06-28T08:06:27.790Z">
 <meta property="article:author" content="Lee">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta name="twitter:card" content="summary">
@@ -103,7 +103,10 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h3 id="1-显示数据bits"><a href="#1-显示数据bits" class="headerlink" title="1. 显示数据bits"></a>1. 显示数据bits</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> HALF_WORD   uint16_t</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> WORD        uint32_t</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">showBits</span><span class="params">(<span class="keyword">void</span>* d, <span class="keyword">int</span> len)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> bytes = len / <span class="number">8</span>;</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">char</span>* p = (<span class="keyword">unsigned</span> <span class="keyword">char</span>*)d;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; bytes; i++) &#123;</span><br><span class="line">		<span class="keyword">unsigned</span> <span class="keyword">char</span> tmp = <span class="number">0x80</span>;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; <span class="number">8</span>; j++) &#123;</span><br><span class="line">			<span class="keyword">if</span> (tmp &amp; *p)</span><br><span class="line">				<span class="built_in">printf</span>(<span class="string">&quot;1&quot;</span>);</span><br><span class="line">			<span class="keyword">else</span></span><br><span class="line">				<span class="built_in">printf</span>(<span class="string">&quot;0&quot;</span>);</span><br><span class="line">			tmp &gt;&gt;= <span class="number">1</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot; &quot;</span>);</span><br><span class="line">		++p;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <blockquote>
+<p><strong>两种bitcpy的实现方式</strong></p>
+</blockquote>
+<h3 id="1-显示数据bits"><a href="#1-显示数据bits" class="headerlink" title="1. 显示数据bits"></a>1. 显示数据bits</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> HALF_WORD   uint16_t</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> WORD        uint32_t</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">showBits</span><span class="params">(<span class="keyword">void</span>* d, <span class="keyword">int</span> len)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> bytes = len / <span class="number">8</span>;</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">char</span>* p = (<span class="keyword">unsigned</span> <span class="keyword">char</span>*)d;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; bytes; i++) &#123;</span><br><span class="line">		<span class="keyword">unsigned</span> <span class="keyword">char</span> tmp = <span class="number">0x80</span>;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; <span class="number">8</span>; j++) &#123;</span><br><span class="line">			<span class="keyword">if</span> (tmp &amp; *p)</span><br><span class="line">				<span class="built_in">printf</span>(<span class="string">&quot;1&quot;</span>);</span><br><span class="line">			<span class="keyword">else</span></span><br><span class="line">				<span class="built_in">printf</span>(<span class="string">&quot;0&quot;</span>);</span><br><span class="line">			tmp &gt;&gt;= <span class="number">1</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot; &quot;</span>);</span><br><span class="line">		++p;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h3 id="2-bitcpy-算术方式"><a href="#2-bitcpy-算术方式" class="headerlink" title="2. bitcpy 算术方式"></a>2. bitcpy 算术方式</h3><p><strong>拷贝方式是从单个字节的低位开始拷贝，进位式拷贝。</strong></p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">bitcopy</span><span class="params">(<span class="keyword">void</span>* to, <span class="keyword">unsigned</span> <span class="keyword">int</span> tOfs, <span class="keyword">int</span> tCnt, <span class="keyword">const</span> <span class="keyword">void</span>* from, <span class="keyword">unsigned</span> <span class="keyword">int</span> fOfs, <span class="keyword">int</span> fCnt)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> BitsOfHalfWord = <span class="built_in"><span class="keyword">sizeof</span></span>(HALF_WORD) * <span class="number">8</span>;</span><br><span class="line">	<span class="comment">// align data and offset to HALF_WORD</span></span><br><span class="line">	to = (<span class="keyword">void</span>*)((<span class="keyword">intptr_t</span>)to + (tOfs / BitsOfHalfWord) * <span class="built_in"><span class="keyword">sizeof</span></span>(HALF_WORD));</span><br><span class="line">	from = (<span class="keyword">void</span>*)((<span class="keyword">intptr_t</span>)from + (fOfs / BitsOfHalfWord) * <span class="built_in"><span class="keyword">sizeof</span></span>(HALF_WORD));</span><br><span class="line">	fOfs %= BitsOfHalfWord;</span><br><span class="line">	tOfs %= BitsOfHalfWord;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">int</span> NbrOfCopiedBits = <span class="number">0</span>, bCnt = (fCnt &lt; tCnt) ? fCnt : tCnt;</span><br><span class="line">	WORD rMask, wMask;</span><br><span class="line">	WORD temp, * _to = (WORD*)to, * _from = (WORD*)from;</span><br><span class="line">	<span class="keyword">while</span> (bCnt &gt; <span class="number">0</span>) &#123;</span><br><span class="line">		<span class="comment">// update counter</span></span><br><span class="line">		<span class="keyword">int</span> BitsToCopy = (bCnt &lt; BitsOfHalfWord) ? bCnt : BitsOfHalfWord;</span><br><span class="line">		bCnt -= BitsToCopy;</span><br><span class="line">		NbrOfCopiedBits += BitsToCopy;</span><br><span class="line">		<span class="comment">// mask reading from &#x27;_from&#x27; and mask writing to &#x27;_to&#x27;</span></span><br><span class="line">		rMask = (((WORD)<span class="number">-1</span>) &lt;&lt; fOfs) ^ (((WORD)<span class="number">-1</span>) &lt;&lt; (fOfs + BitsToCopy));</span><br><span class="line">		wMask = (((WORD)<span class="number">-1</span>) &lt;&lt; tOfs) ^ (((WORD)<span class="number">-1</span>) &lt;&lt; (tOfs + BitsToCopy));</span><br><span class="line">		<span class="built_in">showBits</span>(&amp;rMask, <span class="number">32</span>);</span><br><span class="line">		<span class="built_in">showBits</span>(&amp;wMask, <span class="number">32</span>);</span><br><span class="line">		temp = (*_from &amp; rMask) &gt;&gt; fOfs &lt;&lt; tOfs;</span><br><span class="line">		*_to &amp;= ~wMask;</span><br><span class="line">		*_to |= temp;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%d bit(s) copied\n&quot;</span>, BitsToCopy);</span><br><span class="line">		<span class="comment">// increase data pointer if copy is not completed</span></span><br><span class="line">		<span class="keyword">if</span> (BitsToCopy == BitsOfHalfWord) &#123;</span><br><span class="line">			_to = (WORD*)((<span class="keyword">intptr_t</span>)_to + <span class="built_in"><span class="keyword">sizeof</span></span>(HALF_WORD));</span><br><span class="line">			_from = (WORD*)((<span class="keyword">intptr_t</span>)_from + <span class="built_in"><span class="keyword">sizeof</span></span>(HALF_WORD));</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="built_in">showBits</span>(to, <span class="number">64</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> NbrOfCopiedBits;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -120,7 +123,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/06/24/Bitcpy/" data-id="ckqga24wf000020ng4zh77a6x" data-title="Bitcpy" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/06/24/Bitcpy/" data-id="ckqhg9scz0000c4ng7mjg79ra" data-title="Bitcpy" class="article-share-link">Share</a>
       
       
       
@@ -132,11 +135,11 @@
     
 <nav id="article-nav">
   
-    <a href="/2021/06/28/%E3%80%8A%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E3%80%8B-%E7%AC%AC%E4%B8%89%E7%AB%A0/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2021/06/28/Hexo%E8%AF%B4%E6%98%8E/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          《深入理解计算机系统》- 第三章
+          Hexo说明
         
       </div>
     </a>
@@ -159,7 +162,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C-C/" rel="tag">C/C++</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C-C/" rel="tag">C/C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Others/" rel="tag">Others</a></li></ul>
     </div>
   </div>
 
@@ -169,7 +172,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/C-C/" style="font-size: 10px;">C/C++</a>
+      <a href="/tags/C-C/" style="font-size: 10px;">C/C++</a> <a href="/tags/Others/" style="font-size: 10px;">Others</a>
     </div>
   </div>
 
@@ -192,10 +195,6 @@
         
           <li>
             <a href="/2021/06/28/Hexo%E8%AF%B4%E6%98%8E/">Hexo说明</a>
-          </li>
-        
-          <li>
-            <a href="/2021/06/28/%E3%80%8A%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E3%80%8B-%E7%AC%AC%E4%B8%89%E7%AB%A0/">《深入理解计算机系统》- 第三章</a>
           </li>
         
           <li>
