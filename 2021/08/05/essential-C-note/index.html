@@ -4,18 +4,19 @@
   <meta charset="utf-8">
   
   
-  <title>essential C++ note | Lee的个人博客</title>
+  <title>Essential C++ note | Lee的个人博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="记录本书（对我来说）的一些重点内容">
 <meta property="og:type" content="article">
-<meta property="og:title" content="essential C++ note">
+<meta property="og:title" content="Essential C++ note">
 <meta property="og:url" content="http://example.com/2021/08/05/essential-C-note/index.html">
 <meta property="og:site_name" content="Lee的个人博客">
 <meta property="og:description" content="记录本书（对我来说）的一些重点内容">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-08-05T08:08:02.000Z">
-<meta property="article:modified_time" content="2021-08-05T11:53:26.235Z">
+<meta property="article:modified_time" content="2021-08-06T01:13:01.399Z">
 <meta property="article:author" content="Lee">
+<meta property="article:tag" content="C&#x2F;C++">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="Lee的个人博客" type="application/atom+xml">
@@ -91,7 +92,7 @@
         
   
     <h1 class="p-name article-title" itemprop="headline name">
-      essential C++ note
+      Essential C++ note
     </h1>
   
 
@@ -100,7 +101,7 @@
     <div class="e-content article-entry" itemprop="articleBody">
       
         <blockquote>
-<p>记录本书（对我来说）的一些重点内容</p>
+<p><strong>记录本书（对我来说）的一些重点内容</strong></p>
 </blockquote>
 <h3 id="1-C-编程基础"><a href="#1-C-编程基础" class="headerlink" title="1 C++编程基础"></a>1 C++编程基础</h3><ol>
 <li>初始化方法：构造函数法（constructor syntax）</li>
@@ -136,7 +137,7 @@
 <li>当类中有静态成员变量时，需要及时在类外进行初始化，否则报错：无法解析的外部命令</li>
 <li>通常情况：operator*无参表示解引用；有参表示乘法</li>
 <li>friend声明可以出现在类定义任意位置，不受public或private影响</li>
-<li>嵌套类型（Nested Type），类中可以定义嵌套类型，再用域解析符（例如每个STL容器类都有自己的iterator）</li>
+<li><strong>嵌套类型</strong>（Nested Type），类中可以定义嵌套类型，再用域解析符（例如每个STL容器类都有自己的iterator）</li>
 <li>重载iostream（看书）</li>
 <li>类的函数指针：</li>
 </ol>
@@ -150,7 +151,7 @@
 <ol start="2">
 <li>任何类声明了纯虚函数，那么由于其接口不完整（无定义），程序无法为其产生实体。这种类只能作为派生类的子对象使用，而且前提是这些派生类为所有虚函数提供确切的定义。</li>
 <li>一般规则：凡基类定义了虚函数，则destructor也要声明为virtual</li>
-<li>一般而且，对象的赋值构造函数开发者如果未提供，则编译器会自动生成默认的赋值构造函数。然而以下情况默认的赋值构造函数会被删除：</li>
+<li>一般而言，对象的赋值构造函数开发者如果未提供，则编译器会自动生成默认的赋值构造函数。然而以下情况默认的赋值构造函数会被删除：</li>
 </ol>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    1、存在非静态的const成员变量</span></span><br><span class="line"><span class="comment">    2、存在非静态的引用成员变量</span></span><br><span class="line"><span class="comment">    3、存在不能拷贝的成员变量</span></span><br><span class="line"><span class="comment">    4、存在不能拷贝的基类</span></span><br><span class="line"><span class="comment">    5、存在用户定义的移动构造函数或移动赋值函数</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
 
@@ -171,19 +172,15 @@
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">A</span>(T t):<span class="built_in">dy</span>(t) &#123;&#125;</span><br><span class="line">    T dy;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">friend</span> ostream&amp; <span class="keyword">operator</span>&lt;&lt;(ostream&amp; os, <span class="keyword">const</span> A&lt;T&gt;&amp; b);</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">(ostream&amp; os)</span> <span class="keyword">const</span></span>&#123;</span><br><span class="line">        os &lt;&lt; dy &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">ostream&amp; <span class="keyword">operator</span>&lt;&lt;(ostream&amp; os, <span class="keyword">const</span> A&lt;T&gt;&amp; b) &#123;</span><br><span class="line">    b.<span class="built_in">func</span>(os);</span><br><span class="line">    <span class="keyword">return</span> os;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="function">A&lt;<span class="keyword">double</span>&gt; <span class="title">a</span><span class="params">(<span class="number">4.2</span>)</span></span>;</span><br><span class="line">    cout &lt;&lt; a &lt;&lt; endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    原因：</span></span><br><span class="line"><span class="comment">    因为&quot;operator&lt;&lt;&quot;这个函数的参数T不应该依赖于class的模板参数，友元本来是可以访问类的所有数据成员的(该模板类的int、double、string对象)，你这样依赖的话，放到外部表名该参数T是属于类内部本身，解决方案是为了更好的支持友元，我们一般单独给友元一个模板参数</span></span><br><span class="line"><span class="comment">    1、类中友元声明改为（意义不明不过能用，但是其下绿波浪线提示函数未定义）（不推荐）</span></span><br><span class="line"><span class="comment">    friend ostream&amp; operator&lt;&lt; &lt;T&gt;(ostream&amp; os, const A&lt;T&gt;&amp; b);</span></span><br><span class="line"><span class="comment">    2、类中友元声明改为（S不同于T）（推荐）</span></span><br><span class="line"><span class="comment">    template &lt;typename S&gt;</span></span><br><span class="line"><span class="comment">    friend ostream&amp; operator&lt;&lt;(ostream&amp; os, const A&lt;S&gt;&amp; b);</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
 
-
-
 <ol start="3">
 <li>非类型参数</li>
 </ol>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    1、这类参数在模板内部都是常量值</span></span><br><span class="line"><span class="comment">    2、只允许传入整形、指针和引用这三类</span></span><br><span class="line"><span class="comment">    3、调用非类型参数的实参必须为常量表达式（必须在编译时能计算出结果的）</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
 
-
-
 <h3 id="7-异常处理"><a href="#7-异常处理" class="headerlink" title="7 异常处理"></a>7 异常处理</h3><ol>
 <li>重新抛出时，只需写下关键字throw即可。它只能出现于catch子句中</li>
 <li>局部资源管理，在易发生异常后释放资源是一件风险很大的事情。虽然可以通过try catch处理，但是释放资源的代码要出现两次，不好。这就引出了resource acquisition is initialization(RAII)策略，即初始化阶段进行资源请求。说人话就是，在构造函数中请求所有资源，在析构函数中释放所有资源：C++保证，在异常处理机制终结某个函数之前，所有局部对象的destructor都会被调用。或者使用智能指针例如：auto_ptr等。</li>
-<li>ptext = new vector<string>; 经过以下几个步骤</string></li>
+<li>ptext = new vector<string>; 经过以下几个步骤（异常出现，余下不会执行，会沿着调用链抛出）</string></li>
 </ol>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    1、分配足够的空间</span></span><br><span class="line"><span class="comment">    2、将vector&lt;string&gt; default constructor应用于heap对象之上</span></span><br><span class="line"><span class="comment">    3、将对象地址设置给ptext</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
 
@@ -195,10 +192,12 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/08/05/essential-C-note/" data-id="ckryurtkr0003cwngdfei83hw" data-title="essential C++ note" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/08/05/essential-C-note/" data-id="ckryurtkr0003cwngdfei83hw" data-title="Essential C++ note" class="article-share-link">Share</a>
       
       
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C-C/" rel="tag">C/C++</a></li></ul>
+
     </footer>
   </div>
   
@@ -238,7 +237,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/C-C/" style="font-size: 10px;">C/C++</a> <a href="/tags/Others/" style="font-size: 20px;">Others</a>
+      <a href="/tags/C-C/" style="font-size: 10px;">C/C++</a> <a href="/tags/Others/" style="font-size: 10px;">Others</a>
     </div>
   </div>
 
@@ -260,7 +259,7 @@
       <ul>
         
           <li>
-            <a href="/2021/08/05/essential-C-note/">essential C++ note</a>
+            <a href="/2021/08/05/essential-C-note/">Essential C++ note</a>
           </li>
         
           <li>
