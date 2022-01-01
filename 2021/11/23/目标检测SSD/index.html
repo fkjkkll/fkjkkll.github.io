@@ -17,7 +17,7 @@
 <meta property="og:image" content="http://example.com/2021/11/23/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8BSSD/图2.png">
 <meta property="og:image" content="http://example.com/2021/11/23/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8BSSD/图3.png">
 <meta property="article:published_time" content="2021-11-23T01:52:26.000Z">
-<meta property="article:modified_time" content="2022-01-01T06:11:37.671Z">
+<meta property="article:modified_time" content="2022-01-01T12:04:17.690Z">
 <meta property="article:author" content="Lee">
 <meta property="article:tag" content="DL">
 <meta name="twitter:card" content="summary">
@@ -107,7 +107,7 @@
         <blockquote>
 <p><strong>目标检测SSD</strong></p>
 </blockquote>
-<h3 id="1-锚框的长和宽"><a href="#1-锚框的长和宽" class="headerlink" title="1.锚框的长和宽"></a>1.锚框的长和宽</h3><h4 id="1-1-书上代码解析"><a href="#1-1-书上代码解析" class="headerlink" title="1.1 书上代码解析"></a>1.1 书上代码解析</h4><script type="math/tex; mode=display">
+<h3 id="1-锚框的长和宽"><a href="#1-锚框的长和宽" class="headerlink" title="1. 锚框的长和宽"></a>1. 锚框的长和宽</h3><h4 id="1-1-书上代码解析"><a href="#1-1-书上代码解析" class="headerlink" title="1.1 书上代码解析"></a>1.1 书上代码解析</h4><script type="math/tex; mode=display">
 s指的是长宽的缩放比例而非面积的缩放比例。\\
 比如s=0.5，则面积就是原图像的0.5^2=0.25倍\\
 ----------------\\
@@ -154,8 +154,7 @@ w_0=s*\sqrt{\frac{h*r}{w}}\\
 h_0=s*\sqrt{\frac{w}{r*h}}\\
 \end{cases}\\</script><p>这样定义的话，就要求<code>multibox_prior()</code>函数要传入原图像的长度和宽度。<br>下面实验验证，不论特征图的长宽怎么变，r和s的定义都是一致的。</p>
 <p><img src="/2021/11/23/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8BSSD/图2.png" alt></p>
-<h3 id="锚框偏移"><a href="#锚框偏移" class="headerlink" title="锚框偏移"></a>锚框偏移</h3><p>假设<script type="math/tex">\hat{g}_j</script>是某个标签目标，<script type="math/tex">d_i</script>是某个anchor，边框回归与Faster-RCNN类似</p>
-<p>回归的偏移相对的是<script type="math/tex">d_i</script>的中点和宽高(cx, cy, w, h)</p>
+<h3 id="2-锚框偏移"><a href="#2-锚框偏移" class="headerlink" title="2. 锚框偏移"></a>2. 锚框偏移</h3><p>假设<script type="math/tex">\hat{g}_j</script>是某个标签目标，<script type="math/tex">d_i</script>是某个anchor，边框回归与Faster-RCNN类似<br>回归的偏移相对的是<script type="math/tex">d_i</script>的中点和宽高(cx, cy, w, h)</p>
 <script type="math/tex; mode=display">
 \begin{cases}
 \hat{g}^{cx}_j = (g^{cx}_j - d^{cx}_i)/d^w_i\\
@@ -163,14 +162,11 @@ h_0=s*\sqrt{\frac{w}{r*h}}\\
 \hat{g}^{cw}_j = log(g^{cw}_j / d^{cw}_i)\\
 \hat{g}^{ch}_j = log(g^{ch}_j / d^{ch}_i)\\
 \end{cases}\\</script><p>解释：</p>
-<ol>
-<li><p>激活的锚框（即给分配了某gt的正样本），其与某gt的IOU肯定不低，则其x、y、w、h也肯定差不大，这是前提</p>
-</li>
-<li><p>x、y：做差后分布于零点对称，除以锚框宽或高起到归一化作用，值分布变窄</p>
-</li>
-<li><p>w、h：做除法后用log，可近似线性，且使得结果的分布呈现零点对称，使得网络回归更简单</p>
-</li>
-</ol>
+<ul>
+<li>激活的锚框（即给分配了某gt的正样本），其与某gt的IOU肯定不低，则其x、y、w、h也肯定差不大，这是前提</li>
+<li>x、y：做差后分布于零点对称，除以锚框宽或高起到归一化作用，值分布变窄</li>
+<li>w、h：做除法后用log，可近似线性，且使得结果的分布呈现零点对称，使得网络回归更简单</li>
+</ul>
 <p><img src="/2021/11/23/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8BSSD/图3.png" alt></p>
 
       
@@ -309,20 +305,5 @@ h_0=s*\sqrt{\frac{w}{r*h}}\\
 
 
   </div>
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </body>
 </html>
