@@ -4,23 +4,24 @@
   <meta charset="utf-8">
   
   
-  <title>《动手学习深度学习》13.4锚框 | Lee的个人博客</title>
+  <title>目标检测SSD | Lee的个人博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="《动手学习深度学习》 13.4锚框">
+  <meta name="description" content="目标检测SSD">
 <meta property="og:type" content="article">
-<meta property="og:title" content="《动手学习深度学习》13.4锚框">
-<meta property="og:url" content="http://example.com/2021/11/23/%E3%80%8A%E5%8A%A8%E6%89%8B%E5%AD%A6%E4%B9%A0%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E3%80%8B13-4%E9%94%9A%E6%A1%86/index.html">
+<meta property="og:title" content="目标检测SSD">
+<meta property="og:url" content="http://example.com/2021/11/23/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8BSSD/index.html">
 <meta property="og:site_name" content="Lee的个人博客">
-<meta property="og:description" content="《动手学习深度学习》 13.4锚框">
+<meta property="og:description" content="目标检测SSD">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://example.com/2021/11/23/%E3%80%8A%E5%8A%A8%E6%89%8B%E5%AD%A6%E4%B9%A0%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E3%80%8B13-4%E9%94%9A%E6%A1%86/图1.png">
-<meta property="og:image" content="http://example.com/2021/11/23/%E3%80%8A%E5%8A%A8%E6%89%8B%E5%AD%A6%E4%B9%A0%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E3%80%8B13-4%E9%94%9A%E6%A1%86/图2.png">
+<meta property="og:image" content="http://example.com/2021/11/23/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8BSSD/图1.png">
+<meta property="og:image" content="http://example.com/2021/11/23/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8BSSD/图2.png">
+<meta property="og:image" content="http://example.com/2021/11/23/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8BSSD/图3.png">
 <meta property="article:published_time" content="2021-11-23T01:52:26.000Z">
-<meta property="article:modified_time" content="2021-11-23T04:46:52.750Z">
+<meta property="article:modified_time" content="2022-01-01T06:11:37.671Z">
 <meta property="article:author" content="Lee">
 <meta property="article:tag" content="DL">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/2021/11/23/%E3%80%8A%E5%8A%A8%E6%89%8B%E5%AD%A6%E4%B9%A0%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E3%80%8B13-4%E9%94%9A%E6%A1%86/图1.png">
+<meta name="twitter:image" content="http://example.com/2021/11/23/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8BSSD/图1.png">
   
     <link rel="alternate" href="/atom.xml" title="Lee的个人博客" type="application/atom+xml">
   
@@ -81,9 +82,9 @@
 </header>
 
       <div class="outer">
-        <section id="main"><article id="post-《动手学习深度学习》13-4锚框" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+        <section id="main"><article id="post-目标检测SSD" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2021/11/23/%E3%80%8A%E5%8A%A8%E6%89%8B%E5%AD%A6%E4%B9%A0%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E3%80%8B13-4%E9%94%9A%E6%A1%86/" class="article-date">
+    <a href="/2021/11/23/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8BSSD/" class="article-date">
   <time class="dt-published" datetime="2021-11-23T01:52:26.000Z" itemprop="datePublished">2021-11-23</time>
 </a>
     
@@ -95,7 +96,7 @@
         
   
     <h1 class="p-name article-title" itemprop="headline name">
-      《动手学习深度学习》13.4锚框
+      目标检测SSD
     </h1>
   
 
@@ -104,7 +105,7 @@
     <div class="e-content article-entry" itemprop="articleBody">
       
         <blockquote>
-<p><strong>《动手学习深度学习》 13.4锚框</strong></p>
+<p><strong>目标检测SSD</strong></p>
 </blockquote>
 <h3 id="1-锚框的长和宽"><a href="#1-锚框的长和宽" class="headerlink" title="1.锚框的长和宽"></a>1.锚框的长和宽</h3><h4 id="1-1-书上代码解析"><a href="#1-1-书上代码解析" class="headerlink" title="1.1 书上代码解析"></a>1.1 书上代码解析</h4><script type="math/tex; mode=display">
 s指的是长宽的缩放比例而非面积的缩放比例。\\
@@ -134,7 +135,7 @@ h_0=s/\sqrt{r}\\
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">w0 = torch.cat((size_tensor * torch.sqrt(ratio_tensor[0]),</span><br><span class="line">                   sizes[0] * torch.sqrt(ratio_tensor[1:])))\</span><br><span class="line">                   * in_height / in_width</span><br><span class="line">h0 = torch.cat((size_tensor / torch.sqrt(ratio_tensor[0]),</span><br><span class="line">                   sizes[0] / torch.sqrt(ratio_tensor[1:])))</span><br></pre></td></tr></table></figure>
 <p>先不看<code>in_height / in_width</code>。上面解得的归一化后的公式与代码所写的一模一样。代码中的$w_0$和$h_0$就是锚框归一化后的宽高（此时消除了原图像w和h的影响，可以认为，r所代表的宽高比就是此时锚框的宽高比，r=1时，是一个正方形锚框，也即此时$w_0$和$h_0$的值是一样的）。但是呢，由于我们显示的时候需要乘以图像的实际宽高所以，乘后的锚框实际宽高比就不是1了，所以才要乘以<code>in_height / in_width</code>，作用就是抵消乘以实际图像长宽后r会改变的问题，当然这样做存粹是为了显示方便（也让你误以为r是指锚框的宽高比），带来的副作用就是，锚框的实际面积就不再是原始图像的$s^2$。<code>(￣ε(#￣)。</code></p>
 <p>由于实际在我们进行目标检测时，特征图长和宽都是相同的，比如(19, 19)、(7, 7)，所以<code>in_height / in_width</code>恒等于1，因此对于实际的使用并不会带来副作用。但此时，如果要将锚框显示出来，归一化后的锚框再乘以图像实际长宽后，所显示的锚框的长宽比会改变。如下图所示，特征图宽高是(1, 1)，当r=1，s=0.5时，最终锚框的宽高比并不是r=1，而是$\frac{w}{h}*r$。即上述代码中<code>in_height / in_width</code>这部分失效了。好消息是，面积是原图的$s^2$，又符合定义了。<code>\(￣︶￣\))</code></p>
-<p><img src="/2021/11/23/%E3%80%8A%E5%8A%A8%E6%89%8B%E5%AD%A6%E4%B9%A0%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E3%80%8B13-4%E9%94%9A%E6%A1%86/图1.png" alt></p>
+<p><img src="/2021/11/23/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8BSSD/图1.png" alt></p>
 <h4 id="1-2-尝试的改动"><a href="#1-2-尝试的改动" class="headerlink" title="1.2 尝试的改动"></a>1.2 尝试的改动</h4><p>所以如果r宽高比的定义按照<strong>原图像的宽高比*r</strong>来定义，那么沐神的代码和书上的公式在<strong>实际使用</strong>时都是没问题的。只是将这个函数作用于特征图<strong>宽高不相同</strong>的实例时（比如为了给观众显示方便，直接作用上面这幅图像），会产生一丢丢歧义：此时的r的定义居然又变回了<strong>锚框的宽高比</strong>。</p>
 <p>我们可以尝试来重新定义宽高比r（s定义不变），直接<strong>认定它代表锚框的宽高比</strong>，会有如下公式：</p>
 <script type="math/tex; mode=display">
@@ -152,12 +153,30 @@ w_0和h_0分别处以w和h进行归一化，可得\\
 w_0=s*\sqrt{\frac{h*r}{w}}\\
 h_0=s*\sqrt{\frac{w}{r*h}}\\
 \end{cases}\\</script><p>这样定义的话，就要求<code>multibox_prior()</code>函数要传入原图像的长度和宽度。<br>下面实验验证，不论特征图的长宽怎么变，r和s的定义都是一致的。</p>
-<p><img src="/2021/11/23/%E3%80%8A%E5%8A%A8%E6%89%8B%E5%AD%A6%E4%B9%A0%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E3%80%8B13-4%E9%94%9A%E6%A1%86/图2.png" alt></p>
+<p><img src="/2021/11/23/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8BSSD/图2.png" alt></p>
+<h3 id="锚框偏移"><a href="#锚框偏移" class="headerlink" title="锚框偏移"></a>锚框偏移</h3><p>假设<script type="math/tex">\hat{g}_j</script>是某个标签目标，<script type="math/tex">d_i</script>是某个anchor，边框回归与Faster-RCNN类似</p>
+<p>回归的偏移相对的是<script type="math/tex">d_i</script>的中点和宽高(cx, cy, w, h)</p>
+<script type="math/tex; mode=display">
+\begin{cases}
+\hat{g}^{cx}_j = (g^{cx}_j - d^{cx}_i)/d^w_i\\
+\hat{g}^{cy}_j = (g^{cy}_j - d^{cy}_i)/d^h_i\\
+\hat{g}^{cw}_j = log(g^{cw}_j / d^{cw}_i)\\
+\hat{g}^{ch}_j = log(g^{ch}_j / d^{ch}_i)\\
+\end{cases}\\</script><p>解释：</p>
+<ol>
+<li><p>激活的锚框（即给分配了某gt的正样本），其与某gt的IOU肯定不低，则其x、y、w、h也肯定差不大，这是前提</p>
+</li>
+<li><p>x、y：做差后分布于零点对称，除以锚框宽或高起到归一化作用，值分布变窄</p>
+</li>
+<li><p>w、h：做除法后用log，可近似线性，且使得结果的分布呈现零点对称，使得网络回归更简单</p>
+</li>
+</ol>
+<p><img src="/2021/11/23/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8BSSD/图3.png" alt></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/11/23/%E3%80%8A%E5%8A%A8%E6%89%8B%E5%AD%A6%E4%B9%A0%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E3%80%8B13-4%E9%94%9A%E6%A1%86/" data-id="ckwbm9k9m000c3wng0vnl6con" data-title="《动手学习深度学习》13.4锚框" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/11/23/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8BSSD/" data-id="ckxvd2p2x00004sng56p76dxv" data-title="目标检测SSD" class="article-share-link">Share</a>
       
       
       
@@ -224,7 +243,7 @@ h_0=s*\sqrt{\frac{w}{r*h}}\\
       <ul>
         
           <li>
-            <a href="/2021/11/23/%E3%80%8A%E5%8A%A8%E6%89%8B%E5%AD%A6%E4%B9%A0%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E3%80%8B13-4%E9%94%9A%E6%A1%86/">《动手学习深度学习》13.4锚框</a>
+            <a href="/2021/11/23/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8BSSD/">目标检测SSD</a>
           </li>
         
           <li>
@@ -256,7 +275,7 @@ h_0=s*\sqrt{\frac{w}{r*h}}\\
   <div class="outer">
     <div id="footer-info" class="inner">
       
-      &copy; 2021 Lee<br>
+      &copy; 2022 Lee<br>
       Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
