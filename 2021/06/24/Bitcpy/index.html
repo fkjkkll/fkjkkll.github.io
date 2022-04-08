@@ -13,14 +13,13 @@
 <meta property="og:site_name" content="Lee的个人博客">
 <meta property="og:description" content="两种bitcpy的实现方式">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://example.com/2021/06/24/Bitcpy/result.png">
-<meta property="og:image" content="http://example.com/2021/06/24/Bitcpy/result.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/fkjkkll/My-Algorithm/master/Others/Bitcpy/BitcpyResult.png">
 <meta property="article:published_time" content="2021-06-24T12:17:20.000Z">
-<meta property="article:modified_time" content="2021-07-20T02:44:35.345Z">
+<meta property="article:modified_time" content="2022-03-19T09:47:03.440Z">
 <meta property="article:author" content="Lee">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/2021/06/24/Bitcpy/result.png">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/fkjkkll/My-Algorithm/master/Others/Bitcpy/BitcpyResult.png">
   
     <link rel="alternate" href="/atom.xml" title="Lee的个人博客" type="application/atom+xml">
   
@@ -54,7 +53,7 @@
       </h1>
       
         <h2 id="subtitle-wrap">
-          <a href="/" id="subtitle">随便写写</a>
+          <a href="/" id="subtitle">个人小记</a>
         </h2>
       
     </div>
@@ -115,13 +114,12 @@
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">WORD <span class="title">shiftRight</span><span class="params">(WORD w, <span class="keyword">int</span> len)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">char</span>* s = (<span class="keyword">unsigned</span> <span class="keyword">char</span>*)&amp;w;</span><br><span class="line">	<span class="keyword">while</span> (len--) &#123;</span><br><span class="line">		*(s+<span class="number">3</span>) &gt;&gt;= <span class="number">1</span>;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">			<span class="keyword">if</span> (*(s + i) == <span class="number">0</span>)</span><br><span class="line">				<span class="keyword">continue</span>;</span><br><span class="line">			<span class="keyword">if</span> (*(s + i) &amp; <span class="number">1</span>)</span><br><span class="line">				*(s + i + <span class="number">1</span>) |= <span class="number">0x80</span>;</span><br><span class="line">			*(s + i) &gt;&gt;= <span class="number">1</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> w;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><strong>拷贝方式是按照实际的物理bit位进行顺序拷贝的</strong></p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">bitcpy</span><span class="params">(<span class="keyword">void</span>* to, <span class="keyword">unsigned</span> <span class="keyword">int</span> tOfs, <span class="keyword">const</span> <span class="keyword">void</span>* from, <span class="keyword">unsigned</span> <span class="keyword">int</span> fOfs, <span class="keyword">int</span> bCnt)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> BitsOfHalfWord = <span class="built_in"><span class="keyword">sizeof</span></span>(HALF_WORD) * <span class="number">8</span>;</span><br><span class="line">	<span class="comment">// 将数据和偏置对其“半字”</span></span><br><span class="line">	<span class="comment">// 指针视为intptr_t，加1则前进一个Byte，且更安全（适用于将指针进行算术运算时使用）</span></span><br><span class="line">	to = (<span class="keyword">void</span>*)((<span class="keyword">intptr_t</span>)to + (tOfs / BitsOfHalfWord) * <span class="built_in"><span class="keyword">sizeof</span></span>(HALF_WORD));</span><br><span class="line">	from = (<span class="keyword">void</span>*)((<span class="keyword">intptr_t</span>)from + (fOfs / BitsOfHalfWord) * <span class="built_in"><span class="keyword">sizeof</span></span>(HALF_WORD));</span><br><span class="line">	fOfs %= BitsOfHalfWord;</span><br><span class="line">	tOfs %= BitsOfHalfWord;</span><br><span class="line">	<span class="keyword">int</span> NbrOfCopiedBits = <span class="number">0</span>;</span><br><span class="line">	WORD rMask, wMask;</span><br><span class="line">	WORD temp;</span><br><span class="line">	WORD *_to = (WORD*)to;</span><br><span class="line">	WORD *_from = (WORD*)from;</span><br><span class="line">	<span class="keyword">while</span> (bCnt &gt; <span class="number">0</span>) &#123;</span><br><span class="line">		<span class="comment">// 更新</span></span><br><span class="line">		<span class="keyword">int</span> BitsToCopy = (bCnt &lt; BitsOfHalfWord) ? bCnt : BitsOfHalfWord;</span><br><span class="line">		bCnt -= BitsToCopy;</span><br><span class="line">		NbrOfCopiedBits += BitsToCopy;</span><br><span class="line">		<span class="comment">// 源与目标的遮罩</span></span><br><span class="line">		rMask = <span class="built_in">shiftRight</span>((WORD)<span class="number">-1</span>, fOfs) ^ <span class="built_in">shiftRight</span>((WORD)<span class="number">-1</span>, fOfs + BitsToCopy);</span><br><span class="line">		wMask = <span class="built_in">shiftRight</span>((WORD)<span class="number">-1</span>, tOfs) ^ <span class="built_in">shiftRight</span>((WORD)<span class="number">-1</span>, tOfs + BitsToCopy);</span><br><span class="line">		temp = (*_from &amp; rMask);</span><br><span class="line">		temp = <span class="built_in">shiftLeft</span>(temp, fOfs);</span><br><span class="line">		temp = <span class="built_in">shiftRight</span>(temp, tOfs);</span><br><span class="line">		*_to &amp;= ~wMask;	<span class="comment">// 先清理此部分</span></span><br><span class="line">		*_to |= temp;	<span class="comment">// 在“拷贝”进来</span></span><br><span class="line">		<span class="comment">// 拷贝未完成情况下，跟进指针</span></span><br><span class="line">		<span class="keyword">if</span> (BitsToCopy == BitsOfHalfWord) &#123;</span><br><span class="line">			_to = (WORD*)((<span class="keyword">intptr_t</span>)_to + <span class="built_in"><span class="keyword">sizeof</span></span>(HALF_WORD));</span><br><span class="line">			_from = (WORD*)((<span class="keyword">intptr_t</span>)_from + <span class="built_in"><span class="keyword">sizeof</span></span>(HALF_WORD));</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> NbrOfCopiedBits;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="4-运行效果"><a href="#4-运行效果" class="headerlink" title="4. 运行效果"></a>4. 运行效果</h3><p><img src="/2021/06/24/Bitcpy/result.png" alt></p>
-<h3 id="5-运行效果（测试用）"><a href="#5-运行效果（测试用）" class="headerlink" title="5. 运行效果（测试用）"></a>5. 运行效果（测试用）</h3><img src="/2021/06/24/Bitcpy/result.png" class title="This is">
+<h3 id="4-运行效果"><a href="#4-运行效果" class="headerlink" title="4. 运行效果"></a>4. 运行效果</h3><p><img src="https://raw.githubusercontent.com/fkjkkll/My-Algorithm/master/Others/Bitcpy/BitcpyResult.png" alt=""></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/06/24/Bitcpy/" data-id="cl04o5vts0000a4ng2iaz3n67" data-title="Bitcpy" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/06/24/Bitcpy/" data-id="cl1pzto0j00004kng7m3p1z6h" data-title="Bitcpy" class="article-share-link">Share</a>
       
       
       
@@ -160,7 +158,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C-C/" rel="tag">C/C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DL/" rel="tag">DL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OS/" rel="tag">OS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Others/" rel="tag">Others</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C-C/" rel="tag">C/C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Others/" rel="tag">Others</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%8C%E5%88%86%E6%B3%95/" rel="tag">二分法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" rel="tag">动态规划</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8F%8C%E6%8C%87%E9%92%88/" rel="tag">双指针</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%93%88%E5%B8%8C/" rel="tag">哈希</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%9E%E6%BA%AF/" rel="tag">回溯</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/" rel="tag">字符串</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8E%92%E5%BA%8F/" rel="tag">排序</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" rel="tag">操作系统</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A0%88/" rel="tag">栈</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A0%91/" rel="tag">树</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/" rel="tag">目标检测</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B4%AA%E5%BF%83/" rel="tag">贪心</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%92%E5%BD%92/" rel="tag">递归</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%93%BE%E8%A1%A8/" rel="tag">链表</a></li></ul>
     </div>
   </div>
 
@@ -170,7 +168,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/C-C/" style="font-size: 20px;">C/C++</a> <a href="/tags/DL/" style="font-size: 10px;">DL</a> <a href="/tags/OS/" style="font-size: 10px;">OS</a> <a href="/tags/Others/" style="font-size: 15px;">Others</a>
+      <a href="/tags/C-C/" style="font-size: 15px;">C/C++</a> <a href="/tags/Others/" style="font-size: 10px;">Others</a> <a href="/tags/%E4%BA%8C%E5%88%86%E6%B3%95/" style="font-size: 12.5px;">二分法</a> <a href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" style="font-size: 12.5px;">动态规划</a> <a href="/tags/%E5%8F%8C%E6%8C%87%E9%92%88/" style="font-size: 10px;">双指针</a> <a href="/tags/%E5%93%88%E5%B8%8C/" style="font-size: 10px;">哈希</a> <a href="/tags/%E5%9B%9E%E6%BA%AF/" style="font-size: 10px;">回溯</a> <a href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/" style="font-size: 12.5px;">字符串</a> <a href="/tags/%E6%8E%92%E5%BA%8F/" style="font-size: 12.5px;">排序</a> <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 10px;">操作系统</a> <a href="/tags/%E6%A0%88/" style="font-size: 12.5px;">栈</a> <a href="/tags/%E6%A0%91/" style="font-size: 10px;">树</a> <a href="/tags/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/" style="font-size: 10px;">目标检测</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 20px;">算法</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;">设计模式</a> <a href="/tags/%E8%B4%AA%E5%BF%83/" style="font-size: 10px;">贪心</a> <a href="/tags/%E9%80%92%E5%BD%92/" style="font-size: 17.5px;">递归</a> <a href="/tags/%E9%93%BE%E8%A1%A8/" style="font-size: 10px;">链表</a>
     </div>
   </div>
 
@@ -179,7 +177,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li></ul>
     </div>
   </div>
 
@@ -192,23 +190,23 @@
       <ul>
         
           <li>
-            <a href="/2021/11/23/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8BSSD/">目标检测SSD</a>
+            <a href="/2022/04/08/%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8%E8%AF%A6%E8%A7%A3/">右值引用详解</a>
           </li>
         
           <li>
-            <a href="/2021/10/31/C-priority-queue%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8E%92%E5%BA%8F/">C++ priority_queue自定义排序</a>
+            <a href="/2022/04/07/%E8%B7%AF%E5%BE%84%E6%90%9C%E7%B4%A2/">路径搜索</a>
           </li>
         
           <li>
-            <a href="/2021/08/27/OS-%E8%AF%BB%E8%80%85%E5%86%99%E8%80%85%E9%97%AE%E9%A2%98/">OS:读者写者问题</a>
+            <a href="/2022/04/06/%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8C%B9%E9%85%8D/">字符串匹配</a>
           </li>
         
           <li>
-            <a href="/2021/08/05/essential-C-note/">Essential C++ note</a>
+            <a href="/2022/04/05/%E8%AE%A1%E7%AE%97%E5%99%A8/">计算器</a>
           </li>
         
           <li>
-            <a href="/2021/07/20/%E9%A2%88%E6%A4%8E%E9%94%BB%E7%82%BC/">颈椎锻炼</a>
+            <a href="/2022/04/04/%E9%93%BE%E8%A1%A8%E6%8E%92%E5%BA%8F/">链表排序</a>
           </li>
         
       </ul>

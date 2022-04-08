@@ -14,7 +14,7 @@
 <meta property="og:description" content="记录本书（对我来说）的一些重点内容">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-08-05T08:08:02.000Z">
-<meta property="article:modified_time" content="2021-08-06T01:13:01.399Z">
+<meta property="article:modified_time" content="2022-03-30T09:19:13.937Z">
 <meta property="article:author" content="Lee">
 <meta property="article:tag" content="C&#x2F;C++">
 <meta name="twitter:card" content="summary">
@@ -51,7 +51,7 @@
       </h1>
       
         <h2 id="subtitle-wrap">
-          <a href="/" id="subtitle">随便写写</a>
+          <a href="/" id="subtitle">个人小记</a>
         </h2>
       
     </div>
@@ -106,7 +106,7 @@
 <h3 id="1-C-编程基础"><a href="#1-C-编程基础" class="headerlink" title="1 C++编程基础"></a>1 C++编程基础</h3><ol>
 <li>初始化方法：构造函数法（constructor syntax）</li>
 </ol>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">var</span><span class="params">(<span class="number">66</span>)</span></span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">var</span><span class="params">(<span class="number">66</span>)</span></span>;</span><br><span class="line"><span class="keyword">int</span> var2&#123;<span class="number">66</span>&#125;; <span class="comment">// ok</span></span><br></pre></td></tr></table></figure>
 <ol>
 <li>srand()随机数种子；rand()则产生一个介于0和int所能表示的最大整数；需包含头文件cstdlib</li>
 <li>cerr（standard error）代表标准错误设备，与cout唯一区别就是不带缓冲，立即显示于用户终端</li>
@@ -120,19 +120,19 @@
 <li>inline函数的声明和定义都需要放在头文件，声明和定义有一个标明inline即可（在类定义中实现则默认是inline）；其他的函数，则必须是<strong>“定义放在程序代码文件”、“声明放在头文件”</strong></li>
 <li>多文件共享变量</li>
 </ol>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    变量只能定义一次，但是可以声明多次</span></span><br><span class="line"><span class="comment">    假定main.cpp func.cpp func.h三个文件</span></span><br><span class="line"><span class="comment">    1. 在func.cpp有一个int a=1;如果要在main.cpp中使用，要在func.h或main.cpp中写extern int a；</span></span><br><span class="line"><span class="comment">    2. const object和inline函数一样，是“一次定义”规则下的例外。const object定义只要一出文件外就不可见（意味着可以在多个程序代码中加以定义）。因此如果const int a=1想多文件共享，可以直接写在func.h中，其他的非const object则不可。</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    变量只能定义一次，但是可以声明多次</span></span><br><span class="line"><span class="comment">    假定main.cpp func.cpp func.h三个文件</span></span><br><span class="line"><span class="comment">    1. 在func.cpp有一个int a=1;如果要在main.cpp中使用，要在func.h或main.cpp中写extern int a；</span></span><br><span class="line"><span class="comment">    2. const object和inline函数一样，是“一次定义”规则下的例外。const object定义只要一出文件外就</span></span><br><span class="line"><span class="comment">       不可见（意味着可以在多个程序代码中加以定义）。因此如果const int a=1想多文件共享，可以直接写</span></span><br><span class="line"><span class="comment">       在func.h中，其他的非const object则不可。</span></span><br><span class="line"><span class="comment">       可参考：https://www.icode9.com/content-1-915590.html</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
 <h3 id="3-泛型编程风格"><a href="#3-泛型编程风格" class="headerlink" title="3 泛型编程风格"></a>3 泛型编程风格</h3><ol>
 <li>list不支持iterator的偏移运算（+、-）但是有++和—</li>
 <li>对于标准容器，不确保目标空间大小，可使用iterator inserter用插入操作替代赋值操作</li>
 <li>&lt;这章挺多东西，需要结合书本去看&gt;</li>
 </ol>
 <h3 id="4-基于对象的编程风格"><a href="#4-基于对象的编程风格" class="headerlink" title="4 基于对象的编程风格"></a>4 基于对象的编程风格</h3><ol>
-<li>如果有必要为某个class编写[拷贝构造]，则同样有必要为它编写[拷贝赋值操作]</li>
+<li>如果有必要为某个class编写[拷贝构造]，则同样有必要为它编写[赋值操作]</li>
 <li>没有一个const reference class参数可以调用公开接口中的non-const成分</li>
 <li>类中的变量声明为mutable，标明其不会破坏对象的<strong>常量性</strong>（constness），即可在const函数中可以修改它</li>
-<li>当在class主体外定义member function时，无需重复加上关键字static（同理静态成员变量）</li>
+<li>当定义class的static function时，不可加上关键字static（同理静态成员变量）</li>
 <li>当类中有静态成员变量时，需要及时在类外进行初始化，否则报错：无法解析的外部命令</li>
-<li>通常情况：operator*无参表示解引用；有参表示乘法</li>
+<li>通常情况：<strong>operator*无参表示解引用；有参表示乘法</strong></li>
 <li>friend声明可以出现在类定义任意位置，不受public或private影响</li>
 <li><strong>嵌套类型</strong>（Nested Type），类中可以定义嵌套类型，再用域解析符（例如每个STL容器类都有自己的iterator）</li>
 <li>重载iostream（看书）</li>
@@ -144,14 +144,14 @@
 </ol>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">gen_elems</span><span class="params">(<span class="keyword">int</span> pos)</span> </span>= <span class="number">0</span>;</span><br></pre></td></tr></table></figure>
 <ol>
-<li>任何类声明了纯虚函数，那么由于其接口不完整（无定义），程序无法为其产生实体。这种类只能作为派生类的子对象使用，而且前提是这些派生类为所有虚函数提供确切的定义。</li>
+<li>任何类声明了纯虚函数，那么由于其接口不完整（无定义），程序无法为其产生实体。这种类只能作为派生类的子对象使用，而且前提是这些派生类为<strong>所有</strong>虚函数提供确切的定义。</li>
 <li>一般规则：凡基类定义了虚函数，则destructor也要声明为virtual</li>
-<li>一般而言，对象的赋值构造函数开发者如果未提供，则编译器会自动生成默认的赋值构造函数。然而以下情况默认的赋值构造函数会被删除：</li>
+<li>一般而言，对象的拷贝构造函数开发者如果未提供，则编译器会自动生成默认的拷贝构造函数。然而以下情况默认的拷贝构造函数会被删除：</li>
 </ol>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    1、存在非静态的const成员变量</span></span><br><span class="line"><span class="comment">    2、存在非静态的引用成员变量</span></span><br><span class="line"><span class="comment">    3、存在不能拷贝的成员变量</span></span><br><span class="line"><span class="comment">    4、存在不能拷贝的基类</span></span><br><span class="line"><span class="comment">    5、存在用户定义的移动构造函数或移动赋值函数</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
 <ol>
 <li>在基类的constructor中，派生类的虚函数不允许被调用</li>
-<li>static_cast和dynamic_cast，前者无条件转换，后者判断是否可以转换为目的类型再进行转换</li>
+<li>static_cast和dynamic_cast，前者无条件转换，后者判断（比如基类的指针是否真的指向了该派生类）是否可以转换为目的类型再进行转换</li>
 </ol>
 <h3 id="6-以template进行编程"><a href="#6-以template进行编程" class="headerlink" title="6 以template进行编程"></a>6 以template进行编程</h3><ol>
 <li>函数传入一个指针，只能改变指针所指对象的内容，要想改变指针本身（指向）就要传递reference to pointer</li>
@@ -169,15 +169,15 @@
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    1、这类参数在模板内部都是常量值</span></span><br><span class="line"><span class="comment">    2、只允许传入整形、指针和引用这三类</span></span><br><span class="line"><span class="comment">    3、调用非类型参数的实参必须为常量表达式（必须在编译时能计算出结果的）</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
 <h3 id="7-异常处理"><a href="#7-异常处理" class="headerlink" title="7 异常处理"></a>7 异常处理</h3><ol>
 <li>重新抛出时，只需写下关键字throw即可。它只能出现于catch子句中</li>
-<li>局部资源管理，在易发生异常后释放资源是一件风险很大的事情。虽然可以通过try catch处理，但是释放资源的代码要出现两次，不好。这就引出了resource acquisition is initialization(RAII)策略，即初始化阶段进行资源请求。说人话就是，在构造函数中请求所有资源，在析构函数中释放所有资源：C++保证，在异常处理机制终结某个函数之前，所有局部对象的destructor都会被调用。或者使用智能指针例如：auto_ptr等。</li>
-<li>ptext = new vector<string>; 经过以下几个步骤（异常出现，余下不会执行，会沿着调用链抛出）</string></li>
+<li>局部资源管理，在易发生异常后释放资源是一件风险很大的事情。虽然可以通过try catch处理，但是释放资源的代码要出现两次，不好。这就引出了resource acquisition is initialization(RAII)策略，即初始化阶段进行资源请求。说人话就是，在构造函数中请求所有资源，在析构函数中释放所有资源：C++保证，在异常处理机制终结某个函数之前，所有局部对象的destructor都会被调用。或者使用智能指针例如：unique_ptr、shared_ptr等。</li>
+<li>ptext = new vector<string>; 经过以下几个步骤（异常出现，余下不会执行，会沿着调用链抛出）</li>
 </ol>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    1、分配足够的空间</span></span><br><span class="line"><span class="comment">    2、将vector&lt;string&gt; default constructor应用于heap对象之上</span></span><br><span class="line"><span class="comment">    3、将对象地址设置给ptext</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    // 可能会reorder哦~</span></span><br><span class="line"><span class="comment">    1、分配足够的空间</span></span><br><span class="line"><span class="comment">    2、将vector&lt;string&gt; default constructor应用于heap对象之上</span></span><br><span class="line"><span class="comment">    3、将对象地址设置给ptext</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/08/05/essential-C-note/" data-id="cl04o5vu00005a4ngcdtk7vjs" data-title="Essential C++ note" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/08/05/essential-C-note/" data-id="cl1pzto0y000m4kngc58fdmh0" data-title="Essential C++ note" class="article-share-link">Share</a>
       
       
       
@@ -189,19 +189,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2021/08/27/OS-%E8%AF%BB%E8%80%85%E5%86%99%E8%80%85%E9%97%AE%E9%A2%98/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2021/08/27/%E8%AF%BB%E8%80%85%E5%86%99%E8%80%85%E9%97%AE%E9%A2%98/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          OS:读者写者问题
+          读者写者问题
         
       </div>
     </a>
   
   
-    <a href="/2021/07/20/%E9%A2%88%E6%A4%8E%E9%94%BB%E7%82%BC/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2021/06/28/Hexo%E8%AF%B4%E6%98%8E/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">颈椎锻炼</div>
+      <div class="article-nav-title">Hexo说明</div>
     </a>
   
 </nav>
@@ -221,7 +221,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C-C/" rel="tag">C/C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DL/" rel="tag">DL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OS/" rel="tag">OS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Others/" rel="tag">Others</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C-C/" rel="tag">C/C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Others/" rel="tag">Others</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%8C%E5%88%86%E6%B3%95/" rel="tag">二分法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" rel="tag">动态规划</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8F%8C%E6%8C%87%E9%92%88/" rel="tag">双指针</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%93%88%E5%B8%8C/" rel="tag">哈希</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%9E%E6%BA%AF/" rel="tag">回溯</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/" rel="tag">字符串</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8E%92%E5%BA%8F/" rel="tag">排序</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" rel="tag">操作系统</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A0%88/" rel="tag">栈</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A0%91/" rel="tag">树</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/" rel="tag">目标检测</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B4%AA%E5%BF%83/" rel="tag">贪心</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%92%E5%BD%92/" rel="tag">递归</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%93%BE%E8%A1%A8/" rel="tag">链表</a></li></ul>
     </div>
   </div>
 
@@ -231,7 +231,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/C-C/" style="font-size: 20px;">C/C++</a> <a href="/tags/DL/" style="font-size: 10px;">DL</a> <a href="/tags/OS/" style="font-size: 10px;">OS</a> <a href="/tags/Others/" style="font-size: 15px;">Others</a>
+      <a href="/tags/C-C/" style="font-size: 15px;">C/C++</a> <a href="/tags/Others/" style="font-size: 10px;">Others</a> <a href="/tags/%E4%BA%8C%E5%88%86%E6%B3%95/" style="font-size: 12.5px;">二分法</a> <a href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" style="font-size: 12.5px;">动态规划</a> <a href="/tags/%E5%8F%8C%E6%8C%87%E9%92%88/" style="font-size: 10px;">双指针</a> <a href="/tags/%E5%93%88%E5%B8%8C/" style="font-size: 10px;">哈希</a> <a href="/tags/%E5%9B%9E%E6%BA%AF/" style="font-size: 10px;">回溯</a> <a href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/" style="font-size: 12.5px;">字符串</a> <a href="/tags/%E6%8E%92%E5%BA%8F/" style="font-size: 12.5px;">排序</a> <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 10px;">操作系统</a> <a href="/tags/%E6%A0%88/" style="font-size: 12.5px;">栈</a> <a href="/tags/%E6%A0%91/" style="font-size: 10px;">树</a> <a href="/tags/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/" style="font-size: 10px;">目标检测</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 20px;">算法</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;">设计模式</a> <a href="/tags/%E8%B4%AA%E5%BF%83/" style="font-size: 10px;">贪心</a> <a href="/tags/%E9%80%92%E5%BD%92/" style="font-size: 17.5px;">递归</a> <a href="/tags/%E9%93%BE%E8%A1%A8/" style="font-size: 10px;">链表</a>
     </div>
   </div>
 
@@ -240,7 +240,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li></ul>
     </div>
   </div>
 
@@ -253,23 +253,23 @@
       <ul>
         
           <li>
-            <a href="/2021/11/23/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8BSSD/">目标检测SSD</a>
+            <a href="/2022/04/08/%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8%E8%AF%A6%E8%A7%A3/">右值引用详解</a>
           </li>
         
           <li>
-            <a href="/2021/10/31/C-priority-queue%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8E%92%E5%BA%8F/">C++ priority_queue自定义排序</a>
+            <a href="/2022/04/07/%E8%B7%AF%E5%BE%84%E6%90%9C%E7%B4%A2/">路径搜索</a>
           </li>
         
           <li>
-            <a href="/2021/08/27/OS-%E8%AF%BB%E8%80%85%E5%86%99%E8%80%85%E9%97%AE%E9%A2%98/">OS:读者写者问题</a>
+            <a href="/2022/04/06/%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8C%B9%E9%85%8D/">字符串匹配</a>
           </li>
         
           <li>
-            <a href="/2021/08/05/essential-C-note/">Essential C++ note</a>
+            <a href="/2022/04/05/%E8%AE%A1%E7%AE%97%E5%99%A8/">计算器</a>
           </li>
         
           <li>
-            <a href="/2021/07/20/%E9%A2%88%E6%A4%8E%E9%94%BB%E7%82%BC/">颈椎锻炼</a>
+            <a href="/2022/04/04/%E9%93%BE%E8%A1%A8%E6%8E%92%E5%BA%8F/">链表排序</a>
           </li>
         
       </ul>
