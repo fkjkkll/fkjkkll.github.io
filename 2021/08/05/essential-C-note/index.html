@@ -145,7 +145,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-C-%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80"><span class="nav-number">1.</span> <span class="nav-text">1 C++编程基础</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E9%9D%A2%E5%90%91%E8%BF%87%E7%A8%8B%E7%9A%84%E7%BC%96%E7%A8%8B%E9%A3%8E%E6%A0%BC"><span class="nav-number">2.</span> <span class="nav-text">2 面向过程的编程风格</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E6%B3%9B%E5%9E%8B%E7%BC%96%E7%A8%8B%E9%A3%8E%E6%A0%BC"><span class="nav-number">3.</span> <span class="nav-text">3 泛型编程风格</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%9F%BA%E4%BA%8E%E5%AF%B9%E8%B1%A1%E7%9A%84%E7%BC%96%E7%A8%8B%E9%A3%8E%E6%A0%BC"><span class="nav-number">4.</span> <span class="nav-text">4 基于对象的编程风格</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B%E9%A3%8E%E6%A0%BC"><span class="nav-number">5.</span> <span class="nav-text">5 面向对象编程风格</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E4%BB%A5template%E8%BF%9B%E8%A1%8C%E7%BC%96%E7%A8%8B"><span class="nav-number">6.</span> <span class="nav-text">6 以template进行编程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86"><span class="nav-number">7.</span> <span class="nav-text">7 异常处理</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#c%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80"><span class="nav-number">1.</span> <span class="nav-text">1 C++编程基础</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%A2%E5%90%91%E8%BF%87%E7%A8%8B%E7%9A%84%E7%BC%96%E7%A8%8B%E9%A3%8E%E6%A0%BC"><span class="nav-number">2.</span> <span class="nav-text">2 面向过程的编程风格</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%9B%E5%9E%8B%E7%BC%96%E7%A8%8B%E9%A3%8E%E6%A0%BC"><span class="nav-number">3.</span> <span class="nav-text">3 泛型编程风格</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E5%AF%B9%E8%B1%A1%E7%9A%84%E7%BC%96%E7%A8%8B%E9%A3%8E%E6%A0%BC"><span class="nav-number">4.</span> <span class="nav-text">4 基于对象的编程风格</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B%E9%A3%8E%E6%A0%BC"><span class="nav-number">5.</span> <span class="nav-text">5 面向对象编程风格</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A5template%E8%BF%9B%E8%A1%8C%E7%BC%96%E7%A8%8B"><span class="nav-number">6.</span> <span class="nav-text">6 以template进行编程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86"><span class="nav-number">7.</span> <span class="nav-text">7 异常处理</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -270,71 +270,78 @@
         <blockquote>
 <p><strong>记录本书（对我来说）的一些重点内容</strong></p>
 </blockquote>
-<h3 id="1-C-编程基础"><a href="#1-C-编程基础" class="headerlink" title="1 C++编程基础"></a>1 C++编程基础</h3><ol>
+<h3 id="c编程基础">1 C++编程基础</h3>
+<ol type="1">
 <li>初始化方法：构造函数法（constructor syntax）</li>
 </ol>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">var</span><span class="params">(<span class="number">66</span>)</span></span>;</span><br><span class="line"><span class="type">int</span> var2&#123;<span class="number">66</span>&#125;; <span class="comment">// ok</span></span><br></pre></td></tr></table></figure>
-<ol>
+<ol start="2" type="1">
 <li>srand()随机数种子；rand()则产生一个介于0和int所能表示的最大整数；需包含头文件cstdlib</li>
 <li>cerr（standard error）代表标准错误设备，与cout唯一区别就是不带缓冲，立即显示于用户终端</li>
 </ol>
-<h3 id="2-面向过程的编程风格"><a href="#2-面向过程的编程风格" class="headerlink" title="2 面向过程的编程风格"></a>2 面向过程的编程风格</h3><ol>
+<h3 id="面向过程的编程风格">2 面向过程的编程风格</h3>
+<ol type="1">
 <li>使用模板，则声明与定义要放在一起</li>
 <li>函数指针</li>
 </ol>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 给函数指针赋初值</span></span><br><span class="line"><span class="type">const</span> vector&lt;<span class="type">int</span>&gt;* (*seq_str)(<span class="type">int</span>) = <span class="number">0</span>;</span><br><span class="line"><span class="comment">// seq_array是个数组，内放函数指针</span></span><br><span class="line"><span class="type">const</span> vector&lt;<span class="type">int</span>&gt;* (*seq_array[])(<span class="type">int</span>) = &#123;</span><br><span class="line">    fibon_seq, lucas_seq, pell_seq,</span><br><span class="line">    triang_seq, square_seq, pent_seq</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ol>
+<ol start="3" type="1">
 <li>inline函数的声明和定义都需要放在头文件，声明和定义有一个标明inline即可（在类定义中实现则默认是inline）；其他的函数，则必须是<strong>“定义放在程序代码文件”、“声明放在头文件”</strong></li>
 <li>多文件共享变量</li>
 </ol>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    变量只能定义一次，但是可以声明多次</span></span><br><span class="line"><span class="comment">    假定main.cpp func.cpp func.h三个文件</span></span><br><span class="line"><span class="comment">    1. 在func.cpp有一个int a=1;如果要在main.cpp中使用，要在func.h或main.cpp中写extern int a；</span></span><br><span class="line"><span class="comment">    2. const object和inline函数一样，是“一次定义”规则下的例外。const object定义只要一出文件外就</span></span><br><span class="line"><span class="comment">       不可见（意味着可以在多个程序代码中加以定义）。因此如果const int a=1想多文件共享，可以直接写</span></span><br><span class="line"><span class="comment">       在func.h中，其他的非const object则不可。</span></span><br><span class="line"><span class="comment">       可参考：https://www.icode9.com/content-1-915590.html</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
-<h3 id="3-泛型编程风格"><a href="#3-泛型编程风格" class="headerlink" title="3 泛型编程风格"></a>3 泛型编程风格</h3><ol>
-<li>list不支持iterator的偏移运算（+、-）但是有++和—</li>
+<h3 id="泛型编程风格">3 泛型编程风格</h3>
+<ol type="1">
+<li>list不支持iterator的偏移运算（+、-）但是有++和--</li>
 <li>对于标准容器，不确保目标空间大小，可使用iterator inserter用插入操作替代赋值操作</li>
 <li>&lt;这章挺多东西，需要结合书本去看&gt;</li>
 </ol>
-<h3 id="4-基于对象的编程风格"><a href="#4-基于对象的编程风格" class="headerlink" title="4 基于对象的编程风格"></a>4 基于对象的编程风格</h3><ol>
+<h3 id="基于对象的编程风格">4 基于对象的编程风格</h3>
+<ol type="1">
 <li>如果有必要为某个class编写[拷贝构造]，则同样有必要为它编写[赋值操作]</li>
 <li>没有一个const reference class参数可以调用公开接口中的non-const成分</li>
 <li>类中的变量声明为mutable，标明其不会破坏对象的<strong>常量性</strong>（constness），即可在const函数中可以修改它</li>
 <li>当定义class的static function时，不可加上关键字static（同理静态成员变量）</li>
 <li>当类中有静态成员变量时，需要及时在类外进行初始化，否则报错：无法解析的外部命令</li>
-<li>通常情况：<strong>operator*无参表示解引用；有参表示乘法</strong></li>
+<li>通常情况：**operator*无参表示解引用；有参表示乘法**</li>
 <li>friend声明可以出现在类定义任意位置，不受public或private影响</li>
 <li><strong>嵌套类型</strong>（Nested Type），类中可以定义嵌套类型，再用域解析符（例如每个STL容器类都有自己的iterator）</li>
 <li>重载iostream（看书）</li>
 <li>类的函数指针：</li>
 </ol>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">void</span> (num_sequence::*pm)(<span class="type">int</span>) = <span class="number">0</span>;</span><br><span class="line"><span class="comment">// 如果决定上面一行复杂可以写成：</span></span><br><span class="line"><span class="function"><span class="keyword">typedef</span> <span class="title">void</span> <span class="params">(num_sequence::*PtrType)</span><span class="params">(<span class="type">int</span>)</span></span>;</span><br><span class="line">PtrType pm = <span class="number">0</span>;</span><br><span class="line"><span class="comment">// 成员函数取址要加上class scope限定符和&amp;取地址运算符（不同于一般函数，都不可以省！）</span></span><br><span class="line">PtrType pm = &amp;num_sequence::fibonaci;</span><br><span class="line"><span class="comment">// 调用，由此要引出pointer to member selection运算符“.*”和&quot;-&gt;*&quot;</span></span><br><span class="line">(ns.*pm)(pos)</span><br><span class="line">(pns-&gt;*pm)(pos)</span><br></pre></td></tr></table></figure>
-<h3 id="5-面向对象编程风格"><a href="#5-面向对象编程风格" class="headerlink" title="5 面向对象编程风格"></a>5 面向对象编程风格</h3><ol>
+<h3 id="面向对象编程风格">5 面向对象编程风格</h3>
+<ol type="1">
 <li>纯虚函数：将虚函数赋值为0</li>
 </ol>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">gen_elems</span><span class="params">(<span class="type">int</span> pos)</span> </span>= <span class="number">0</span>;</span><br></pre></td></tr></table></figure>
-<ol>
+<ol start="2" type="1">
 <li>任何类声明了纯虚函数，那么由于其接口不完整（无定义），程序无法为其产生实体。这种类只能作为派生类的子对象使用，而且前提是这些派生类为<strong>所有</strong>虚函数提供确切的定义。</li>
 <li>一般规则：凡基类定义了虚函数，则destructor也要声明为virtual</li>
 <li>一般而言，对象的拷贝构造函数开发者如果未提供，则编译器会自动生成默认的拷贝构造函数。然而以下情况默认的拷贝构造函数会被删除：</li>
 </ol>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    1、存在非静态的const成员变量</span></span><br><span class="line"><span class="comment">    2、存在非静态的引用成员变量</span></span><br><span class="line"><span class="comment">    3、存在不能拷贝的成员变量</span></span><br><span class="line"><span class="comment">    4、存在不能拷贝的基类</span></span><br><span class="line"><span class="comment">    5、存在用户定义的移动构造函数或移动赋值函数</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
-<ol>
+<ol start="5" type="1">
 <li>在基类的constructor中，派生类的虚函数不允许被调用</li>
 <li>static_cast和dynamic_cast，前者无条件转换，后者判断（比如基类的指针是否真的指向了该派生类）是否可以转换为目的类型再进行转换</li>
 </ol>
-<h3 id="6-以template进行编程"><a href="#6-以template进行编程" class="headerlink" title="6 以template进行编程"></a>6 以template进行编程</h3><ol>
+<h3 id="以template进行编程">6 以template进行编程</h3>
+<ol type="1">
 <li>函数传入一个指针，只能改变指针所指对象的内容，要想改变指针本身（指向）就要传递reference to pointer</li>
 </ol>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">BTnode*&amp; prev <span class="comment">// 可以看成BTnode* &amp;prev 或 ((BTnode*)&amp;) prev</span></span><br></pre></td></tr></table></figure>
-<ol>
+<ol start="2" type="1">
 <li>模板类声明友元的问题：</li>
 </ol>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 下面代码直接运行会报错：无法解析的外部命令</span></span><br></pre></td></tr></table></figure>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">A</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">A</span>(T t):<span class="built_in">dy</span>(t) &#123;&#125;</span><br><span class="line">    T dy;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">friend</span> ostream&amp; <span class="keyword">operator</span>&lt;&lt;(ostream&amp; os, <span class="type">const</span> A&lt;T&gt;&amp; b);</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">func</span><span class="params">(ostream&amp; os)</span> <span class="type">const</span></span>&#123;</span><br><span class="line">        os &lt;&lt; dy &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">ostream&amp; <span class="keyword">operator</span>&lt;&lt;(ostream&amp; os, <span class="type">const</span> A&lt;T&gt;&amp; b) &#123;</span><br><span class="line">    b.<span class="built_in">func</span>(os);</span><br><span class="line">    <span class="keyword">return</span> os;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="function">A&lt;<span class="type">double</span>&gt; <span class="title">a</span><span class="params">(<span class="number">4.2</span>)</span></span>;</span><br><span class="line">    cout &lt;&lt; a &lt;&lt; endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    原因：</span></span><br><span class="line"><span class="comment">    因为&quot;operator&lt;&lt;&quot;这个函数的参数T不应该依赖于class的模板参数，友元本来是可以访问类的所有数据成员的(该模板类的int、double、string对象)，你这样依赖的话，放到外部表名该参数T是属于类内部本身，解决方案是为了更好的支持友元，我们一般单独给友元一个模板参数</span></span><br><span class="line"><span class="comment">    1、类中友元声明改为（意义不明不过能用，但是其下绿波浪线提示函数未定义）（不推荐）</span></span><br><span class="line"><span class="comment">    friend ostream&amp; operator&lt;&lt; &lt;T&gt;(ostream&amp; os, const A&lt;T&gt;&amp; b);</span></span><br><span class="line"><span class="comment">    2、类中友元声明改为（S不同于T）（推荐）</span></span><br><span class="line"><span class="comment">    template &lt;typename S&gt;</span></span><br><span class="line"><span class="comment">    friend ostream&amp; operator&lt;&lt;(ostream&amp; os, const A&lt;S&gt;&amp; b);</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
-<ol>
+<ol start="3" type="1">
 <li>非类型参数</li>
 </ol>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    1、这类参数在模板内部都是常量值</span></span><br><span class="line"><span class="comment">    2、只允许传入整形、指针和引用这三类</span></span><br><span class="line"><span class="comment">    3、调用非类型参数的实参必须为常量表达式（必须在编译时能计算出结果的）</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
-<h3 id="7-异常处理"><a href="#7-异常处理" class="headerlink" title="7 异常处理"></a>7 异常处理</h3><ol>
+<h3 id="异常处理">7 异常处理</h3>
+<ol type="1">
 <li>重新抛出时，只需写下关键字throw即可。它只能出现于catch子句中</li>
 <li>局部资源管理，在易发生异常后释放资源是一件风险很大的事情。虽然可以通过try catch处理，但是释放资源的代码要出现两次，不好。这就引出了resource acquisition is initialization(RAII)策略，即初始化阶段进行资源请求。说人话就是，在构造函数中请求所有资源，在析构函数中释放所有资源：C++保证，在异常处理机制终结某个函数之前，所有局部对象的destructor都会被调用。或者使用智能指针例如：unique_ptr、shared_ptr等。</li>
 <li>ptext = new vector<string>; 经过以下几个步骤（异常出现，余下不会执行，会沿着调用链抛出）</li>
@@ -395,7 +402,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">74k</span>
+    <span title="Symbols count total">75k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
@@ -426,6 +433,12 @@
   
 
 
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
 
 
 
