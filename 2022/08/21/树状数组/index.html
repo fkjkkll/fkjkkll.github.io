@@ -30,11 +30,11 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://raw.githubusercontent.com/fkjkkll/OnlineSource/master/Image/algorithm/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84.gif">
 <meta property="article:published_time" content="2022-08-21T05:51:43.000Z">
-<meta property="article:modified_time" content="2022-08-30T12:00:54.129Z">
+<meta property="article:modified_time" content="2022-09-07T06:48:14.790Z">
 <meta property="article:author" content="Lee">
 <meta property="article:tag" content="算法">
-<meta property="article:tag" content="C&#x2F;C++">
 <meta property="article:tag" content="树">
+<meta property="article:tag" content="特殊">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/fkjkkll/OnlineSource/master/Image/algorithm/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84.gif">
 
@@ -149,7 +149,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9C%80%E6%B1%82"><span class="nav-number">1.</span> <span class="nav-text">需求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%84%E5%A4%87%E7%9F%A5%E8%AF%86%EF%BC%9Alowbit"><span class="nav-number">2.</span> <span class="nav-text">预备知识：lowbit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84"><span class="nav-number">3.</span> <span class="nav-text">树状数组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81"><span class="nav-number">4.</span> <span class="nav-text">代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9C%80%E6%B1%82"><span class="nav-number">1.</span> <span class="nav-text">需求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%84%E5%A4%87%E7%9F%A5%E8%AF%86lowbit"><span class="nav-number">2.</span> <span class="nav-text">预备知识：lowbit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84"><span class="nav-number">3.</span> <span class="nav-text">树状数组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81"><span class="nav-number">4.</span> <span class="nav-text">代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -162,13 +162,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-count">34</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-count">10</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -243,7 +243,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2022-08-30 20:00:54" itemprop="dateModified" datetime="2022-08-30T20:00:54+08:00">2022-08-30</time>
+      <time title="Modified: 2022-09-07 14:48:14" itemprop="dateModified" datetime="2022-09-07T14:48:14+08:00">2022-09-07</time>
     </span>
 
   
@@ -271,68 +271,73 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><ul>
+        <h2 id="需求">需求</h2>
+<ul>
 <li>随机修改数组中一个数字</li>
 <li>求前缀和</li>
 <li>以上操作需要频繁操作</li>
 </ul>
-<h2 id="预备知识：lowbit"><a href="#预备知识：lowbit" class="headerlink" title="预备知识：lowbit"></a>预备知识：lowbit</h2><p>lowbit指数字的二进制最低位1及后续0取出后的数字<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">lowbit</span><span class="params">(<span class="type">int</span> a)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a &amp; -a;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>例如:10：<code>1010 &amp; 0110 = 0010</code>，即10的lowbit为2。</p>
-<div class="table-container">
+<h2 id="预备知识lowbit">预备知识：lowbit</h2>
+<p>lowbit指数字的二进制最低位1及后续0取出后的数字 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">lowbit</span><span class="params">(<span class="type">int</span> a)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a &amp; -a;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure> 例如:10：<code>1010 &amp; 0110 = 0010</code>，即10的lowbit为2。</p>
 <table>
 <thead>
-<tr>
-<th style="text-align:center">x</th>
-<th style="text-align:center">1</th>
-<th style="text-align:center">2</th>
-<th style="text-align:center">3</th>
-<th style="text-align:center">4</th>
-<th style="text-align:center">5</th>
-<th style="text-align:center">6</th>
-<th style="text-align:center">7</th>
-<th style="text-align:center">8</th>
-<th style="text-align:center">9</th>
-<th style="text-align:center">10</th>
+<tr class="header">
+<th style="text-align: center;">x</th>
+<th style="text-align: center;">1</th>
+<th style="text-align: center;">2</th>
+<th style="text-align: center;">3</th>
+<th style="text-align: center;">4</th>
+<th style="text-align: center;">5</th>
+<th style="text-align: center;">6</th>
+<th style="text-align: center;">7</th>
+<th style="text-align: center;">8</th>
+<th style="text-align: center;">9</th>
+<th style="text-align: center;">10</th>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td style="text-align:center">lowbit(x)</td>
-<td style="text-align:center">1</td>
-<td style="text-align:center">2</td>
-<td style="text-align:center">1</td>
-<td style="text-align:center">4</td>
-<td style="text-align:center">1</td>
-<td style="text-align:center">2</td>
-<td style="text-align:center">1</td>
-<td style="text-align:center">8</td>
-<td style="text-align:center">1</td>
-<td style="text-align:center">2</td>
+<tr class="odd">
+<td style="text-align: center;">lowbit(x)</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">2</td>
 </tr>
 </tbody>
 </table>
-</div>
 <p><em>注意：0不存在lowbit，所以数组的下标需要右偏移一位（使用时偏移或初始化多1位）</em></p>
-<h2 id="树状数组"><a href="#树状数组" class="headerlink" title="树状数组"></a>树状数组</h2><p><img src="https://raw.githubusercontent.com/fkjkkll/OnlineSource/master/Image/algorithm/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84.gif" alt="树状数组"></p>
+<h2 id="树状数组">树状数组</h2>
+<figure>
+<img src="https://raw.githubusercontent.com/fkjkkll/OnlineSource/master/Image/algorithm/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84.gif" alt="树状数组" /><figcaption aria-hidden="true">树状数组</figcaption>
+</figure>
 <ul>
 <li>tarr从1开始，arr从0开始</li>
 <li>树状数组的每一个元素<code>tarr[i]</code>：其值为<code>a[j]+...a[i-1]+a[i-1]</code>，其中连加的项总共<code>lowbit(i)</code>个</li>
 <li>在树状数组中，为什么需要寻找其父节点？有两个用处：1、初始化树状数组。2、修改某个数同时修改其祖上一系列树状数组的值。对于<code>tarr[i]</code>而言，其直接父节点即为<code>tarr[i + lowbit(i)]</code>，通过这种方式逐步向上迭代，即可探寻祖上一条链</li>
 <li>对于给定数组：<code>arr = [1,3,2,6,4,1]</code>，可得其对应的树状数组：<code>tarr = [1, 1+3, 2, 1+3+2+6, 4, 4+1] -&gt; [1, 4, 2, 12, 4, 5]</code></li>
-<li>求和时，例如<code>sum(idx=13)</code><ul>
+<li>求和时，例如<code>sum(idx=13)</code>
+<ul>
 <li>先得到<code>res += tarr[13]</code>，随后<code>idx -= lowbit(idx)</code>，此时<code>idx==12</code></li>
 <li>再得到<code>res += tarr[12]</code>，随后<code>idx -= lowbit(12)</code>，此时<code>idx==8</code></li>
 <li>再得到<code>res += tarr[8]</code>，随后<code>idx -= lowbit(8)</code>，此时<code>idx==0</code>结束循环</li>
 <li>最终，<code>res = tarr[13] + tarr[12] + tarr[8] = (arr[12]) + (arr[8]+...+arr[11]) + (arr[0]+...+arr[7])</code></li>
-</ul>
-</li>
-<li>总之，对于树状数组<code>tarr</code><ul>
+</ul></li>
+<li>总之，对于树状数组<code>tarr</code>
+<ul>
 <li><code>idx += lowbit(idx)</code>是为了寻找祖上，修改和初始化用到</li>
 <li><code>idx -= lowbit(idx)</code>是为了求和</li>
+</ul></li>
 </ul>
-</li>
-</ul>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">TreeArr</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">TreeArr</span>(vector&lt;<span class="type">int</span>&gt; arr) :<span class="built_in">arr</span>(arr), <span class="built_in">tarr</span>(arr.<span class="built_in">size</span>()+<span class="number">1</span>) &#123;</span><br><span class="line">        <span class="comment">// 初始化树状数组，arr中的每个元素被加到其祖上所有节点中</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">size_t</span> i = <span class="number">0</span>; i &lt; arr.<span class="built_in">size</span>(); ++i) &#123;</span><br><span class="line">            <span class="type">size_t</span> idx = i + <span class="number">1</span>; <span class="comment">// 偏移1位</span></span><br><span class="line">            <span class="keyword">while</span> (idx &lt; tarr.<span class="built_in">size</span>()) &#123;</span><br><span class="line">                tarr[idx] += arr[i];</span><br><span class="line">                idx += <span class="built_in">lowbit</span>(idx);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">update</span><span class="params">(<span class="type">int</span> i, <span class="type">int</span> val)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> diff = val - arr[i];</span><br><span class="line">        <span class="type">size_t</span> idx = i + <span class="number">1</span>;</span><br><span class="line">        <span class="comment">// 修改时也要修改其祖上所有节点 + lowbit(idx)</span></span><br><span class="line">        <span class="keyword">while</span> (idx &lt; tarr.<span class="built_in">size</span>()) &#123;</span><br><span class="line">            tarr[idx] += diff;</span><br><span class="line">            idx += <span class="built_in">lowbit</span>(idx);</span><br><span class="line">        &#125;</span><br><span class="line">        arr[i] = val; <span class="comment">// 勿忘</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">getSum</span><span class="params">(<span class="type">int</span> i)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> idx = i + <span class="number">1</span>;</span><br><span class="line">        <span class="type">int</span> res = <span class="number">0</span>;</span><br><span class="line">        <span class="comment">// 求和时则是 - lowbit(idx)</span></span><br><span class="line">        <span class="keyword">while</span> (idx &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            res += tarr[idx];</span><br><span class="line">            idx -= <span class="built_in">lowbit</span>(idx);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">getRange</span><span class="params">(<span class="type">int</span> l, <span class="type">int</span> r)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">getSum</span>(r) - <span class="built_in">getSum</span>(l - <span class="number">1</span>); <span class="comment">//!</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">static</span> <span class="type">int</span> <span class="title">lowbit</span><span class="params">(<span class="type">int</span> a)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> a &amp; -a;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    vector&lt;<span class="type">int</span>&gt; arr;</span><br><span class="line">    vector&lt;<span class="type">int</span>&gt; tarr;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<h2 id="代码">代码</h2>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">TreeArr</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">TreeArr</span>(vector&lt;<span class="type">int</span>&gt; arr) :<span class="built_in">arr</span>(arr), <span class="built_in">tarr</span>(arr.<span class="built_in">size</span>()+<span class="number">1</span>) &#123;</span><br><span class="line">        <span class="comment">// 初始化树状数组，arr中的每个元素被加到其祖上所有节点中</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">size_t</span> i = <span class="number">0</span>; i &lt; arr.<span class="built_in">size</span>(); ++i) &#123;</span><br><span class="line">            <span class="type">size_t</span> idx = i + <span class="number">1</span>; <span class="comment">// 偏移1位</span></span><br><span class="line">            <span class="keyword">while</span> (idx &lt; tarr.<span class="built_in">size</span>()) &#123;</span><br><span class="line">                tarr[idx] += arr[i];</span><br><span class="line">                idx += <span class="built_in">lowbit</span>(idx);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">update</span><span class="params">(<span class="type">int</span> i, <span class="type">int</span> val)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> diff = val - arr[i];</span><br><span class="line">        <span class="type">size_t</span> idx = i + <span class="number">1</span>;</span><br><span class="line">        <span class="comment">// 修改时也要修改其祖上所有节点 + lowbit(idx)</span></span><br><span class="line">        <span class="keyword">while</span> (idx &lt; tarr.<span class="built_in">size</span>()) &#123;</span><br><span class="line">            tarr[idx] += diff;</span><br><span class="line">            idx += <span class="built_in">lowbit</span>(idx);</span><br><span class="line">        &#125;</span><br><span class="line">        arr[i] = val; <span class="comment">// 勿忘</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">getSum</span><span class="params">(<span class="type">int</span> i)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> idx = i + <span class="number">1</span>;</span><br><span class="line">        <span class="type">int</span> res = <span class="number">0</span>;</span><br><span class="line">        <span class="comment">// 求和时则是 - lowbit(idx)</span></span><br><span class="line">        <span class="keyword">while</span> (idx &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            res += tarr[idx];</span><br><span class="line">            idx -= <span class="built_in">lowbit</span>(idx);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">getRange</span><span class="params">(<span class="type">int</span> l, <span class="type">int</span> r)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">getSum</span>(r) - <span class="built_in">getSum</span>(l - <span class="number">1</span>); <span class="comment">//!</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">static</span> <span class="type">int</span> <span class="title">lowbit</span><span class="params">(<span class="type">int</span> a)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> a &amp; -a;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    vector&lt;<span class="type">int</span>&gt; arr;</span><br><span class="line">    vector&lt;<span class="type">int</span>&gt; tarr;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="参考">参考</h2>
+<ol type="1">
 <li><a target="_blank" rel="noopener" href="https://baijiahao.baidu.com/s?id=1734883051625102971&amp;wfr=spider&amp;for=pc">什么是树状数组？让这个12岁年轻人为你讲解</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/7cd5ad2f449a">数据结构：树状数组</a></li>
 <li><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/range-sum-query-mutable/submissions/">307. 区域和检索 - 数组可修改</a></li>
@@ -349,8 +354,8 @@
     <footer class="post-footer">
           <div class="post-tags">
               <a href="/tags/%E7%AE%97%E6%B3%95/" rel="tag"># 算法</a>
-              <a href="/tags/C-C/" rel="tag"># C/C++</a>
               <a href="/tags/%E6%A0%91/" rel="tag"># 树</a>
+              <a href="/tags/%E7%89%B9%E6%AE%8A/" rel="tag"># 特殊</a>
           </div>
 
         
@@ -396,13 +401,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">98k</span>
+    <span title="Symbols count total">103k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">1:29</span>
+    <span title="Reading time total">1:33</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>

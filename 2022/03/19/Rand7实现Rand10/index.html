@@ -145,7 +145,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#470-%E7%94%A8-Rand7-%E5%AE%9E%E7%8E%B0-Rand10"><span class="nav-number">1.</span> <span class="nav-text">470 用 Rand7() 实现 Rand10()</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%8B%92%E7%BB%9D%E9%87%87%E6%A0%B7"><span class="nav-number">1.1.</span> <span class="nav-text">1. 拒绝采样</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-LC-470-Rand7%E7%94%9F%E6%88%90Rand10"><span class="nav-number">1.2.</span> <span class="nav-text">2. LC-470 Rand7生成Rand10</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%94%A8-rand7-%E5%AE%9E%E7%8E%B0-rand10"><span class="nav-number">1.</span> <span class="nav-text">470 用 Rand7() 实现 Rand10()</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8B%92%E7%BB%9D%E9%87%87%E6%A0%B7"><span class="nav-number">1.1.</span> <span class="nav-text">1. 拒绝采样</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lc-470-rand7%E7%94%9F%E6%88%90rand10"><span class="nav-number">1.2.</span> <span class="nav-text">2. LC-470 Rand7生成Rand10</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -158,13 +158,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-count">34</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-count">10</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -249,7 +249,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>794</span>
+      <span>806</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -267,10 +267,13 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="470-用-Rand7-实现-Rand10"><a href="#470-用-Rand7-实现-Rand10" class="headerlink" title="470 用 Rand7() 实现 Rand10()"></a>470 <a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/implement-rand10-using-rand7/">用 Rand7() 实现 Rand10()</a></h1><h2 id="1-拒绝采样"><a href="#1-拒绝采样" class="headerlink" title="1. 拒绝采样"></a>1. 拒绝采样</h2><p>在解LC-470前先介绍一道拒绝采样的经典问题：利用频率近似概率的方式求出Pi的值。在$1\times1$的方块内随机坐标采样，记录落入以原点为圆心，半径为1的$\frac{1}{4}$圆内的次数。</p>
-<p>由$\frac{1}{4}\pi r^2 = \frac{cnt}{N}$ 可得 $\pi = \frac{4\times cnt}{N\times r^2}$ ，由于$r=1$，所以$\pi = \frac{4\times cnt}{N}$<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">srand</span>((<span class="type">unsigned</span>)<span class="built_in">time</span>(<span class="number">0</span>)); <span class="comment">// time(0)表示从1970到现在的秒数</span></span><br><span class="line">    <span class="type">int</span> N = (<span class="type">int</span>)<span class="number">1e7</span>, cnt = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; N; i++) &#123;</span><br><span class="line">        <span class="type">double</span> a = (<span class="number">1.0</span> * <span class="built_in">rand</span>() / RAND_MAX); <span class="comment">// 除以RAND_MAX归一化0~1</span></span><br><span class="line">        <span class="type">double</span> b = (<span class="number">1.0</span> * <span class="built_in">rand</span>() / RAND_MAX);</span><br><span class="line">        <span class="keyword">if</span> (a * a + b * b &lt; <span class="number">1.0</span>) cnt++; <span class="comment">// 落入1/4圆则加一</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%lf&quot;</span>, (<span class="number">4.0</span> * cnt) / N);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h2 id="2-LC-470-Rand7生成Rand10"><a href="#2-LC-470-Rand7生成Rand10" class="headerlink" title="2. LC-470 Rand7生成Rand10"></a>2. LC-470 Rand7生成Rand10</h2><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/implement-rand10-using-rand7/solution/cong-zui-ji-chu-de-jiang-qi-ru-he-zuo-dao-jun-yun-/">力扣高赞题解</a></p>
-<p><strong>(rand_X() - 1) × Y + rand_Y() ==&gt; 可以等概率的生成[1, X * Y]范围的随机数</strong><br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">rand10</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">while</span>(<span class="literal">true</span>)&#123;</span><br><span class="line">            <span class="comment">// 等概率生成[1,49]范围的随机数</span></span><br><span class="line">            <span class="type">int</span> num = (<span class="built_in">rand7</span>()<span class="number">-1</span>)*<span class="number">7</span> + <span class="built_in">rand7</span>();</span><br><span class="line">            <span class="comment">// 拒绝采样，并返回[1,10]范围的随机数</span></span><br><span class="line">            <span class="keyword">if</span>(num &lt;= <span class="number">40</span>) <span class="keyword">return</span> num % <span class="number">10</span> + <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+        <h1 id="用-rand7-实现-rand10">470 <a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/implement-rand10-using-rand7/">用 Rand7() 实现 Rand10()</a></h1>
+<h2 id="拒绝采样">1. 拒绝采样</h2>
+<p>在解LC-470前先介绍一道拒绝采样的经典问题：利用频率近似概率的方式求出Pi的值。在<span class="math inline">\(1\times1\)</span>的方块内随机坐标采样，记录落入以原点为圆心，半径为1的<span class="math inline">\(\frac{1}{4}\)</span>圆内的次数。</p>
+<p>由<span class="math inline">\(\frac{1}{4}\pi r^2 = \frac{cnt}{N}\)</span> 可得 <span class="math inline">\(\pi = \frac{4\times cnt}{N\times r^2}\)</span> ，由于<span class="math inline">\(r=1\)</span>，所以<span class="math inline">\(\pi = \frac{4\times cnt}{N}\)</span> <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">srand</span>((<span class="type">unsigned</span>)<span class="built_in">time</span>(<span class="number">0</span>)); <span class="comment">// time(0)表示从1970到现在的秒数</span></span><br><span class="line">    <span class="type">int</span> N = (<span class="type">int</span>)<span class="number">1e7</span>, cnt = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; N; i++) &#123;</span><br><span class="line">        <span class="type">double</span> a = (<span class="number">1.0</span> * <span class="built_in">rand</span>() / RAND_MAX); <span class="comment">// 除以RAND_MAX归一化0~1</span></span><br><span class="line">        <span class="type">double</span> b = (<span class="number">1.0</span> * <span class="built_in">rand</span>() / RAND_MAX);</span><br><span class="line">        <span class="keyword">if</span> (a * a + b * b &lt; <span class="number">1.0</span>) cnt++; <span class="comment">// 落入1/4圆则加一</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%lf&quot;</span>, (<span class="number">4.0</span> * cnt) / N);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="lc-470-rand7生成rand10">2. LC-470 Rand7生成Rand10</h2>
+<p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/implement-rand10-using-rand7/solution/cong-zui-ji-chu-de-jiang-qi-ru-he-zuo-dao-jun-yun-/">力扣高赞题解</a></p>
+<p><strong>(rand_X() - 1) × Y + rand_Y() ==&gt; 可以等概率的生成[1, X * Y]范围的随机数</strong> <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">rand10</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">while</span>(<span class="literal">true</span>)&#123;</span><br><span class="line">            <span class="comment">// 等概率生成[1,49]范围的随机数</span></span><br><span class="line">            <span class="type">int</span> num = (<span class="built_in">rand7</span>()<span class="number">-1</span>)*<span class="number">7</span> + <span class="built_in">rand7</span>();</span><br><span class="line">            <span class="comment">// 拒绝采样，并返回[1,10]范围的随机数</span></span><br><span class="line">            <span class="keyword">if</span>(num &lt;= <span class="number">40</span>) <span class="keyword">return</span> num % <span class="number">10</span> + <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
 
     </div>
 
@@ -326,13 +329,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">98k</span>
+    <span title="Symbols count total">103k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">1:29</span>
+    <span title="Reading time total">1:33</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
