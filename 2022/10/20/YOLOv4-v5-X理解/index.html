@@ -29,7 +29,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://raw.githubusercontent.com/fkjkkll/OnlineSource/master/Image/object%20detection/YOLOX%E6%A0%87%E7%AD%BE%E5%8C%B9%E9%85%8D.jpg">
 <meta property="article:published_time" content="2022-10-20T14:06:44.000Z">
-<meta property="article:modified_time" content="2022-10-20T14:07:03.030Z">
+<meta property="article:modified_time" content="2025-11-21T07:27:44.840Z">
 <meta property="article:author" content="Lizq">
 <meta property="article:tag" content="目标检测">
 <meta name="twitter:card" content="summary">
@@ -248,9 +248,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2022-10-20 22:06:44 / 修改时间：22:07:03" itemprop="dateCreated datePublished" datetime="2022-10-20T22:06:44+08:00">2022-10-20</time>
+      <time title="创建时间：2022-10-20 22:06:44" itemprop="dateCreated datePublished" datetime="2022-10-20T22:06:44+08:00">2022-10-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-11-21 15:27:44" itemprop="dateModified" datetime="2025-11-21T15:27:44+08:00">2025-11-21</time>
     </span>
 
   
@@ -291,7 +297,7 @@
 <h2 id="新的正样本选择机制"><a href="#新的正样本选择机制" class="headerlink" title="新的正样本选择机制"></a>新的正样本选择机制</h2><p>网络输出部分xywh的偏移计算公式发生改动，现在xywh都会经过sigmoid归一化。</p>
 <ul>
 <li>网络输出xy偏移公式：$pred_x &#x3D; t_x*2-0.5+grid_x$</li>
-<li>网络输出wh偏移公式：$pred_w &#x3D; (t_w<em>2)^2</em>anchor_w$</li>
+<li>网络输出wh偏移公式：$pred_w &#x3D; (t_w*2)^{2}*anchor_w$</li>
 </ul>
 <p>这样设计xy的原因是，YOLOv3如果中心点在极边缘，那么网络的输出需要是个比较大的值，才能通过sigmoid得到极边缘的位置，这不好学习，改进的方法则可以消除这个问题。</p>
 <p>这样设计wh的原因是，指数不好控制，容易训练不稳定</p>
