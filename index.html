@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 8.1.1">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js" defer></script>
+
+    <meta property="og:type" content="website">
+<meta property="og:title" content="Lizq的个人博客">
+<meta property="og:url" content="http://example.com/index.html">
+<meta property="og:site_name" content="Lizq的个人博客">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="Lizq">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":true,"isPost":false,"lang":"zh-CN","comments":"","permalink":"","path":"index.html","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Lizq的个人博客</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Lizq的个人博客</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Lizq</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">48</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fkjkkll" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fkjkkll" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:lzq0225@qq.com" title="E-Mail → mailto:lzq0225@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/10/20/YOLOv4-v5-X%E7%90%86%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Lizq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/10/20/YOLOv4-v5-X%E7%90%86%E8%A7%A3/" class="post-title-link" itemprop="url">YOLOv4,v5,X理解</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-10-20 22:06:44 / 修改时间：22:07:03" itemprop="dateCreated datePublished" datetime="2022-10-20T22:06:44+08:00">2022-10-20</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>973</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="YOLOv4"><a href="#YOLOv4" class="headerlink" title="YOLOv4"></a>YOLOv4</h1><p>YOLOv4是在YOLOv3的基础上进行了一些改进，但是整个流程依旧是YOLOv3，比如正负样本的划分、忽略样本等等。<br>其中添加的改进主要有如下几点：</p>
+<ul>
+<li>跨阶段局部网络（Cross-Stage-Partial, CSP）作为主干网络进行特征提取</li>
+<li>Mish激活函数（backbone）和Leaky ReLU（neck）</li>
+<li>Mosaic数据增强、MixUP数据增强</li>
+<li>添加注意力机制模块</li>
+<li>CIoU作为边框回归损失</li>
+<li>在neck中添加空间金字塔池化（Spatial Pyramid Pooling, SPP）提升感受野</li>
+<li>在原先YOLOv3 neck的特征金字塔网络（Feature Pyramid Netword, FPN）的基础上改进为路径聚合网络（Path Aggregation Network, PAN）</li>
+</ul>
+<h1 id="YOLOv5"><a href="#YOLOv5" class="headerlink" title="YOLOv5"></a>YOLOv5</h1><p>YOLOv5并无论文，我以开源代码中的实现来说明（version 5.0）。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/10/20/YOLOv4-v5-X%E7%90%86%E8%A7%A3/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/10/08/YOLOv3%E6%BA%90%E7%A0%81%E7%90%86%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Lizq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/10/08/YOLOv3%E6%BA%90%E7%A0%81%E7%90%86%E8%A7%A3/" class="post-title-link" itemprop="url">YOLOv3源码理解</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-10-08 19:31:54 / 修改时间：20:34:32" itemprop="dateCreated datePublished" datetime="2022-10-08T19:31:54+08:00">2022-10-08</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="0-主干网络"><a href="#0-主干网络" class="headerlink" title="0 主干网络"></a>0 主干网络</h2><p>YOLOv3采用DarkNet-53网络，结构如下图（DarkNet-53预训练于ImageNet，由于是1000类的分类，所以网络最后输出经过全连接层。但是目标检测不需要那个全连接层，因此实际上只使用了“DarkNet-52”，共52层卷积层）：</p>
+<p><img src="https://raw.githubusercontent.com/fkjkkll/OnlineSource/master/Image/object%20detection/YOLOv3_Backbone.jpg" alt="YOLOv3 Backbone"></p>
+<ul>
+<li>BN为批归一化层，Acti为激活函数，YOLOv3采用LeakyReLU</li>
+<li>输入批次经过一个3X3卷积改变通道数为32，然后经过5个降残差块。每个降残差块包含一次步幅为2的3X3卷积加上一系列残差块。每个残差块包含一次1X1卷积降低通道数，再经过一次3X3卷积提升通道数，最后和残差边进行连接。</li>
+<li>整体主干网络清晰，每经过一个降残差块，通道数翻倍，特征图宽高减半。</li>
+</ul>
+<h2 id="1-预测分支网络"><a href="#1-预测分支网络" class="headerlink" title="1 预测分支网络"></a>1 预测分支网络</h2>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/10/08/YOLOv3%E6%BA%90%E7%A0%81%E7%90%86%E8%A7%A3/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/23/C%E4%B8%8ECPP%E4%BA%92%E7%9B%B8%E8%B0%83%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Lizq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/09/23/C%E4%B8%8ECPP%E4%BA%92%E7%9B%B8%E8%B0%83%E7%94%A8/" class="post-title-link" itemprop="url">C与CPP互相调用</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-09-23 12:32:46 / 修改时间：12:37:48" itemprop="dateCreated datePublished" datetime="2022-09-23T12:32:46+08:00">2022-09-23</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>682</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="0-说明"><a href="#0-说明" class="headerlink" title="0. 说明"></a>0. 说明</h2><ul>
+<li>C++采用g++编译，C采用gcc编译。两者主要不同点是：C++编译考虑到函数重载，会将原函数“改名”（命名倾轧name mangling）；而在C中不存在重载，函数名不会变动。</li>
+<li>g++和gcc可以兼容C++和C的编译方式，但是默认情况下g++采用C++编译方式；而gcc采用C的编译方式</li>
+<li>注意：gcc编译C++文件时不会主动链接C++用到的库stdc++，需要手动指定链接选项<code>-lstdc++</code></li>
+<li><code>__cplusplus</code>宏定义会在编译cpp文件以及用C++的方式编译时被包含，因此用gcc编译.cpp文件或者g++编译.c、.cpp文件都会有这个宏</li>
+<li>之所以用条件判断，因为gcc不认识<code>extern &quot;C&quot;</code>，直接编译会报错</li>
+</ul>
+<h2 id="1-C-调用C"><a href="#1-C-调用C" class="headerlink" title="1. C++调用C"></a>1. C++调用C</h2><p>只需要声明时包含<code>extern &quot;C&quot;</code>即可。下面的代码中，func.h可以不动，在main.cpp调用时，直接<code>extern &quot;C&quot; int func(int, int)</code>也是可以的。只需要让编译器按照C的方式编译，不要改动函数名即可正确链接的函数符号。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// func.h 不论.c还是.cpp文件调用，都不会出错</span></span><br><span class="line"><span class="meta">#<span class="keyword">ifndef</span> FUNC_H</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> FUNC_H</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> __cplusplus</span></span><br><span class="line"><span class="keyword">extern</span> <span class="string">&quot;C&quot;</span> &#123;</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span> <span class="comment">// __cplusplus</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">func</span><span class="params">(<span class="type">int</span>, <span class="type">int</span>)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> __cplusplus</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span> <span class="comment">// __cplusplus</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/09/23/C%E4%B8%8ECPP%E4%BA%92%E7%9B%B8%E8%B0%83%E7%94%A8/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/16/Qt%E4%BF%A1%E5%8F%B7%E4%B8%8E%E6%A7%BD/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Lizq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/09/16/Qt%E4%BF%A1%E5%8F%B7%E4%B8%8E%E6%A7%BD/" class="post-title-link" itemprop="url">Qt信号与槽</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-09-16 14:48:33 / 修改时间：14:49:23" itemprop="dateCreated datePublished" datetime="2022-09-16T14:48:33+08:00">2022-09-16</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>Qt的信号与槽机制是如何实现的？</p>
+<h2 id="猜测1：回调函数"><a href="#猜测1：回调函数" class="headerlink" title="猜测1：回调函数"></a>猜测1：回调函数</h2><ul>
+<li>这里用C11出现的function来封装所有可调用的对象：函数、指针、lambda、bind创建的对象、重载了小括号的仿函数</li>
+<li>通过unordered_multimap来记录某个字符串与一个可调用对象的映射（注意unordered_multimap未实现[]和at函数，不能通过这类方式获取value）</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Connection</span> &#123;</span><br><span class="line">	unordered_multimap&lt;string, function&lt;<span class="type">void</span>()&gt;&gt; mmap;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="comment">// 按照名称建立映射关系</span></span><br><span class="line">	<span class="function"><span class="type">void</span> <span class="title">connect</span><span class="params">(<span class="type">const</span> string&amp; name, <span class="type">const</span> function&lt;<span class="type">void</span>()&gt;&amp; callback)</span> </span>&#123;</span><br><span class="line">		<span class="comment">//mmap[name] = callback; ERROR</span></span><br><span class="line">		mmap.<span class="built_in">insert</span>(&#123; name, callback &#125;);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="type">void</span> <span class="title">invok</span><span class="params">(<span class="type">const</span> string&amp; name)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">auto</span> res = mmap.<span class="built_in">equal_range</span>(name);</span><br><span class="line">		<span class="keyword">auto</span> l = res.first, r = res.second;</span><br><span class="line">		<span class="keyword">while</span> (l != r) &#123;</span><br><span class="line">			l-&gt;<span class="built_in">second</span>();</span><br><span class="line">			++l;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 全局共享的Connection</span></span><br><span class="line"><span class="type">static</span> Connection con;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Tom</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="type">void</span> <span class="title">miaow</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		cout &lt;&lt; <span class="string">&quot;喵&quot;</span> &lt;&lt; endl;</span><br><span class="line">		con.<span class="built_in">invok</span>(<span class="string">&quot;mouse&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Jerry</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="built_in">Jerry</span>() &#123;</span><br><span class="line">		<span class="comment">// 普通类函数的第一个参数是this，所以这里绑定this</span></span><br><span class="line">		con.<span class="built_in">connect</span>(<span class="string">&quot;mouse&quot;</span>, <span class="built_in">bind</span>(&amp;Jerry::RunAway, <span class="keyword">this</span>));</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="type">void</span> <span class="title">RunAway</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		cout &lt;&lt; <span class="string">&quot;那只笨又猫来了，快跑！&quot;</span> &lt;&lt; endl;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="comment">// 模拟嵌套层级很深的场景，外部不能直接访问到tom</span></span><br><span class="line">	<span class="keyword">struct</span> <span class="title class_">A</span> &#123;</span><br><span class="line">		<span class="keyword">struct</span> <span class="title class_">B</span> &#123;</span><br><span class="line">			<span class="keyword">struct</span> <span class="title class_">C</span> &#123;</span><br><span class="line">			<span class="keyword">private</span>:</span><br><span class="line">				Tom tom;</span><br><span class="line">			<span class="keyword">public</span>:</span><br><span class="line">				<span class="function"><span class="type">void</span> <span class="title">MiaoMiaoMiao</span><span class="params">()</span> </span>&#123;</span><br><span class="line">					tom.<span class="built_in">miaow</span>();</span><br><span class="line">				&#125;</span><br><span class="line">			&#125; c;</span><br><span class="line">			<span class="function"><span class="type">void</span> <span class="title">MiaoMiao</span><span class="params">()</span> </span>&#123;</span><br><span class="line">				c.<span class="built_in">MiaoMiaoMiao</span>();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125; b;</span><br><span class="line">		<span class="function"><span class="type">void</span> <span class="title">Miao</span><span class="params">()</span> </span>&#123;</span><br><span class="line">			b.<span class="built_in">MiaoMiao</span>();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125; a;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 模拟嵌套层级很深的场景，外部不能直接访问到jerry</span></span><br><span class="line">	<span class="keyword">struct</span> <span class="title class_">D</span> &#123;</span><br><span class="line">		<span class="keyword">struct</span> <span class="title class_">E</span> &#123;</span><br><span class="line">			<span class="keyword">struct</span> <span class="title class_">F</span> &#123;</span><br><span class="line">			<span class="keyword">private</span>:</span><br><span class="line">				Jerry jerry1, jerry2, jerry3;</span><br><span class="line">			&#125; f;</span><br><span class="line">		&#125; e;</span><br><span class="line">	&#125; d;</span><br><span class="line"></span><br><span class="line">	a.<span class="built_in">Miao</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出结果：</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/09/16/Qt%E4%BF%A1%E5%8F%B7%E4%B8%8E%E6%A7%BD/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/12/%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8F%E5%92%8C%E4%BA%8C%E5%88%86%E5%9B%BE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Lizq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/09/12/%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8F%E5%92%8C%E4%BA%8C%E5%88%86%E5%9B%BE/" class="post-title-link" itemprop="url">拓扑排序和二分图</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-09-12 14:51:30" itemprop="dateCreated datePublished" datetime="2022-09-12T14:51:30+08:00">2022-09-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-09-19 22:09:13" itemprop="dateModified" datetime="2022-09-19T22:09:13+08:00">2022-09-19</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>714</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="1-拓扑排序（有向图）"><a href="#1-拓扑排序（有向图）" class="headerlink" title="1 拓扑排序（有向图）"></a>1 拓扑排序（有向图）</h2><h3 id="课程表Ⅱ"><a href="#课程表Ⅱ" class="headerlink" title="课程表Ⅱ"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/course-schedule-ii/">课程表Ⅱ</a></h3><h4 id="1-1-BFS（易理解）"><a href="#1-1-BFS（易理解）" class="headerlink" title="1.1 BFS（易理解）"></a>1.1 BFS（易理解）</h4><p>创建一个表示入度的数组，初始将入度为0的节点加入队列，后续依次弹出队列，每次弹出node，减小node指向的节点的入度，入度为0的加入队列，直到队列为空，结果需要判定出队列的节点数和图的总节点数相同，不同则代表有循环</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">findOrder</span><span class="params">(<span class="type">int</span> numCourses, vector&lt;vector&lt;<span class="type">int</span>&gt;&gt;&amp; prerequisites)</span> </span>&#123;</span><br><span class="line">        vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; <span class="built_in">g</span>(numCourses);</span><br><span class="line">        <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">inDegree</span><span class="params">(numCourses)</span></span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">auto</span>&amp; e : prerequisites) &#123;</span><br><span class="line">            g[e[<span class="number">1</span>]].<span class="built_in">push_back</span>(e[<span class="number">0</span>]);</span><br><span class="line">            ++inDegree[e[<span class="number">0</span>]];</span><br><span class="line">        &#125;</span><br><span class="line">        queue&lt;<span class="type">int</span>&gt; q;</span><br><span class="line">        vector&lt;<span class="type">int</span>&gt; ret;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; numCourses; ++i)</span><br><span class="line">            <span class="keyword">if</span> (inDegree[i] == <span class="number">0</span>) q.<span class="built_in">push</span>(i);</span><br><span class="line">        <span class="keyword">while</span> (!q.<span class="built_in">empty</span>()) &#123;</span><br><span class="line">            <span class="type">int</span> node = q.<span class="built_in">front</span>(); q.<span class="built_in">pop</span>();</span><br><span class="line">            ret.<span class="built_in">push_back</span>(node);</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">auto</span> e : g[node]) &#123;</span><br><span class="line">                --inDegree[e];</span><br><span class="line">                <span class="keyword">if</span> (inDegree[e] == <span class="number">0</span>)</span><br><span class="line">                    q.<span class="built_in">push</span>(e);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ret.<span class="built_in">size</span>() == numCourses ? ret : <span class="built_in">vector</span>&lt;<span class="type">int</span>&gt;();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/09/12/%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8F%E5%92%8C%E4%BA%8C%E5%88%86%E5%9B%BE/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/07/%E5%B8%A6%E9%99%90%E5%88%B6%E7%9A%84%E6%9C%80%E7%9F%AD%E8%B7%AF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Lizq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/09/07/%E5%B8%A6%E9%99%90%E5%88%B6%E7%9A%84%E6%9C%80%E7%9F%AD%E8%B7%AF/" class="post-title-link" itemprop="url">带限制的最短路</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-09-07 14:37:30" itemprop="dateCreated datePublished" datetime="2022-09-07T14:37:30+08:00">2022-09-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-09-19 21:59:01" itemprop="dateModified" datetime="2022-09-19T21:59:01+08:00">2022-09-19</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>919</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/cheapest-flights-within-k-stops/">带限制的最短路</a></p>
+<h2 id="错误示例（Dijkstra）"><a href="#错误示例（Dijkstra）" class="headerlink" title="错误示例（Dijkstra）"></a>错误示例（Dijkstra）</h2><p>全局的dist记录着最短距离，但它并未记录是几跳获得的。例如，到达终点的前一跳，从<code>X-&gt;dst</code>，我的代码中只限制了到达<code>X</code>最多k+1跳，此时更新了<code>dist[X]</code>，当更新到<code>dst</code>时，利用的<code>dist[X]</code>是经过k跳的<code>X</code>作为跳板，则结果是经过了<code>k+2</code>跳，超出了限制，因此结果必然是错误的。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Item</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="type">int</span> node, skip, dis;</span><br><span class="line">    <span class="built_in">Item</span>(<span class="type">int</span> a, <span class="type">int</span> b, <span class="type">int</span> c):<span class="built_in">node</span>(a),<span class="built_in">skip</span>(b),<span class="built_in">dis</span>(c)&#123;&#125;</span><br><span class="line">    <span class="type">bool</span> <span class="keyword">operator</span>&gt;(<span class="type">const</span> Item&amp; R) <span class="type">const</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>-&gt;dis &gt; R.dis;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="type">int</span> INF = <span class="number">0x3f3f3f3f</span>;</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">findCheapestPrice</span><span class="params">(<span class="type">int</span> n, vector&lt;vector&lt;<span class="type">int</span>&gt;&gt;&amp; flights, <span class="type">int</span> src, <span class="type">int</span> dst, <span class="type">int</span> k)</span> </span>&#123;</span><br><span class="line">        vector&lt;vector&lt;pair&lt;<span class="type">int</span>, <span class="type">int</span>&gt;&gt;&gt; <span class="built_in">g</span>(n);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">auto</span>&amp; e : flights) g[e[<span class="number">0</span>]].<span class="built_in">push_back</span>(&#123; e[<span class="number">1</span>], e[<span class="number">2</span>] &#125;);</span><br><span class="line">        <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">dist</span><span class="params">(n, INF)</span></span>;</span><br><span class="line">        dist[src] = <span class="number">0</span>;</span><br><span class="line">        priority_queue&lt;Item, vector&lt;Item&gt;, greater&lt;Item&gt;&gt; pq;</span><br><span class="line">        pq.<span class="built_in">emplace</span>(src, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">        <span class="keyword">while</span> (!pq.<span class="built_in">empty</span>()) &#123;</span><br><span class="line">            <span class="keyword">auto</span> cur = pq.<span class="built_in">top</span>(); pq.<span class="built_in">pop</span>();</span><br><span class="line">            <span class="type">int</span> node = cur.node;</span><br><span class="line">            <span class="type">int</span> dis = cur.dis;</span><br><span class="line">            <span class="type">int</span> skip = cur.skip;</span><br><span class="line">            <span class="keyword">if</span> (skip &gt; k) <span class="keyword">continue</span>;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">auto</span>&amp; e : g[node]) &#123;</span><br><span class="line">                <span class="type">int</span> w_node = e.first;</span><br><span class="line">                <span class="type">int</span> w_weight = e.second;</span><br><span class="line">                <span class="keyword">if</span> (dist[w_node] &gt; dist[node] + w_weight) &#123;</span><br><span class="line">                    dist[w_node] = dist[node] + w_weight;</span><br><span class="line">                    pq.<span class="built_in">emplace</span>(w_node, skip + <span class="number">1</span>, dist[w_node]);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dist[dst];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="再次尝试Dijkstra（完全没必要）"><a href="#再次尝试Dijkstra（完全没必要）" class="headerlink" title="再次尝试Dijkstra（完全没必要）"></a>再次尝试Dijkstra（完全没必要）</h2>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/09/07/%E5%B8%A6%E9%99%90%E5%88%B6%E7%9A%84%E6%9C%80%E7%9F%AD%E8%B7%AF/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/01/%E9%80%86%E5%BA%8F%E5%AF%B9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Lizq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/09/01/%E9%80%86%E5%BA%8F%E5%AF%B9/" class="post-title-link" itemprop="url">逆序对</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-09-01 14:53:56" itemprop="dateCreated datePublished" datetime="2022-09-01T14:53:56+08:00">2022-09-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-09-19 22:32:20" itemprop="dateModified" datetime="2022-09-19T22:32:20+08:00">2022-09-19</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>968</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="逆序对计算"><a href="#逆序对计算" class="headerlink" title="逆序对计算"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/shu-zu-zhong-de-ni-xu-dui-lcof/">逆序对计算</a></h1><h2 id="1-归并排序"><a href="#1-归并排序" class="headerlink" title="1 归并排序"></a>1 归并排序</h2><p>归并排序天然就可统计逆序对，在归并时有以下两种方式统计：</p>
+<p>当左侧当前指针指向位置的数字CUR较小时，本轮将其加入归并后的数组，注意到右数组当前指针左边的都是小于CUR的，但是他们位置却在其右侧，所以逆序对贡献为<code>l2-old_l2</code></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (a &lt;= b) &#123; <span class="comment">// 这里包含等于 可以用全1数组模拟想想</span></span><br><span class="line">    trr[p++] = arr[l1++];</span><br><span class="line">    ret += (l2-old_l2);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> </span><br><span class="line">    trr[p++] = arr[l2++];</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/09/01/%E9%80%86%E5%BA%8F%E5%AF%B9/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/27/%E7%BA%BF%E6%AE%B5%E6%A0%91/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Lizq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/08/27/%E7%BA%BF%E6%AE%B5%E6%A0%91/" class="post-title-link" itemprop="url">线段树</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-08-27 15:46:58" itemprop="dateCreated datePublished" datetime="2022-08-27T15:46:58+08:00">2022-08-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-09-19 22:20:00" itemprop="dateModified" datetime="2022-09-19T22:20:00+08:00">2022-09-19</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><ul>
+<li>数组区间内经常发生修改，但是又要频繁求得区间的各类统计信息例如最大值、最小值、区间和等等。</li>
+<li>对于一个数组频繁求区间和和修改的情况下：<ul>
+<li>普通操作：修改：O(1)；区间和：O(n)</li>
+<li>前缀和：修改：O(n)；区间和：O(1)</li>
+<li>线段树：修改：O(nlogn)；区间和：O(nlogn)</li>
+</ul>
+</li>
+</ul>
+<h2 id="线段树"><a href="#线段树" class="headerlink" title="线段树"></a>线段树</h2><ul>
+<li>将数组以二分的形式建成一棵二叉树，叶子节点为数组的值，非叶子节点保存相应的统计信息。这棵树近似完全二叉树的结构，所以可以用数组来构建</li>
+<li>下面所列举的代码只需要改变给<code>tree[node]</code>赋值相关代码即可实现求最大值、最小值、区间和，肥肠方便</li>
+<li><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/range-sum-query-mutable/">307. 区域和检索 - 数组可修改</a></li>
+</ul>
+<h2 id="1、数组版"><a href="#1、数组版" class="headerlink" title="1、数组版"></a>1、数组版</h2>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/08/27/%E7%BA%BF%E6%AE%B5%E6%A0%91/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/21/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Lizq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/08/21/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84/" class="post-title-link" itemprop="url">树状数组</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-08-21 13:51:43" itemprop="dateCreated datePublished" datetime="2022-08-21T13:51:43+08:00">2022-08-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-09-07 14:48:14" itemprop="dateModified" datetime="2022-09-07T14:48:14+08:00">2022-09-07</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>656</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><ul>
+<li>随机修改数组中一个数字</li>
+<li>求前缀和</li>
+<li>以上操作需要频繁操作</li>
+</ul>
+<h2 id="预备知识：lowbit"><a href="#预备知识：lowbit" class="headerlink" title="预备知识：lowbit"></a>预备知识：lowbit</h2><p>lowbit指数字的二进制最低位1及后续0取出后的数字</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">lowbit</span><span class="params">(<span class="type">int</span> a)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a &amp; -a;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/08/21/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/19/const%E8%A6%81%E7%82%B9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Lizq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/08/19/const%E8%A6%81%E7%82%B9/" class="post-title-link" itemprop="url">const要点</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-08-19 20:14:02" itemprop="dateCreated datePublished" datetime="2022-08-19T20:14:02+08:00">2022-08-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-08-30 20:01:18" itemprop="dateModified" datetime="2022-08-30T20:01:18+08:00">2022-08-30</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>455</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="const要点"><a href="#const要点" class="headerlink" title="const要点"></a>const要点</h1><ul>
+<li>C的const是虚假的，就是个只读量，只是说不能通过变量名进行修改，但是拿到指针就可修改；</li>
+<li>C++的const会保险一些，会有类似符号表的东西；但是类内的const普通成员变量则依旧会被通过指针改变</li>
+<li>静态const和全局const虽然可以通过指针修改，编译时期可能不会报错，但是运行到那个地方就会报错</li>
+<li>const只在编译期间保证常量被使用时的不变性，无法保证运行期间的行为。</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">A</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> val2 = <span class="number">22</span>;</span><br><span class="line">    <span class="type">static</span> <span class="type">int</span> val3;</span><br><span class="line">    <span class="type">static</span> <span class="type">const</span> <span class="type">int</span> val4 = <span class="number">44</span>; <span class="comment">// !</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="type">int</span> A::val3 = <span class="number">33</span>;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> val5 = <span class="number">55</span>;</span><br><span class="line"><span class="type">int</span> val6 = <span class="number">66</span>;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> val1 = <span class="number">11</span>;</span><br><span class="line">    <span class="type">int</span>* p1 = (<span class="type">int</span>*)&amp;val1; <span class="comment">// 栈区，拿到地址随便改，但是符号表会覆盖</span></span><br><span class="line">    *p1 = <span class="number">1111</span>;</span><br><span class="line">    cout &lt;&lt; &amp;val1 &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; val1 &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; p1 &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; *p1 &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;===&quot;</span> &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    A ins;</span><br><span class="line">    <span class="type">int</span>* p2 = (<span class="type">int</span>*)&amp;ins.val2;</span><br><span class="line">    *p2 = <span class="number">2222</span>; <span class="comment">// 栈区，拿到地址随便改</span></span><br><span class="line">    cout &lt;&lt; &amp;ins.val2 &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; ins.val2 &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; p2 &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; *p2 &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;===&quot;</span> &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span>* p3 = (<span class="type">int</span>*)&amp;A::val3;</span><br><span class="line">    *p3 = <span class="number">3333</span>; <span class="comment">// 全局数据区，但是不在常量区，可以修改</span></span><br><span class="line">    cout &lt;&lt; p3 &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; *p3 &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; &amp;A::val3 &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; A::val3 &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;===&quot;</span> &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span>* p4 = (<span class="type">int</span>*)&amp;A::val4;</span><br><span class="line">    <span class="comment">//*p4 = 4444; // 编译不出错，运行会异常（常量区不能修改）</span></span><br><span class="line">    cout &lt;&lt; p4 &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; *p4 &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; &amp;A::val4 &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; A::val4 &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;===&quot;</span> &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span>* p5 = (<span class="type">int</span>*)&amp;val5;</span><br><span class="line">    <span class="comment">//*p5 = 5555; // 编译不出错，运行会异常（常量区不能修改）</span></span><br><span class="line">    cout &lt;&lt; p5 &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; *p5 &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; &amp;val5 &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; val5 &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;===&quot;</span> &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span>* p6 = (<span class="type">int</span>*)&amp;val6;</span><br><span class="line">    *p6 = <span class="number">6666</span>; <span class="comment">// 全局数据区，但是不在常量区，可以修改</span></span><br><span class="line">    cout &lt;&lt; p6 &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; *p6 &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; &amp;val6 &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; val6 &lt;&lt; endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出结果：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">00EFFD98 11</span></span><br><span class="line"><span class="comment">00EFFD98 1111</span></span><br><span class="line"><span class="comment">===</span></span><br><span class="line"><span class="comment">00EFFD80 2222</span></span><br><span class="line"><span class="comment">00EFFD80 2222</span></span><br><span class="line"><span class="comment">===</span></span><br><span class="line"><span class="comment">0027C038 3333</span></span><br><span class="line"><span class="comment">0027C038 3333</span></span><br><span class="line"><span class="comment">===</span></span><br><span class="line"><span class="comment">00279B38 44</span></span><br><span class="line"><span class="comment">00279B38 44</span></span><br><span class="line"><span class="comment">===</span></span><br><span class="line"><span class="comment">00279B30 55</span></span><br><span class="line"><span class="comment">00279B30 55</span></span><br><span class="line"><span class="comment">===</span></span><br><span class="line"><span class="comment">0027C03C 6666</span></span><br><span class="line"><span class="comment">0027C03C 6666</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/08/19/const%E8%A6%81%E7%82%B9/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+  </nav>
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Lizq</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">42k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:31</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

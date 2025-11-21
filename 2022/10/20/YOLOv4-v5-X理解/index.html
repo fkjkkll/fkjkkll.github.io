@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 8.1.1">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="YOLOv4YOLOv4是在YOLOv3的基础上进行了一些改进，但是整个流程依旧是YOLOv3，比如正负样本的划分、忽略样本等等。其中添加的改进主要有如下几点：  跨阶段局部网络（Cross-Stage-Partial, CSP）作为主干网络进行特征提取 Mish激活函数（backbone）和Leaky ReLU（neck） Mosaic数据增强、MixUP数据增强 添加注意力机制模块 CIoU作">
+<meta property="og:type" content="article">
+<meta property="og:title" content="YOLOv4,v5,X理解">
+<meta property="og:url" content="http://example.com/2022/10/20/YOLOv4-v5-X%E7%90%86%E8%A7%A3/index.html">
+<meta property="og:site_name" content="Lizq的个人博客">
+<meta property="og:description" content="YOLOv4YOLOv4是在YOLOv3的基础上进行了一些改进，但是整个流程依旧是YOLOv3，比如正负样本的划分、忽略样本等等。其中添加的改进主要有如下几点：  跨阶段局部网络（Cross-Stage-Partial, CSP）作为主干网络进行特征提取 Mish激活函数（backbone）和Leaky ReLU（neck） Mosaic数据增强、MixUP数据增强 添加注意力机制模块 CIoU作">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/fkjkkll/OnlineSource/master/Image/object%20detection/YOLOX%E6%A0%87%E7%AD%BE%E5%8C%B9%E9%85%8D.jpg">
+<meta property="article:published_time" content="2022-10-20T14:06:44.000Z">
+<meta property="article:modified_time" content="2022-10-20T14:07:03.030Z">
+<meta property="article:author" content="Lizq">
+<meta property="article:tag" content="目标检测">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/fkjkkll/OnlineSource/master/Image/object%20detection/YOLOX%E6%A0%87%E7%AD%BE%E5%8C%B9%E9%85%8D.jpg">
+
+
+<link rel="canonical" href="http://example.com/2022/10/20/YOLOv4-v5-X%E7%90%86%E8%A7%A3/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/10/20/YOLOv4-v5-X%E7%90%86%E8%A7%A3/","path":"2022/10/20/YOLOv4-v5-X理解/","title":"YOLOv4,v5,X理解"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>YOLOv4,v5,X理解 | Lizq的个人博客</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Lizq的个人博客</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#YOLOv4"><span class="nav-number">1.</span> <span class="nav-text">YOLOv4</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#YOLOv5"><span class="nav-number">2.</span> <span class="nav-text">YOLOv5</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B0%E7%9A%84%E6%AD%A3%E6%A0%B7%E6%9C%AC%E9%80%89%E6%8B%A9%E6%9C%BA%E5%88%B6"><span class="nav-number">2.1.</span> <span class="nav-text">新的正样本选择机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E6%94%B9%E5%8A%A8"><span class="nav-number">2.2.</span> <span class="nav-text">其他改动</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#YOLOX"><span class="nav-number">3.</span> <span class="nav-text">YOLOX</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A3%E6%A0%B7%E6%9C%AC%E9%80%89%E6%8B%A9%E7%AD%96%E7%95%A5%EF%BC%88SimOTA%EF%BC%89"><span class="nav-number">3.1.</span> <span class="nav-text">正样本选择策略（SimOTA）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E6%94%B9%E5%8A%A8-1"><span class="nav-number">3.2.</span> <span class="nav-text">其他改动</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Lizq</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">48</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fkjkkll" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fkjkkll" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:lzq0225@qq.com" title="E-Mail → mailto:lzq0225@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/10/20/YOLOv4-v5-X%E7%90%86%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Lizq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="YOLOv4,v5,X理解 | Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          YOLOv4,v5,X理解
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-10-20 22:06:44 / 修改时间：22:07:03" itemprop="dateCreated datePublished" datetime="2022-10-20T22:06:44+08:00">2022-10-20</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>973</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="YOLOv4"><a href="#YOLOv4" class="headerlink" title="YOLOv4"></a>YOLOv4</h1><p>YOLOv4是在YOLOv3的基础上进行了一些改进，但是整个流程依旧是YOLOv3，比如正负样本的划分、忽略样本等等。<br>其中添加的改进主要有如下几点：</p>
+<ul>
+<li>跨阶段局部网络（Cross-Stage-Partial, CSP）作为主干网络进行特征提取</li>
+<li>Mish激活函数（backbone）和Leaky ReLU（neck）</li>
+<li>Mosaic数据增强、MixUP数据增强</li>
+<li>添加注意力机制模块</li>
+<li>CIoU作为边框回归损失</li>
+<li>在neck中添加空间金字塔池化（Spatial Pyramid Pooling, SPP）提升感受野</li>
+<li>在原先YOLOv3 neck的特征金字塔网络（Feature Pyramid Netword, FPN）的基础上改进为路径聚合网络（Path Aggregation Network, PAN）</li>
+</ul>
+<h1 id="YOLOv5"><a href="#YOLOv5" class="headerlink" title="YOLOv5"></a>YOLOv5</h1><p>YOLOv5并无论文，我以开源代码中的实现来说明（version 5.0）。</p>
+<h2 id="新的正样本选择机制"><a href="#新的正样本选择机制" class="headerlink" title="新的正样本选择机制"></a>新的正样本选择机制</h2><p>网络输出部分xywh的偏移计算公式发生改动，现在xywh都会经过sigmoid归一化。</p>
+<ul>
+<li>网络输出xy偏移公式：$pred_x &#x3D; t_x*2-0.5+grid_x$</li>
+<li>网络输出wh偏移公式：$pred_w &#x3D; (t_w<em>2)^2</em>anchor_w$</li>
+</ul>
+<p>这样设计xy的原因是，YOLOv3如果中心点在极边缘，那么网络的输出需要是个比较大的值，才能通过sigmoid得到极边缘的位置，这不好学习，改进的方法则可以消除这个问题。</p>
+<p>这样设计wh的原因是，指数不好控制，容易训练不稳定</p>
+<p>对于每个gt，会先计算它与9个锚框的宽与宽之比，高与高之比，以及倒数；结果会得到每一个gt与9个锚框的4个比值，选择4个比值的最大值作为代表值，代表值比值因子在一定范围内（如4）的先验框作为负责预测该目标的先验框（因此可能会有多个先验框负责预测该gt）。</p>
+<p>进一步，正样本会根据中心点的具体位置，会添加四个角的额外两个特征点来预测，一共每个目标有三个位置的对应大小的先验框来负责预测（可能会有相同大小的先验框的不同位置都负责预测该gt）。当然，过程会有可能某个先验框负责多个gt的预测的矛盾产生，但是不用担心，会根据代表值最低匹配原则来确认它到底负责哪一个gt</p>
+<p>总的来说可能会有多个尺度的多个位置负责预测某个目标，相比较于YOLOv3、YOLOv4，大大提升了正样本数量</p>
+<h2 id="其他改动"><a href="#其他改动" class="headerlink" title="其他改动"></a>其他改动</h2><ul>
+<li>Focus模块，主干网络起始以Focus结构降低特征图宽高，不过该结构在最新版已经弃用</li>
+<li>网络全部采用SiLU激活函数</li>
+<li>CSPLayer相较于YOLOv4发生一点点改动，减少一个卷积模组</li>
+<li>将SPP模块放入到主干网络最后一部分（后续版本提出SPPF，性能优秀）</li>
+<li>neck部分的卷积堆叠用CSPLayer替代，并修改部分通道改变情况</li>
+<li>通过尺度因子：通道深度、残差块层数，来定义网络从而划分s、m、l、x大小不同网络</li>
+</ul>
+<h1 id="YOLOX"><a href="#YOLOX" class="headerlink" title="YOLOX"></a>YOLOX</h1><p>YOLOX的整体网络架构基本上和YOLOv5一致（原论文大多实验也是基于YOLOv3），所以该网络主要创新是在解耦头以及正样本选择方面。</p>
+<h2 id="正样本选择策略（SimOTA）"><a href="#正样本选择策略（SimOTA）" class="headerlink" title="正样本选择策略（SimOTA）"></a>正样本选择策略（SimOTA）</h2><p>值得一提的是预测xywz的偏移，不需要经过sigmoid归一化</p>
+<ul>
+<li>网络输出xy偏移公式：$pred_x &#x3D; t_x+grid_x$</li>
+<li>网络输出wh便宜公式：$pred_w &#x3D; e^{t_w}$</li>
+</ul>
+<p>具体的正样本（特征点）选取规则：</p>
+<p><img src="https://raw.githubusercontent.com/fkjkkll/OnlineSource/master/Image/object%20detection/YOLOX%E6%A0%87%E7%AD%BE%E5%8C%B9%E9%85%8D.jpg" alt="YOLOX标签分配策略"></p>
+<h2 id="其他改动-1"><a href="#其他改动-1" class="headerlink" title="其他改动"></a>其他改动</h2><ul>
+<li>计算损失时，类别损失标签不是1，是该特征点对于的预测框与对应gt的IoU</li>
+<li>anchor-free：输出分叉，然后结果堆叠就行了</li>
+<li>Decoupled Head，解耦头预测</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/" rel="tag"># 目标检测</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/10/08/YOLOv3%E6%BA%90%E7%A0%81%E7%90%86%E8%A7%A3/" rel="prev" title="YOLOv3源码理解">
+                  <i class="fa fa-angle-left"></i> YOLOv3源码理解
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Lizq</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">42k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:31</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

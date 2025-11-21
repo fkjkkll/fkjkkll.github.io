@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 8.1.1">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="32 最长有效括号方法1：动态规划1.1 错误1无法解决诸如(())的问题。 要考虑到当前碰到右括号后，前面的是左括号还是右括号，然后分别进行处理 12345678910111213141516171819202122class Solution &#123;public:    int longestValidParentheses(string s) &#123;        int n &#x3D;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="最长有效括号">
+<meta property="og:url" content="http://example.com/2022/03/19/%E6%9C%80%E9%95%BF%E6%9C%89%E6%95%88%E6%8B%AC%E5%8F%B7/index.html">
+<meta property="og:site_name" content="Lizq的个人博客">
+<meta property="og:description" content="32 最长有效括号方法1：动态规划1.1 错误1无法解决诸如(())的问题。 要考虑到当前碰到右括号后，前面的是左括号还是右括号，然后分别进行处理 12345678910111213141516171819202122class Solution &#123;public:    int longestValidParentheses(string s) &#123;        int n &#x3D;">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-03-19T08:24:22.000Z">
+<meta property="article:modified_time" content="2022-09-19T02:18:08.176Z">
+<meta property="article:author" content="Lizq">
+<meta property="article:tag" content="动态规划">
+<meta property="article:tag" content="算法">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2022/03/19/%E6%9C%80%E9%95%BF%E6%9C%89%E6%95%88%E6%8B%AC%E5%8F%B7/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/03/19/%E6%9C%80%E9%95%BF%E6%9C%89%E6%95%88%E6%8B%AC%E5%8F%B7/","path":"2022/03/19/最长有效括号/","title":"最长有效括号"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>最长有效括号 | Lizq的个人博客</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Lizq的个人博客</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#32-%E6%9C%80%E9%95%BF%E6%9C%89%E6%95%88%E6%8B%AC%E5%8F%B7"><span class="nav-number">1.</span> <span class="nav-text">32 最长有效括号</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B9%E6%B3%951%EF%BC%9A%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92"><span class="nav-number">1.1.</span> <span class="nav-text">方法1：动态规划</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E9%94%99%E8%AF%AF1"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.1 错误1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E9%94%99%E8%AF%AF2"><span class="nav-number">1.1.2.</span> <span class="nav-text">1.2 错误2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-%E6%AD%A3%E7%A1%AE%E7%AD%94%E6%A1%88"><span class="nav-number">1.1.3.</span> <span class="nav-text">1.3 正确答案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-%E5%AE%98%E6%96%B9%E7%9A%84DP%EF%BC%88LC%E5%AE%98%E6%96%B9%EF%BC%89-Elegant"><span class="nav-number">1.1.4.</span> <span class="nav-text">1.4 官方的DP（LC官方）(Elegant)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B9%E6%B3%952%EF%BC%9A%E6%A0%88%EF%BC%88LC%E5%AE%98%E6%96%B9%EF%BC%89"><span class="nav-number">1.2.</span> <span class="nav-text">方法2：栈（LC官方）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B9%E6%B3%953%EF%BC%9A%E8%B4%AA%E5%BF%83%EF%BC%88LC%E5%AE%98%E6%96%B9%EF%BC%89"><span class="nav-number">1.3.</span> <span class="nav-text">方法3：贪心（LC官方）</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Lizq</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">48</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fkjkkll" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fkjkkll" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:lzq0225@qq.com" title="E-Mail → mailto:lzq0225@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/19/%E6%9C%80%E9%95%BF%E6%9C%89%E6%95%88%E6%8B%AC%E5%8F%B7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Lizq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="最长有效括号 | Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          最长有效括号
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-03-19 16:24:22" itemprop="dateCreated datePublished" datetime="2022-03-19T16:24:22+08:00">2022-03-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-09-19 10:18:08" itemprop="dateModified" datetime="2022-09-19T10:18:08+08:00">2022-09-19</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="32-最长有效括号"><a href="#32-最长有效括号" class="headerlink" title="32 最长有效括号"></a>32 <a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/longest-valid-parentheses/">最长有效括号</a></h1><h2 id="方法1：动态规划"><a href="#方法1：动态规划" class="headerlink" title="方法1：动态规划"></a>方法1：动态规划</h2><h3 id="1-1-错误1"><a href="#1-1-错误1" class="headerlink" title="1.1 错误1"></a>1.1 错误1</h3><p><strong>无法解决诸如<code>(())</code>的问题。</strong> 要考虑到当前碰到右括号后，前面的是左括号还是右括号，然后分别进行处理</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">longestValidParentheses</span><span class="params">(string s)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> n = s.<span class="built_in">size</span>();</span><br><span class="line">        <span class="type">int</span> l = <span class="number">0</span>;</span><br><span class="line">        <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">dp</span><span class="params">(n)</span></span>;</span><br><span class="line">        <span class="type">int</span> ret = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i&lt;n; ++i)&#123;</span><br><span class="line">            <span class="keyword">if</span>(s[i] == <span class="string">&#x27;(&#x27;</span>)&#123;</span><br><span class="line">                ++l; </span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(l)&#123;</span><br><span class="line">                --l;</span><br><span class="line">                dp[i] = <span class="number">2</span>;</span><br><span class="line">                <span class="keyword">if</span>(i<span class="number">-2</span> &gt;= <span class="number">0</span>) dp[i] += dp[i<span class="number">-2</span>]; <span class="comment">// BUG</span></span><br><span class="line">                ret = <span class="built_in">max</span>(ret, dp[i]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ret;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-2-错误2"><a href="#1-2-错误2" class="headerlink" title="1.2 错误2"></a>1.2 错误2</h3><p><strong>无法解决诸如<code>()(())</code>的问题。</strong> </p>
+<ol>
+<li><code>*****()</code> 好解决直接 <code>dp[i] += dp[i-2];</code></li>
+<li><code>*****))</code> 需要额外判断找到与当前右括号<code>i</code>对应的左括号<code>t</code>，然后<code>t</code>的左边要继续判断</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">longestValidParentheses</span><span class="params">(string s)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> n = s.<span class="built_in">size</span>();</span><br><span class="line">        <span class="type">int</span> l = <span class="number">0</span>;</span><br><span class="line">        <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">dp</span><span class="params">(n)</span></span>;</span><br><span class="line">        <span class="type">int</span> ret = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i&lt;n; ++i)&#123;</span><br><span class="line">            <span class="keyword">if</span>(s[i] == <span class="string">&#x27;(&#x27;</span>)&#123;</span><br><span class="line">                ++l; </span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(l)&#123;</span><br><span class="line">                --l;</span><br><span class="line">                dp[i] = <span class="number">2</span>;</span><br><span class="line">                <span class="keyword">if</span>(s[i<span class="number">-1</span>] == <span class="string">&#x27;(&#x27;</span> &amp;&amp; i<span class="number">-2</span> &gt;= <span class="number">0</span>) dp[i] += dp[i<span class="number">-2</span>];</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span>(s[i<span class="number">-1</span>] == <span class="string">&#x27;)&#x27;</span>) dp[i] += dp[i<span class="number">-1</span>]; <span class="comment">// 这里要继续修改</span></span><br><span class="line">                ret = <span class="built_in">max</span>(ret, dp[i]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ret;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-3-正确答案"><a href="#1-3-正确答案" class="headerlink" title="1.3 正确答案"></a>1.3 正确答案</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">longestValidParentheses</span><span class="params">(string s)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> n = s.<span class="built_in">size</span>();</span><br><span class="line">        <span class="type">int</span> l = <span class="number">0</span>;</span><br><span class="line">        <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">dp</span><span class="params">(n)</span></span>;</span><br><span class="line">        <span class="type">int</span> ret = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i&lt;n; ++i)&#123;</span><br><span class="line">            <span class="keyword">if</span>(s[i] == <span class="string">&#x27;(&#x27;</span>)&#123;</span><br><span class="line">                ++l; </span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(l)&#123;</span><br><span class="line">                --l;</span><br><span class="line">                dp[i] = <span class="number">2</span>;</span><br><span class="line">                <span class="keyword">if</span>(s[i<span class="number">-1</span>] == <span class="string">&#x27;(&#x27;</span> &amp;&amp; i<span class="number">-2</span> &gt;= <span class="number">0</span>) dp[i] += dp[i<span class="number">-2</span>];</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span>(s[i<span class="number">-1</span>] == <span class="string">&#x27;)&#x27;</span>)&#123;</span><br><span class="line">                    dp[i] += dp[i<span class="number">-1</span>];</span><br><span class="line">                    <span class="keyword">if</span>(i-dp[i]&gt;=<span class="number">0</span>) <span class="comment">//添加这里</span></span><br><span class="line">                        dp[i] += dp[i-dp[i]];</span><br><span class="line">                &#125;</span><br><span class="line">                ret = <span class="built_in">max</span>(ret, dp[i]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ret;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-4-官方的DP（LC官方）-Elegant"><a href="#1-4-官方的DP（LC官方）-Elegant" class="headerlink" title="1.4 官方的DP（LC官方）(Elegant)"></a>1.4 官方的DP（LC官方）(Elegant)</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">longestValidParentheses</span><span class="params">(string s)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> n = s.<span class="built_in">size</span>();</span><br><span class="line">        <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">dp</span><span class="params">(n, <span class="number">0</span>)</span></span>;</span><br><span class="line">        <span class="type">int</span> res = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>; i&lt;n; ++i)&#123;</span><br><span class="line">            <span class="keyword">if</span>(s[i] == <span class="string">&#x27;(&#x27;</span>) <span class="keyword">continue</span>;</span><br><span class="line">            <span class="comment">// 只有以&#x27;)&#x27;结尾的才有效</span></span><br><span class="line">            <span class="keyword">if</span>(s[i<span class="number">-1</span>] == <span class="string">&#x27;(&#x27;</span>)&#123;</span><br><span class="line">                <span class="keyword">if</span>(i<span class="number">-2</span> &lt; <span class="number">0</span>) dp[i] = <span class="number">2</span>; <span class="comment">// 防止越界</span></span><br><span class="line">                <span class="keyword">else</span> dp[i] = dp[i<span class="number">-2</span>] + <span class="number">2</span>; <span class="comment">// 转移函数</span></span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="keyword">if</span>(i-dp[i<span class="number">-1</span>]<span class="number">-1</span>&gt;=<span class="number">0</span> &amp;&amp; s[i-dp[i<span class="number">-1</span>]<span class="number">-1</span>] == <span class="string">&#x27;(&#x27;</span>)&#123;</span><br><span class="line">                    dp[i] = dp[i<span class="number">-1</span>] + <span class="number">2</span>; <span class="comment">// 转移函数</span></span><br><span class="line">                    <span class="keyword">if</span>(i-dp[i<span class="number">-1</span>]<span class="number">-2</span> &gt;= <span class="number">0</span>)</span><br><span class="line">                        dp[i] += dp[i-dp[i<span class="number">-1</span>]<span class="number">-2</span>];</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            res = <span class="built_in">max</span>(res, dp[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="方法2：栈（LC官方）"><a href="#方法2：栈（LC官方）" class="headerlink" title="方法2：栈（LC官方）"></a>方法2：栈（LC官方）</h2><p>保持栈底元素为当前已经遍历过的元素中 <strong>「最后一个没有被匹配的右括号的下标」</strong> 需要注意的是，如果一开始栈为空，第一个字符为左括号的时候我们会将其放入栈中，这样就不满足提及的「最后一个没有被匹配的右括号的下标」，为了保持统一，我们在一开始的时候往栈中放入一个值为 -1−1 的元素。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">longestValidParentheses</span><span class="params">(string s)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> n = s.<span class="built_in">size</span>();</span><br><span class="line">        stack&lt;<span class="type">int</span>&gt; stk;</span><br><span class="line">        stk.<span class="built_in">push</span>(<span class="number">-1</span>);</span><br><span class="line">        <span class="type">int</span> res = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i&lt;n; ++i)&#123;</span><br><span class="line">            <span class="keyword">if</span>(s[i] == <span class="string">&#x27;(&#x27;</span>) stk.<span class="built_in">push</span>(i);</span><br><span class="line">            <span class="keyword">else</span>&#123;</span><br><span class="line">                stk.<span class="built_in">pop</span>();</span><br><span class="line">                <span class="keyword">if</span>(stk.<span class="built_in">empty</span>()) <span class="comment">// 更新「最后一个没有被匹配的右括号的下标」</span></span><br><span class="line">                    stk.<span class="built_in">push</span>(i);</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                    res = <span class="built_in">max</span>(res, i-stk.<span class="built_in">top</span>()); <span class="comment">// 以i结尾的有效性括号长度</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="方法3：贪心（LC官方）"><a href="#方法3：贪心（LC官方）" class="headerlink" title="方法3：贪心（LC官方）"></a>方法3：贪心（LC官方）</h2><p>利用两个计数器<code>l和r</code>，从左到右遍历字符串，遇到左括号则<code>l加1</code>，遇到右括号则<code>r加1</code>；当<code>l和r</code>相等时更新最长长度，当<code>r&gt;l时将l和r置0</code></p>
+<p>这样的做法贪心地考虑了以当前字符下标结尾的有效括号长度，每次当右括号数量多于左括号数量的时候之前的字符我们都扔掉不再考虑，重新从下一个字符开始计算，但这样会漏掉一种情况，就是遍历的时候左括号的数量始终大于右括号的数量，即 (() ，这种时候最长有效括号是求不出来的。</p>
+<p>解决的方法也很简单，我们只需要从右往左遍历用类似的方法计算即可，只是这个时候判断条件反了过来：当<code>r&lt;l时将l和r置0</code>。</p>
+<p>这样我们就能涵盖所有情况从而求解出答案。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">longestValidParentheses</span><span class="params">(string s)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> l = <span class="number">0</span>, r = <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> res = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i&lt;s.<span class="built_in">size</span>(); ++i)&#123;</span><br><span class="line">            <span class="keyword">if</span>(s[i] == <span class="string">&#x27;(&#x27;</span>) ++l;</span><br><span class="line">            <span class="keyword">else</span> ++r;</span><br><span class="line">            <span class="keyword">if</span>(l == r) res = <span class="built_in">max</span>(res, l + r);</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(r &gt; l) l = r = <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        l = r = <span class="number">0</span>; <span class="comment">// 重置！</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=s.<span class="built_in">size</span>()<span class="number">-1</span>; i&gt;=<span class="number">0</span>; --i)&#123;</span><br><span class="line">            <span class="keyword">if</span>(s[i] == <span class="string">&#x27;(&#x27;</span>) ++l;</span><br><span class="line">            <span class="keyword">else</span> ++r;</span><br><span class="line">            <span class="keyword">if</span>(l == r) res = <span class="built_in">max</span>(res, l + r);</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span>(l &gt; r) l = r = <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%AE%97%E6%B3%95/" rel="tag"># 算法</a>
+              <a href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" rel="tag"># 动态规划</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/11/23/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8BSSD/" rel="prev" title="目标检测SSD">
+                  <i class="fa fa-angle-left"></i> 目标检测SSD
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/03/19/Rand7%E5%AE%9E%E7%8E%B0Rand10/" rel="next" title="Rand7实现Rand10">
+                  Rand7实现Rand10 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Lizq</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">42k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:31</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

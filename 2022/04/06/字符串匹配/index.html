@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 8.1.1">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="BF(Brute Force)算法 BF是最符合人类直觉的字符串匹配算法，但是主串的下标i经常要往回走，无法利用已匹配信息，效率不够好  12345678910111213141516int bruteForce(const string&amp; t, const string&amp; p) &#123;    int i &#x3D; 0, j &#x3D; 0;    &#x2F;&#x2F; i和j都是非负数，所以可以和无符号">
+<meta property="og:type" content="article">
+<meta property="og:title" content="字符串匹配">
+<meta property="og:url" content="http://example.com/2022/04/06/%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8C%B9%E9%85%8D/index.html">
+<meta property="og:site_name" content="Lizq的个人博客">
+<meta property="og:description" content="BF(Brute Force)算法 BF是最符合人类直觉的字符串匹配算法，但是主串的下标i经常要往回走，无法利用已匹配信息，效率不够好  12345678910111213141516int bruteForce(const string&amp; t, const string&amp; p) &#123;    int i &#x3D; 0, j &#x3D; 0;    &#x2F;&#x2F; i和j都是非负数，所以可以和无符号">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-04-06T03:04:18.000Z">
+<meta property="article:modified_time" content="2022-09-07T06:44:53.606Z">
+<meta property="article:author" content="Lizq">
+<meta property="article:tag" content="特殊">
+<meta property="article:tag" content="算法">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2022/04/06/%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8C%B9%E9%85%8D/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/04/06/%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8C%B9%E9%85%8D/","path":"2022/04/06/字符串匹配/","title":"字符串匹配"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>字符串匹配 | Lizq的个人博客</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Lizq的个人博客</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#BF-Brute-Force-%E7%AE%97%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">BF(Brute Force)算法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#KMP%E7%AE%97%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">KMP算法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#KMP%E4%B9%8BNext%E4%BC%98%E5%8C%96"><span class="nav-number">3.</span> <span class="nav-text">KMP之Next优化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">4.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Lizq</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">48</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fkjkkll" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fkjkkll" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:lzq0225@qq.com" title="E-Mail → mailto:lzq0225@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/06/%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8C%B9%E9%85%8D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Lizq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="字符串匹配 | Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          字符串匹配
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-06 11:04:18" itemprop="dateCreated datePublished" datetime="2022-04-06T11:04:18+08:00">2022-04-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-09-07 14:44:53" itemprop="dateModified" datetime="2022-09-07T14:44:53+08:00">2022-09-07</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>777</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="BF-Brute-Force-算法"><a href="#BF-Brute-Force-算法" class="headerlink" title="BF(Brute Force)算法"></a>BF(Brute Force)算法</h1><ul>
+<li>BF是最符合人类直觉的字符串匹配算法，但是主串的下标<code>i</code>经常要往回走，无法利用已匹配信息，效率不够好</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">bruteForce</span><span class="params">(<span class="type">const</span> string&amp; t, <span class="type">const</span> string&amp; p)</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> i = <span class="number">0</span>, j = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">// i和j都是非负数，所以可以和无符号直接比较</span></span><br><span class="line">    <span class="keyword">while</span> (i &lt; t.<span class="built_in">size</span>() &amp;&amp; j &lt; p.<span class="built_in">size</span>()) &#123;</span><br><span class="line">        <span class="keyword">if</span> (t[i] == p[j]) &#123;</span><br><span class="line">            ++i; ++j;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            i = i - j + <span class="number">1</span>;</span><br><span class="line">            j = <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (j == p.<span class="built_in">size</span>())</span><br><span class="line">        <span class="keyword">return</span> i - j;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="KMP算法"><a href="#KMP算法" class="headerlink" title="KMP算法"></a>KMP算法</h1><ul>
+<li>思想：“利用已部分匹配的信息，保持<code>i</code>指针不回溯，通过修改<code>j</code>指针，让模式串尽量移动到有效的位置”</li>
+<li>定义<code>next</code>数组： <code>next[j] = d</code> 表示当 <code>t[i] != p[j]</code> 时，<code>j</code>下一次匹配的位置。注意到，下标从0开始，<code>d</code>值实际上是下标<code>j</code>前的<strong>最长前后缀子串</strong>的<strong>长度</strong></li>
+<li>求取<code>next</code>的过程本身就是<code>p</code>串与自己匹配的过程<ol>
+<li>当 <code>p[i]==p[j]</code> ，则 <code>p[++i] = ++j</code></li>
+<li>当 <code>p[i]!=p[j]</code> ，则利用前面已求得的<code>next</code>数组，<code>j=next[j]</code> ；直到无法找到，此时 <code>j=-1</code> ，自动进入第一个<code>if</code>语句，此时<code>i</code>往后走一步，妙</li>
+</ol>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">getNext</span><span class="params">(<span class="type">const</span> string&amp; p)</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> n = p.<span class="built_in">size</span>();</span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">next</span><span class="params">(n)</span></span>;</span><br><span class="line">    next[<span class="number">0</span>] = <span class="number">-1</span>;</span><br><span class="line">    <span class="type">int</span> i = <span class="number">0</span>, j = <span class="number">-1</span>;</span><br><span class="line">    <span class="comment">// !!! i &lt; n 则会在下面越界，因为0已经求过了，循环只会进行n-1次</span></span><br><span class="line">    <span class="keyword">while</span> (i &lt; n - <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (j == <span class="number">-1</span> || p[i] == p[j]) &#123;</span><br><span class="line">            ++i, ++j;</span><br><span class="line">            next[i] = j;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            j = next[j];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> next;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">KMP</span><span class="params">(<span class="type">const</span> string&amp; t, <span class="type">const</span> string&amp; p)</span> </span>&#123;</span><br><span class="line">    vector&lt;<span class="type">int</span>&gt; next = <span class="built_in">getNext</span>(p);</span><br><span class="line">    <span class="type">int</span> n = t.<span class="built_in">size</span>(), m = p.<span class="built_in">size</span>();</span><br><span class="line">    <span class="type">int</span> i = <span class="number">0</span>, j = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">// !!! j可以为负数，和无符号比较会转换为无符号比较法(南辕北辙)</span></span><br><span class="line">    <span class="keyword">while</span> (i &lt; n &amp;&amp; j &lt; m) &#123;</span><br><span class="line">        <span class="keyword">if</span> (j == <span class="number">-1</span> || t[i] == p[j]) &#123;</span><br><span class="line">            ++i; ++j;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            j = next[j];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (j == p.<span class="built_in">size</span>())</span><br><span class="line">        <span class="keyword">return</span> i - j;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="KMP之Next优化"><a href="#KMP之Next优化" class="headerlink" title="KMP之Next优化"></a>KMP之Next优化</h1><ul>
+<li>比如<code>[ A B A B ]</code>这个串，按照上面所述KMP得到的结果是<code>[-1, 0, 0, 1]</code>，然而，例如匹配的是<code>[ A B A B D E]</code>，在下标为<code>3</code>处失败了，<code>next</code>指导去下标<code>1</code>处继续匹配，但是，下标<code>1</code>和下标<code>3</code>都是<code>B</code>，没有必要再进行比较了。诸如此类的例子还有<code>[ A A A A B]</code>，用上述KMP得到的<code>next</code>是<code>[-1, 0, 1, 2, 3]</code></li>
+<li>方法就是在 <code>++i, ++j</code> 后加一步判断，本来直接 <code>next[i]=j</code> 但是如果 <code>p[i]==p[j]</code> 则如果以后匹配 <code>p[i]</code> 失败，则匹配 <code>p[j]</code> 肯定也失败啊，所以如果两者相等，直接 <code>next[i] = next[j]</code> 。此时的结果对于<code>[ A B A B ]</code>产生的是<code>[-1, 0, -1, 0]</code>；对于<code>[ A A A A B]</code>产生的是<code>[-1, -1, -1, -1, 3]</code></li>
+<li>加三行代码就行了</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">getNext</span><span class="params">(<span class="type">const</span> string&amp; p)</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> n = p.<span class="built_in">size</span>();</span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">next</span><span class="params">(n)</span></span>;</span><br><span class="line">    next[<span class="number">0</span>] = <span class="number">-1</span>;</span><br><span class="line">    <span class="type">int</span> i = <span class="number">0</span>, j = <span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">while</span> (i &lt; n - <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (j == <span class="number">-1</span> || p[i] == p[j]) &#123;</span><br><span class="line">            ++i, ++j;</span><br><span class="line">            <span class="keyword">if</span> (p[i] == p[j]) <span class="comment">// new </span></span><br><span class="line">                next[i] = next[j]; <span class="comment">// new </span></span><br><span class="line">            <span class="keyword">else</span> <span class="comment">// new</span></span><br><span class="line">                next[i] = j;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            j = next[j];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> next;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">KMP</span><span class="params">(<span class="type">const</span> string&amp; t, <span class="type">const</span> string&amp; p)</span> </span>&#123;</span><br><span class="line">    vector&lt;<span class="type">int</span>&gt; next = <span class="built_in">getNext</span>(p);</span><br><span class="line">    <span class="type">int</span> n = t.<span class="built_in">size</span>(), m = p.<span class="built_in">size</span>();</span><br><span class="line">    <span class="type">int</span> i = <span class="number">0</span>, j = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (i &lt; n &amp;&amp; j &lt; m) &#123;</span><br><span class="line">        <span class="keyword">if</span> (j == <span class="number">-1</span> || t[i] == p[j]) &#123;</span><br><span class="line">            ++i; ++j;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            j = next[j];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (j == p.<span class="built_in">size</span>())</span><br><span class="line">        <span class="keyword">return</span> i - j;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
+<li>博客园博主：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/dusf/p/kmp.html">sofu6</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%AE%97%E6%B3%95/" rel="tag"># 算法</a>
+              <a href="/tags/%E7%89%B9%E6%AE%8A/" rel="tag"># 特殊</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/04/05/%E8%AE%A1%E7%AE%97%E5%99%A8/" rel="prev" title="计算器">
+                  <i class="fa fa-angle-left"></i> 计算器
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/04/07/%E8%B7%AF%E5%BE%84%E6%90%9C%E7%B4%A2/" rel="next" title="路径搜索">
+                  路径搜索 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Lizq</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">42k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:31</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

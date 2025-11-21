@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 8.1.1">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="逆序对计算1 归并排序归并排序天然就可统计逆序对，在归并时有以下两种方式统计： 当左侧当前指针指向位置的数字CUR较小时，本轮将其加入归并后的数组，注意到右数组当前指针左边的都是小于CUR的，但是他们位置却在其右侧，所以逆序对贡献为l2-old_l2 123456if (a &lt;&#x3D; b) &#123; &#x2F;&#x2F; 这里包含等于 可以用全1数组模拟想想    trr[p++] &#x3D; arr[l1++];">
+<meta property="og:type" content="article">
+<meta property="og:title" content="逆序对">
+<meta property="og:url" content="http://example.com/2022/09/01/%E9%80%86%E5%BA%8F%E5%AF%B9/index.html">
+<meta property="og:site_name" content="Lizq的个人博客">
+<meta property="og:description" content="逆序对计算1 归并排序归并排序天然就可统计逆序对，在归并时有以下两种方式统计： 当左侧当前指针指向位置的数字CUR较小时，本轮将其加入归并后的数组，注意到右数组当前指针左边的都是小于CUR的，但是他们位置却在其右侧，所以逆序对贡献为l2-old_l2 123456if (a &lt;&#x3D; b) &#123; &#x2F;&#x2F; 这里包含等于 可以用全1数组模拟想想    trr[p++] &#x3D; arr[l1++];">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-09-01T06:53:56.000Z">
+<meta property="article:modified_time" content="2022-09-19T14:32:20.223Z">
+<meta property="article:author" content="Lizq">
+<meta property="article:tag" content="排序">
+<meta property="article:tag" content="树">
+<meta property="article:tag" content="特殊">
+<meta property="article:tag" content="算法">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2022/09/01/%E9%80%86%E5%BA%8F%E5%AF%B9/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/09/01/%E9%80%86%E5%BA%8F%E5%AF%B9/","path":"2022/09/01/逆序对/","title":"逆序对"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>逆序对 | Lizq的个人博客</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Lizq的个人博客</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%80%86%E5%BA%8F%E5%AF%B9%E8%AE%A1%E7%AE%97"><span class="nav-number">1.</span> <span class="nav-text">逆序对计算</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F"><span class="nav-number">1.1.</span> <span class="nav-text">1 归并排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E7%A6%BB%E6%95%A3%E5%8C%96-%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84"><span class="nav-number">1.2.</span> <span class="nav-text">2 离散化+树状数组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%8F%E8%AE%B0"><span class="nav-number">1.3.</span> <span class="nav-text">小记</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Lizq</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">48</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fkjkkll" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fkjkkll" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:lzq0225@qq.com" title="E-Mail → mailto:lzq0225@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/01/%E9%80%86%E5%BA%8F%E5%AF%B9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Lizq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="逆序对 | Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          逆序对
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-09-01 14:53:56" itemprop="dateCreated datePublished" datetime="2022-09-01T14:53:56+08:00">2022-09-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-09-19 22:32:20" itemprop="dateModified" datetime="2022-09-19T22:32:20+08:00">2022-09-19</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>968</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="逆序对计算"><a href="#逆序对计算" class="headerlink" title="逆序对计算"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/shu-zu-zhong-de-ni-xu-dui-lcof/">逆序对计算</a></h1><h2 id="1-归并排序"><a href="#1-归并排序" class="headerlink" title="1 归并排序"></a>1 归并排序</h2><p>归并排序天然就可统计逆序对，在归并时有以下两种方式统计：</p>
+<p>当左侧当前指针指向位置的数字CUR较小时，本轮将其加入归并后的数组，注意到右数组当前指针左边的都是小于CUR的，但是他们位置却在其右侧，所以逆序对贡献为<code>l2-old_l2</code></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (a &lt;= b) &#123; <span class="comment">// 这里包含等于 可以用全1数组模拟想想</span></span><br><span class="line">    trr[p++] = arr[l1++];</span><br><span class="line">    ret += (l2-old_l2);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> </span><br><span class="line">    trr[p++] = arr[l2++];</span><br></pre></td></tr></table></figure>
+<p>当右侧当前指针指向位置的数字CUR较小时，本轮将其加入归并后的数组，注意到左数组当前指针及其右边都是大于CUR的，但是他们的位置却在其左侧，所以逆序对的贡献为<code>old_l2 - l1</code></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (a &lt;= b)  <span class="comment">// 这里包含等于 可以用全1数组模拟想想</span></span><br><span class="line">    trr[p++] = arr[l1++];</span><br><span class="line"><span class="keyword">else</span> &#123;</span><br><span class="line">    trr[p++] = arr[l2++];</span><br><span class="line">    ret += (old_l2 - l1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>下面是完整代码</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="type">int</span> ret = <span class="number">0</span>;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">merge</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; arr, vector&lt;<span class="type">int</span>&gt;&amp; trr, <span class="type">int</span> l1, <span class="type">int</span> r1, <span class="type">int</span> l2, <span class="type">int</span> r2)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> l = l1, r = r2;</span><br><span class="line">        <span class="type">int</span> p = l1, old_l2 = l2;</span><br><span class="line">        <span class="keyword">while</span> (l1 &lt;= r1 || l2 &lt;= r2) &#123;</span><br><span class="line">            <span class="type">long</span> <span class="type">long</span> a = l1 &lt;= r1 ? arr[l1] : LLONG_MAX;</span><br><span class="line">            <span class="type">long</span> <span class="type">long</span> b = l2 &lt;= r2 ? arr[l2] : LLONG_MAX;</span><br><span class="line">            <span class="keyword">if</span> (a &lt;= b) &#123; <span class="comment">// !!!!! &lt;= 等于时也必须，不然右侧添加一堆等于的，再计算，结果肯定大了呀</span></span><br><span class="line">                trr[p++] = arr[l1++];</span><br><span class="line">                ret += (l2-old_l2); <span class="comment">// 只需要在这里加上这句，收集逆序对</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> </span><br><span class="line">                trr[p++] = arr[l2++];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = l; i &lt;= r; ++i)</span><br><span class="line">            arr[i] = trr[i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">core</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; arr, vector&lt;<span class="type">int</span>&gt;&amp; trr, <span class="type">int</span> l, <span class="type">int</span> r)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (l &gt;= r) <span class="keyword">return</span>;</span><br><span class="line">        <span class="type">int</span> m = (l + r) / <span class="number">2</span>;</span><br><span class="line">        <span class="built_in">core</span>(arr, trr, l, m);</span><br><span class="line">        <span class="built_in">core</span>(arr, trr, m + <span class="number">1</span>, r);</span><br><span class="line">        <span class="built_in">merge</span>(arr, trr, l, m, m + <span class="number">1</span>, r);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">reversePairs</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">trr</span><span class="params">(nums.size())</span></span>;</span><br><span class="line">        <span class="built_in">core</span>(nums, trr, <span class="number">0</span>, (<span class="type">int</span>)nums.<span class="built_in">size</span>() - <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">return</span> ret;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-离散化-树状数组"><a href="#2-离散化-树状数组" class="headerlink" title="2 离散化+树状数组"></a>2 离散化+树状数组</h2><p>树状数组可以非常方便进行区间统计和单点修改，对于原数组，我们从后往前遍历，依次将其加入树状数组（计数），并求其左侧（小于的）之前的所有已插入的数字的和，最终即可求得总的逆序对。然而，原数组的数值范围波动较大，不能直接用树状数组去记录，其间必有许多0表现出极大的稀疏性，因此需要对原数组进行离散化。所谓离散化，即将原数组映射到1~N的数据范围，让数据的范围全部聚集在一起，减少空间浪费，有利于树状数组发挥。因为在该问题中我们不关心数据的绝对大小，仅关心数据的相对大小，所以可以离散化。离散化需要借助偏向的二分查找进行。</p>
+<p>对于数组<code>[1,3,2,4,1]</code>，离散化后的结果是<code>1,4,3,5,1</code>，程序处理过程中树状数组的变化为（树状数组0位弃用）：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">对于原数组 [<span class="number">1</span>,<span class="number">4</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">1</span>]</span><br><span class="line">从后往前遍历 <span class="number">1</span>-&gt;<span class="number">5</span>-&gt;<span class="number">3</span>-&gt;<span class="number">4</span>-&gt;<span class="number">1</span></span><br><span class="line">X    [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>]   ret = <span class="number">0</span> 初始</span><br><span class="line"><span class="number">1</span>    [<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>]   ret = <span class="number">0</span></span><br><span class="line"><span class="number">5</span>    [<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>]   ret = <span class="number">1</span></span><br><span class="line"><span class="number">3</span>    [<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">1</span>]   ret = <span class="number">2</span></span><br><span class="line"><span class="number">4</span>    [<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">3</span>,<span class="number">1</span>]   ret = <span class="number">4</span></span><br><span class="line"><span class="number">1</span>    [<span class="number">0</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">4</span>,<span class="number">1</span>]   ret = <span class="number">4</span></span><br><span class="line">最终逆序对即为<span class="number">4</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 树状数组</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Trr</span> &#123;</span><br><span class="line">    vector&lt;<span class="type">int</span>&gt; trr;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">static</span> <span class="type">int</span> <span class="title">lowbit</span><span class="params">(<span class="type">int</span> a)</span> </span>&#123; <span class="keyword">return</span> a &amp; -a; &#125;</span><br><span class="line">    <span class="built_in">Trr</span>(<span class="type">const</span> vector&lt;<span class="type">int</span>&gt;&amp; arr) : <span class="built_in">trr</span>(arr.<span class="built_in">size</span>() + <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; arr.<span class="built_in">size</span>(); ++i) &#123;</span><br><span class="line">            <span class="type">int</span> t = i + <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">while</span> (t &lt; trr.<span class="built_in">size</span>()) &#123;</span><br><span class="line">                trr[t] += arr[i];</span><br><span class="line">                t += <span class="built_in">lowbit</span>(t);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">query</span><span class="params">(<span class="type">int</span> n)</span> </span>&#123; <span class="comment">// from 1</span></span><br><span class="line">        <span class="type">int</span> ret = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (n) &#123;</span><br><span class="line">            ret += trr[n];</span><br><span class="line">            n -= <span class="built_in">lowbit</span>(n);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ret;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">update</span><span class="params">(<span class="type">int</span> pos, <span class="type">int</span> diff)</span> </span>&#123; <span class="comment">// from 1</span></span><br><span class="line">        <span class="keyword">while</span> (pos &lt; trr.<span class="built_in">size</span>()) &#123;</span><br><span class="line">            trr[pos] += diff;</span><br><span class="line">            pos += <span class="built_in">lowbit</span>(pos);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">reversePairs</span><span class="params">(vector&lt;<span class="type">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 离散化(nlogn)</span></span><br><span class="line">        <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">tmp</span><span class="params">(nums)</span></span>;</span><br><span class="line">        <span class="built_in">sort</span>(tmp.<span class="built_in">begin</span>(), tmp.<span class="built_in">end</span>());</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">auto</span>&amp; e : nums)</span><br><span class="line">            e = <span class="built_in">lower_bound</span>(tmp.<span class="built_in">begin</span>(), tmp.<span class="built_in">end</span>(), e) - tmp.<span class="built_in">begin</span>() + <span class="number">1</span>;</span><br><span class="line">        <span class="comment">// 树状数组统计逆序对(nlogn)</span></span><br><span class="line">        <span class="function">Trr <span class="title">trr</span><span class="params">(vector&lt;<span class="type">int</span>&gt;(nums.size()))</span></span>; <span class="comment">// 初始化全0</span></span><br><span class="line">        <span class="type">int</span> ret = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = nums.<span class="built_in">size</span>() - <span class="number">1</span>; i &gt;= <span class="number">0</span>; --i) &#123;</span><br><span class="line">            trr.<span class="built_in">update</span>(nums[i], <span class="number">1</span>);</span><br><span class="line">            ret += trr.<span class="built_in">query</span>(nums[i] - <span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ret;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="小记"><a href="#小记" class="headerlink" title="小记"></a>小记</h2><ul>
+<li>已知的树状数组的两种用途<ul>
+<li>原数组的下标作为索引，进行区间统计和修改</li>
+<li>原数组的值作为下标，进行区间计数（本题）</li>
+</ul>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%AE%97%E6%B3%95/" rel="tag"># 算法</a>
+              <a href="/tags/%E7%89%B9%E6%AE%8A/" rel="tag"># 特殊</a>
+              <a href="/tags/%E6%A0%91/" rel="tag"># 树</a>
+              <a href="/tags/%E6%8E%92%E5%BA%8F/" rel="tag"># 排序</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/08/27/%E7%BA%BF%E6%AE%B5%E6%A0%91/" rel="prev" title="线段树">
+                  <i class="fa fa-angle-left"></i> 线段树
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/09/07/%E5%B8%A6%E9%99%90%E5%88%B6%E7%9A%84%E6%9C%80%E7%9F%AD%E8%B7%AF/" rel="next" title="带限制的最短路">
+                  带限制的最短路 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Lizq</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">42k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:31</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

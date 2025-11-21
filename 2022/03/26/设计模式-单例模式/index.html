@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 8.1.1">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="单例模式0、静态函数变量版本利用C++特性 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849template &lt;class T&gt;class SingleTon &#123;public:    static T&amp; GetInstance() &amp;#12">
+<meta property="og:type" content="article">
+<meta property="og:title" content="设计模式-单例模式">
+<meta property="og:url" content="http://example.com/2022/03/26/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/index.html">
+<meta property="og:site_name" content="Lizq的个人博客">
+<meta property="og:description" content="单例模式0、静态函数变量版本利用C++特性 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849template &lt;class T&gt;class SingleTon &#123;public:    static T&amp; GetInstance() &amp;#12">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-03-26T08:11:58.000Z">
+<meta property="article:modified_time" content="2022-09-16T06:54:01.568Z">
+<meta property="article:author" content="Lizq">
+<meta property="article:tag" content="设计模式">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2022/03/26/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/03/26/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/","path":"2022/03/26/设计模式-单例模式/","title":"设计模式-单例模式"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>设计模式-单例模式 | Lizq的个人博客</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Lizq的个人博客</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">单例模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#0%E3%80%81%E9%9D%99%E6%80%81%E5%87%BD%E6%95%B0%E5%8F%98%E9%87%8F%E7%89%88%E6%9C%AC"><span class="nav-number">1.1.</span> <span class="nav-text">0、静态函数变量版本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E6%99%AE%E9%80%9A%E7%89%88%E6%9C%AC%EF%BC%88%E9%AB%98%E5%B9%B6%E5%8F%91%E6%95%88%E7%8E%87%E4%B8%8D%E8%B6%B3%EF%BC%89%EF%BC%88%E5%AE%89%E5%85%A8%EF%BC%89"><span class="nav-number">1.2.</span> <span class="nav-text">1、普通版本（高并发效率不足）（安全）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81%E5%8F%8C%E6%A3%80%E6%9F%A5%E9%94%81%EF%BC%88%E6%9C%89%E9%9A%90%E6%82%A3%EF%BC%89"><span class="nav-number">1.3.</span> <span class="nav-text">2、双检查锁（有隐患）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81%E5%8F%8C%E6%A3%80%E6%9F%A5%E9%94%81%EF%BC%88%E5%AE%89%E5%85%A8%EF%BC%89"><span class="nav-number">1.4.</span> <span class="nav-text">3、双检查锁（安全）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">2.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Lizq</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">48</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fkjkkll" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fkjkkll" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:lzq0225@qq.com" title="E-Mail → mailto:lzq0225@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/26/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Lizq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="设计模式-单例模式 | Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          设计模式-单例模式
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-03-26 16:11:58" itemprop="dateCreated datePublished" datetime="2022-03-26T16:11:58+08:00">2022-03-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-09-16 14:54:01" itemprop="dateModified" datetime="2022-09-16T14:54:01+08:00">2022-09-16</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>743</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h2><h3 id="0、静态函数变量版本"><a href="#0、静态函数变量版本" class="headerlink" title="0、静态函数变量版本"></a>0、静态函数变量版本</h3><p>利用C++特性</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> <span class="title class_">T</span>&gt;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SingleTon</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">static</span> T&amp; <span class="title">GetInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="type">static</span> T ins;</span><br><span class="line">        <span class="keyword">return</span> ins;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">SingleTon</span>(<span class="type">const</span> SingleTon&amp;) = <span class="keyword">delete</span>;</span><br><span class="line">    SingleTon&amp; <span class="keyword">operator</span>=(<span class="type">const</span> SingleTon&amp;) = <span class="keyword">delete</span>;</span><br><span class="line">    <span class="keyword">virtual</span> ~<span class="built_in">SingleTon</span>() &#123;&#125;</span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">    <span class="built_in">SingleTon</span>() &#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Apple</span> : <span class="keyword">public</span> SingleTon&lt;Apple&gt; &#123;</span><br><span class="line">    <span class="keyword">friend</span> SingleTon&lt;Apple&gt;; <span class="comment">// 友元</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">show</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        cout &lt;&lt; __FUNCTION__ &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">    ~<span class="built_in">Apple</span>() &#123;</span><br><span class="line">        cout &lt;&lt; __FUNCTION__ &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">    <span class="built_in">Apple</span>() &#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Orange</span> : <span class="keyword">public</span> SingleTon&lt;Orange&gt; &#123;</span><br><span class="line">    <span class="keyword">friend</span> SingleTon&lt;Orange&gt;; <span class="comment">// 友元</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    ~<span class="built_in">Orange</span>() &#123;</span><br><span class="line">        cout &lt;&lt; __FUNCTION__ &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">show</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        cout &lt;&lt; __FUNCTION__ &lt;&lt; endl;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">    <span class="built_in">Orange</span>() &#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Apple::<span class="built_in">GetInstance</span>().<span class="built_in">show</span>();</span><br><span class="line">    cout &lt;&lt; &amp;Apple::<span class="built_in">GetInstance</span>() &lt;&lt; endl;</span><br><span class="line">    Apple::<span class="built_in">GetInstance</span>().<span class="built_in">show</span>();</span><br><span class="line">    cout &lt;&lt; &amp;Apple::<span class="built_in">GetInstance</span>() &lt;&lt; endl;</span><br><span class="line">    Orange::<span class="built_in">GetInstance</span>().<span class="built_in">show</span>();</span><br><span class="line">    Orange::<span class="built_in">GetInstance</span>().<span class="built_in">show</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="1、普通版本（高并发效率不足）（安全）"><a href="#1、普通版本（高并发效率不足）（安全）" class="headerlink" title="1、普通版本（高并发效率不足）（安全）"></a>1、普通版本（高并发效率不足）（安全）</h3><ul>
+<li>在类中添加一个私有静态成员单例实例的指针。</li>
+<li>声明一个公有静态构建方法用于获取单例实例的指针。</li>
+<li>在静态方法中实现”延迟初始化”。 该方法会在首次被调用时创建一个新对象， 并将其存储在静态成员变量中。 此后该方法每次被调用时都返回该实例。</li>
+<li>将类的构造函数设为私有。 类的静态方法仍能调用构造函数， 但是其他对象不能调用。</li>
+<li>检查客户端代码， 将对单例的构造函数的调用替换为对其静态构建方法的调用。</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Singleton</span> &#123;</span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">	<span class="built_in">Singleton</span>(<span class="type">const</span> string&amp; val) : <span class="built_in">data</span>(val) &#123;&#125; <span class="comment">// 构造函数</span></span><br><span class="line">	~<span class="built_in">Singleton</span>() &#123;&#125;</span><br><span class="line">	<span class="type">static</span> Singleton* _instance; <span class="comment">// 静态：实例的指针</span></span><br><span class="line">	<span class="type">static</span> mutex _mutex;</span><br><span class="line">	string data; <span class="comment">// 代表类内的资源</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="built_in">Singleton</span>(<span class="type">const</span> Singleton&amp; another) = <span class="keyword">delete</span>; <span class="comment">// 禁止拷贝构造</span></span><br><span class="line">	Singleton&amp; <span class="keyword">operator</span>=(<span class="type">const</span> Singleton&amp; another) = <span class="keyword">delete</span>; <span class="comment">// 禁止赋值</span></span><br><span class="line">	<span class="function"><span class="type">static</span> Singleton* <span class="title">getInstance</span><span class="params">(<span class="type">const</span> string&amp; val)</span></span>; <span class="comment">// 静态：获取实例</span></span><br><span class="line">	<span class="function"><span class="type">void</span> <span class="title">show</span><span class="params">()</span> </span>&#123; cout &lt;&lt; <span class="string">&quot;data: &quot;</span> &lt;&lt; data &lt;&lt; endl; &#125; <span class="comment">// 测试</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 静态成员需要在类外定义</span></span><br><span class="line">Singleton* Singleton::_instance = <span class="literal">nullptr</span>;</span><br><span class="line">mutex Singleton::_mutex;</span><br><span class="line"></span><br><span class="line"><span class="function">Singleton* <span class="title">Singleton::getInstance</span><span class="params">(<span class="type">const</span> string&amp; val)</span> </span>&#123;</span><br><span class="line">	<span class="function">lock_guard&lt;mutex&gt; <span class="title">lock</span><span class="params">(_mutex)</span></span>; <span class="comment">// 出作用域自动释放</span></span><br><span class="line">	<span class="keyword">if</span> (_instance == <span class="literal">nullptr</span>) &#123;</span><br><span class="line">		_instance = <span class="keyword">new</span> <span class="built_in">Singleton</span>(val);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> _instance;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	Singleton* a = Singleton::<span class="built_in">getInstance</span>(<span class="string">&quot;aaa&quot;</span>);</span><br><span class="line">	a-&gt;<span class="built_in">show</span>(); <span class="comment">// &quot;aaa&quot; ok</span></span><br><span class="line">	Singleton* b = Singleton::<span class="built_in">getInstance</span>(<span class="string">&quot;bbb&quot;</span>);</span><br><span class="line">	b-&gt;<span class="built_in">show</span>(); <span class="comment">// &quot;aaa&quot; ok</span></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2、双检查锁（有隐患）"><a href="#2、双检查锁（有隐患）" class="headerlink" title="2、双检查锁（有隐患）"></a>2、双检查锁（有隐患）</h3><p>reorder问题：通常new通常有三步：1、分配一块内存空间；2、执行构造器；3、返回指针；<br>但是由于编译器有时会进行优化，执行顺序变为132：即分配空间后先返回指针，再执行构造器<br>这样就会到来危险，比如线程A执行new，132，3执行完；线程B发现m_instance非空返回，然后外部直接用这个指针会出错</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//双检查锁，但由于内存读写reorder不安全（不安全）</span></span><br><span class="line"><span class="function">Singleton* <span class="title">Singleton::getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(m_instance==<span class="literal">nullptr</span>)&#123; <span class="comment">// 第一次检查，主要解决性能问题，毕竟读操作不需要上锁</span></span><br><span class="line">        Lock lock;</span><br><span class="line">        <span class="keyword">if</span> (m_instance == <span class="literal">nullptr</span>) &#123; <span class="comment">// 第二次检查，解决核心问题：只能new单个</span></span><br><span class="line">            m_instance = <span class="keyword">new</span> <span class="built_in">Singleton</span>();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> m_instance;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3、双检查锁（安全）"><a href="#3、双检查锁（安全）" class="headerlink" title="3、双检查锁（安全）"></a>3、双检查锁（安全）</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//C++ 11版本之后的跨平台实现 (volatile)（安全）</span></span><br><span class="line">std::atomic&lt;Singleton*&gt; Singleton::m_instance;</span><br><span class="line">std::mutex Singleton::m_mutex;</span><br><span class="line"></span><br><span class="line"><span class="function">Singleton* <span class="title">Singleton::getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Singleton* tmp = m_instance.<span class="built_in">load</span>(std::memory_order_relaxed);</span><br><span class="line">    std::<span class="built_in">atomic_thread_fence</span>(std::memory_order_acquire); <span class="comment">// 获取内存fence</span></span><br><span class="line">    <span class="keyword">if</span> (tmp == <span class="literal">nullptr</span>) &#123;</span><br><span class="line">        <span class="function">std::lock_guard&lt;std::mutex&gt; <span class="title">lock</span><span class="params">(m_mutex)</span></span>;</span><br><span class="line">        tmp = m_instance.<span class="built_in">load</span>(std::memory_order_relaxed);</span><br><span class="line">        <span class="keyword">if</span> (tmp == <span class="literal">nullptr</span>) &#123;</span><br><span class="line">            tmp = <span class="keyword">new</span> Singleton;</span><br><span class="line">            std::<span class="built_in">atomic_thread_fence</span>(std::memory_order_release); <span class="comment">// 释放内存fence</span></span><br><span class="line">            m_instance.<span class="built_in">store</span>(tmp, std::memory_order_relaxed);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> tmp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://refactoringguru.cn/design-patterns/catalog">Refactoring.Guru</a></li>
+<li>李建忠设计模式</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/jaredtao/DesignPattern">C++ 23种设计模式</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag"># 设计模式</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/03/24/%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/" rel="prev" title="线程安全智能指针">
+                  <i class="fa fa-angle-left"></i> 线程安全智能指针
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/03/27/Set%E3%80%81Map%E3%80%81Unordered/" rel="next" title="Set、Map、Unordered">
+                  Set、Map、Unordered <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Lizq</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">42k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:31</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

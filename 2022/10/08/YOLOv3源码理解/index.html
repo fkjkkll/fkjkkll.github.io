@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 8.1.1">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="0 主干网络YOLOv3采用DarkNet-53网络，结构如下图（DarkNet-53预训练于ImageNet，由于是1000类的分类，所以网络最后输出经过全连接层。但是目标检测不需要那个全连接层，因此实际上只使用了“DarkNet-52”，共52层卷积层）：   BN为批归一化层，Acti为激活函数，YOLOv3采用LeakyReLU 输入批次经过一个3X3卷积改变通道数为32，然后经过5个降残">
+<meta property="og:type" content="article">
+<meta property="og:title" content="YOLOv3源码理解">
+<meta property="og:url" content="http://example.com/2022/10/08/YOLOv3%E6%BA%90%E7%A0%81%E7%90%86%E8%A7%A3/index.html">
+<meta property="og:site_name" content="Lizq的个人博客">
+<meta property="og:description" content="0 主干网络YOLOv3采用DarkNet-53网络，结构如下图（DarkNet-53预训练于ImageNet，由于是1000类的分类，所以网络最后输出经过全连接层。但是目标检测不需要那个全连接层，因此实际上只使用了“DarkNet-52”，共52层卷积层）：   BN为批归一化层，Acti为激活函数，YOLOv3采用LeakyReLU 输入批次经过一个3X3卷积改变通道数为32，然后经过5个降残">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/fkjkkll/OnlineSource/master/Image/object%20detection/YOLOv3_Backbone.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/fkjkkll/OnlineSource/master/Image/object%20detection/YOLOv3_Branch.png">
+<meta property="article:published_time" content="2022-10-08T11:31:54.000Z">
+<meta property="article:modified_time" content="2022-10-08T12:34:32.621Z">
+<meta property="article:author" content="Lizq">
+<meta property="article:tag" content="目标检测">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/fkjkkll/OnlineSource/master/Image/object%20detection/YOLOv3_Backbone.jpg">
+
+
+<link rel="canonical" href="http://example.com/2022/10/08/YOLOv3%E6%BA%90%E7%A0%81%E7%90%86%E8%A7%A3/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/10/08/YOLOv3%E6%BA%90%E7%A0%81%E7%90%86%E8%A7%A3/","path":"2022/10/08/YOLOv3源码理解/","title":"YOLOv3源码理解"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>YOLOv3源码理解 | Lizq的个人博客</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Lizq的个人博客</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0-%E4%B8%BB%E5%B9%B2%E7%BD%91%E7%BB%9C"><span class="nav-number">1.</span> <span class="nav-text">0 主干网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E9%A2%84%E6%B5%8B%E5%88%86%E6%94%AF%E7%BD%91%E7%BB%9C"><span class="nav-number">2.</span> <span class="nav-text">1 预测分支网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E6%95%B0%E6%8D%AE%E5%8A%A0%E8%BD%BD"><span class="nav-number">3.</span> <span class="nav-text">2 数据加载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E8%AE%AD%E7%BB%83%E7%BD%91%E7%BB%9C"><span class="nav-number">4.</span> <span class="nav-text">3 训练网络</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E8%BE%93%E5%87%BA%E5%B1%82%E7%9A%84%E8%A7%A3%E7%A0%81"><span class="nav-number">4.1.</span> <span class="nav-text">3.1 输出层的解码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-%E6%AD%A3%E8%B4%9F%E6%A0%B7%E6%9C%AC"><span class="nav-number">4.2.</span> <span class="nav-text">3.2 正负样本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0%E8%AE%A1%E7%AE%97"><span class="nav-number">4.3.</span> <span class="nav-text">3.3 损失函数计算</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E9%A2%84%E6%B5%8B%E7%BD%91%E7%BB%9C"><span class="nav-number">5.</span> <span class="nav-text">4 预测网络</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Lizq</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">48</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fkjkkll" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fkjkkll" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:lzq0225@qq.com" title="E-Mail → mailto:lzq0225@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/10/08/YOLOv3%E6%BA%90%E7%A0%81%E7%90%86%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Lizq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="YOLOv3源码理解 | Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          YOLOv3源码理解
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-10-08 19:31:54 / 修改时间：20:34:32" itemprop="dateCreated datePublished" datetime="2022-10-08T19:31:54+08:00">2022-10-08</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="0-主干网络"><a href="#0-主干网络" class="headerlink" title="0 主干网络"></a>0 主干网络</h2><p>YOLOv3采用DarkNet-53网络，结构如下图（DarkNet-53预训练于ImageNet，由于是1000类的分类，所以网络最后输出经过全连接层。但是目标检测不需要那个全连接层，因此实际上只使用了“DarkNet-52”，共52层卷积层）：</p>
+<p><img src="https://raw.githubusercontent.com/fkjkkll/OnlineSource/master/Image/object%20detection/YOLOv3_Backbone.jpg" alt="YOLOv3 Backbone"></p>
+<ul>
+<li>BN为批归一化层，Acti为激活函数，YOLOv3采用LeakyReLU</li>
+<li>输入批次经过一个3X3卷积改变通道数为32，然后经过5个降残差块。每个降残差块包含一次步幅为2的3X3卷积加上一系列残差块。每个残差块包含一次1X1卷积降低通道数，再经过一次3X3卷积提升通道数，最后和残差边进行连接。</li>
+<li>整体主干网络清晰，每经过一个降残差块，通道数翻倍，特征图宽高减半。</li>
+</ul>
+<h2 id="1-预测分支网络"><a href="#1-预测分支网络" class="headerlink" title="1 预测分支网络"></a>1 预测分支网络</h2><p>下图是YOLOv3的预测分支网络部分，是一个典型的特征金字塔结构。最后的输出通道75是假设采用VOC数据集进行20个类别的检测，因此输出的75代表<code>3*(4+1+20)</code>，3代表每个特征点3个先验框；4代表先验框x、y的偏移量以及宽高的伸缩量；1代表该先验框包含目标的置信度；20代表该数据集类别个数。</p>
+<p><img src="https://raw.githubusercontent.com/fkjkkll/OnlineSource/master/Image/object%20detection/YOLOv3_Branch.png" alt="YOLOv3 Branch"></p>
+<h2 id="2-数据加载"><a href="#2-数据加载" class="headerlink" title="2 数据加载"></a>2 数据加载</h2><ul>
+<li>图片会被进行各种图像增强、添加灰条等操作，最终大小为<code>(416，416)</code>，值归一化到<code>0~1</code>，形状为<code>(B, 3, 416, 416)</code></li>
+<li>标签会被归一化<code>0~1</code>（从数据集<code>[左上右下]</code>转换为<code>[中心宽高]</code>），形状为<code>list[(GT, 4)...B个]</code></li>
+</ul>
+<h2 id="3-训练网络"><a href="#3-训练网络" class="headerlink" title="3 训练网络"></a>3 训练网络</h2><ul>
+<li>网络前向传播会获得一个包含三元素的元组：<code>((bs,75,13,13),(bs,75,26,26),(bs,75,52,52))</code>，代表网络三个层的输出</li>
+<li>依次计算每个层的损失，相加之后进行反向传播</li>
+</ul>
+<h3 id="3-1-输出层的解码"><a href="#3-1-输出层的解码" class="headerlink" title="3.1 输出层的解码"></a>3.1 输出层的解码</h3><p>以<code>(bs,75,13,13)</code>为例，<code>view</code>到<code>(bs,3,13,13,25)</code>，随后通过其中包含的信息结合给该层分配的三个先验框的宽高，可以得到预测框的结果。</p>
+<ul>
+<li><code>(..., 0:2)</code>执行<code>sigmoid</code>获得该层先验框的偏移</li>
+<li><code>(..., 2:4)</code>不执行任何操作，之后用于宽高的缩放</li>
+<li><code>(..., 4)</code>执行<code>sigmoid</code>获得包含物体的置信度</li>
+<li><code>(..., 5:)</code>执行<code>sigmoid</code>获得被认为是每个类别的概率</li>
+</ul>
+<h3 id="3-2-正负样本"><a href="#3-2-正负样本" class="headerlink" title="3.2 正负样本"></a>3.2 正负样本</h3><ul>
+<li>批次里的每个图片都会单独循环处理：将这些真实框与9个先验框做IOU，从而确定每个真实框由哪个大小的先验框负责。确认后，再根据真实框的中心位置，确认属于哪个特征点负责，最终即可确认由哪一个先验框（确定了哪一层）的哪个特征图（该层的哪个格子）负责，正样本既定。</li>
+<li>按理说，其他未分配真实框的预测框都是负样本，有<code>(13*13+26*26+52*52)*3 - 9 = 10647 - 9 = 10638</code>个负样本。但是作者考虑到，某些本不负责预测目标框的预测框，如果其IOU与该目标比较重合（例如大于0.5），则不能将其作为负样本，应该忽略之。因此实际的负样本应该是小于该值的。</li>
+</ul>
+<h3 id="3-3-损失函数计算"><a href="#3-3-损失函数计算" class="headerlink" title="3.3 损失函数计算"></a>3.3 损失函数计算</h3><ul>
+<li>YOLOv3包含三个损失：边框回归损失、目标置信度损失、类别损失</li>
+<li>对于正样本，三项损失都要计算：<ul>
+<li>其中边框回归损失可以采用<code>MSELoss</code>、<code>BCELoss</code>、或者各类的<code>IOU损失</code>，例如<code>DIOU, GIOU, CIOU</code></li>
+<li>目标置信度损失直接采用<code>BCELoss</code>，可以选择和<code>Focal Loss</code>形式结合</li>
+<li>类别损失直接采用<code>BCELoss</code></li>
+</ul>
+</li>
+<li>对于负样本，只计算目标置信度损失，直接采用<code>BCELoss</code>，可以选择和<code>Focal Loss</code>形式结合。注意，当选择<code>Focal Loss</code>形式时，该项损失的权重系数要重新配置，一般要增大很多。而且训练结束后的预测的<code>置信度*类别</code>可能会降低，因为只学习难的，简单易判的往往损失权值极地，基本不学习，导致这种现象产生。</li>
+</ul>
+<h2 id="4-预测网络"><a href="#4-预测网络" class="headerlink" title="4 预测网络"></a>4 预测网络</h2><ul>
+<li>转RGB、调整形状、添加灰条（可选）、归一化0~1、添加批次通道，最终形状：<code>(1,3,416,416)</code></li>
+<li>送入网络得到结果，一个包含三元素的元组：<code>((1,75,13,13),(1,75,26,26),(1,75,52,52))</code></li>
+<li>将结果解码：根据预测结果和先验框宽高，得到一个包含三元素的列表：<code>[(1, 3*13*13, 25), (1, 3*26*26, 25), (1, 3*52*52, 25)]</code>，最终合并为单个张量：<code>(1, 10647, 25)</code>。其中的值都被归一化为0~1了</li>
+<li>将数据转换为<code>(10647, 7)</code>代表<code>xmin, ymin, xmax, ymax, conf, class_conf, class_pred</code>，按照<code>(..., 4)*(..., 5) &gt; threshold</code>获得保留的预测框</li>
+<li>按照每个类别，分别执行非极大值抑制，最后收集保留的这些预测框</li>
+<li>将预测框按照之前图像预处理，进行反向操作（其中为方便操作，将之前的7属性的坐标部分进行颠倒，现在为<code>ymin, xmin, ymax, xmax, conf, class_conf, class_pred</code>），可以理解为<code>top, left, bottom, right</code></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/" rel="tag"># 目标检测</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/09/23/C%E4%B8%8ECPP%E4%BA%92%E7%9B%B8%E8%B0%83%E7%94%A8/" rel="prev" title="C与CPP互相调用">
+                  <i class="fa fa-angle-left"></i> C与CPP互相调用
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/10/20/YOLOv4-v5-X%E7%90%86%E8%A7%A3/" rel="next" title="YOLOv4,v5,X理解">
+                  YOLOv4,v5,X理解 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Lizq</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">42k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:31</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>
