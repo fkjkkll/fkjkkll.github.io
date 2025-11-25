@@ -28,7 +28,7 @@
 <meta property="og:description" content="AVL介绍平衡二叉树(BST, Balanced Binary Tree又称AVL Tree)是自平衡的二叉搜索树(BST, Binary Search Tree)，二叉搜索树的问题是，如果插入顺序是有序的，会导致树退化为线性结构，查询的复杂度退化为$O(N)$。 定义首先介绍平衡因子(BF, Balance Factor)：$BF(T) &#x3D; h_L - h_R$，其中$h_L$和$h_">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-11-25T07:03:43.000Z">
-<meta property="article:modified_time" content="2025-11-25T07:57:05.512Z">
+<meta property="article:modified_time" content="2025-11-25T08:02:49.750Z">
 <meta property="article:author" content="Lizq">
 <meta property="article:tag" content="C#">
 <meta property="article:tag" content="树">
@@ -250,7 +250,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2025-11-25 15:03:43 / 修改时间：15:57:05" itemprop="dateCreated datePublished" datetime="2025-11-25T15:03:43+08:00">2025-11-25</time>
+      <time title="创建时间：2025-11-25 15:03:43 / 修改时间：16:02:49" itemprop="dateCreated datePublished" datetime="2025-11-25T15:03:43+08:00">2025-11-25</time>
     </span>
 
   
@@ -285,7 +285,7 @@
 </ul>
 <h4 id="插入"><a href="#插入" class="headerlink" title="插入"></a>插入</h4><ul>
 <li>普通BST插入后，判断平衡因子，可以得到“偏斜”出现在左右哪个子孩子，再判断那个子孩子的平衡因子，即可得知导致不平衡的节点的具体相对位置。根据相对位置的分类，可以分为：LL、RR、LR、RL。</li>
-<li>当插入一个节点导致整个树多个节点发现不平衡时，<strong>只处理最靠近插入节点的不平衡节点</strong>，即可解决其他节点的不平衡问题，这一点通过递归来实现时，</li>
+<li>当插入一个节点导致整个树多个节点发现不平衡时，<strong>只处理最靠近插入节点的不平衡节点</strong>，即可解决其他节点的不平衡问题，这一点通过递归来实现时是默认满足的</li>
 </ul>
 <h4 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h4><ul>
 <li>普通BST删除后，判断平衡因子，判断逻辑同插入，但是需要明确的一点是，删除操作时，某个发现不平衡的节点$T$的某侧”偏斜”孩子的平衡因子可能是0（只有删除才会有这个情况出现），此时也是需要进行旋转调整。如果它是左孩子，则LL、LR都可以（简单起见用LL）；如果它是右孩子，则RR、RL都可以（简单起见用RR）。</li>
