@@ -22,20 +22,20 @@
 
     <meta property="og:type" content="website">
 <meta property="og:title" content="Lizq的个人博客">
-<meta property="og:url" content="http://example.com/tags/%E5%9B%BE/index.html">
+<meta property="og:url" content="http://example.com/page/6/index.html">
 <meta property="og:site_name" content="Lizq的个人博客">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:author" content="Lizq">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="http://example.com/tags/%E5%9B%BE/">
+<link rel="canonical" href="http://example.com/page/6/">
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":false,"lang":"zh-CN","comments":"","permalink":"","path":"tags/图/index.html","title":""}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":true,"isPost":false,"lang":"zh-CN","comments":"","permalink":"","path":"page/6/index.html","title":""}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>标签: 图 | Lizq的个人博客</title>
+<title>Lizq的个人博客</title>
   
 
 
@@ -93,7 +93,7 @@
 
     <a href="/" class="brand" rel="start">
       <i class="logo-line"></i>
-      <p class="site-title">Lizq的个人博客</p>
+      <h1 class="site-title">Lizq的个人博客</h1>
       <i class="logo-line"></i>
     </a>
   </div>
@@ -201,90 +201,114 @@
 
     </div>
 
-    <div class="main-inner tag posts-collapse">
+    <div class="main-inner index posts-expand">
+
+    
 
 
+<div class="post-block">
   
   
-  
-  <div class="post-block">
-    <div class="post-content">
-      <div class="collection-title">
-        <h1 class="collection-header">图
-          <small>标签</small>
-        </h1>
-      </div>
 
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/24/Bitcpy/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Lizq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/06/24/Bitcpy/" class="post-title-link" itemprop="url">Bitcpy</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-06-24 20:17:20" itemprop="dateCreated datePublished" datetime="2021-06-24T20:17:20+08:00">2021-06-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-08-30 20:09:37" itemprop="dateModified" datetime="2022-08-30T20:09:37+08:00">2022-08-30</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>571</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <blockquote>
+<p><strong>两种bitcpy的实现方式</strong></p>
+</blockquote>
+<h3 id="1-显示数据bits"><a href="#1-显示数据bits" class="headerlink" title="1. 显示数据bits"></a>1. 显示数据bits</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> HALF_WORD   uint16_t</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> WORD        uint32_t</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">showBits</span><span class="params">(<span class="type">void</span>* d, <span class="type">int</span> len)</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> bytes = len / <span class="number">8</span>;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">char</span>* p = (<span class="type">unsigned</span> <span class="type">char</span>*)d;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; bytes; i++) &#123;</span><br><span class="line">        <span class="type">unsigned</span> <span class="type">char</span> tmp = <span class="number">0x80</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">0</span>; j &lt; <span class="number">8</span>; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (tmp &amp; *p)</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">&quot;1&quot;</span>);</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">&quot;0&quot;</span>);</span><br><span class="line">            tmp &gt;&gt;= <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot; &quot;</span>);</span><br><span class="line">        ++p;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-bitcpy-算术方式"><a href="#2-bitcpy-算术方式" class="headerlink" title="2. bitcpy 算术方式"></a>2. bitcpy 算术方式</h3><p><strong>拷贝方式是从单个字节的低位开始拷贝，进位式拷贝。</strong></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/06/24/Bitcpy/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
-    <div class="collection-year">
-      <span class="collection-header">2022</span>
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2022-09-12T14:51:30+08:00"
-              content="2022-09-12">
-          09-12
-        </time>
-      </div>
+    
+    
+    
 
-      <div class="post-title">
-          <a class="post-title-link" href="/2022/09/12/%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8F%E5%92%8C%E4%BA%8C%E5%88%86%E5%9B%BE/" itemprop="url">
-            <span itemprop="name">拓扑排序和二分图</span>
-          </a>
-      </div>
-
+    <footer class="post-footer">
+        <div class="post-eof"></div>
       
-    </header>
+    </footer>
   </article>
+</div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2022-09-07T14:37:30+08:00"
-              content="2022-09-07">
-          09-07
-        </time>
-      </div>
 
-      <div class="post-title">
-          <a class="post-title-link" href="/2022/09/07/%E5%B8%A6%E9%99%90%E5%88%B6%E7%9A%84%E6%9C%80%E7%9F%AD%E8%B7%AF/" itemprop="url">
-            <span itemprop="name">带限制的最短路</span>
-          </a>
-      </div>
 
-      
-    </header>
-  </article>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2022-04-07T09:00:51+08:00"
-              content="2022-04-07">
-          04-07
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2022/04/07/%E8%B7%AF%E5%BE%84%E6%90%9C%E7%B4%A2/" itemprop="url">
-            <span itemprop="name">路径搜索</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-    </div>
-  </div>
-  
-  
-  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/page/5/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span>
+  </nav>
 
 </div>
   </main>

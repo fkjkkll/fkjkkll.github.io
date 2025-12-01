@@ -171,7 +171,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-count">51</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -385,6 +385,110 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2025/11/25/AVL%E6%A0%91%E5%AE%9E%E7%8E%B0/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/10/07/%E8%B7%B3%E8%B7%83%E8%A1%A8%E7%BB%93%E5%90%88%E5%AD%97%E5%85%B8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Lizq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/10/07/%E8%B7%B3%E8%B7%83%E8%A1%A8%E7%BB%93%E5%90%88%E5%AD%97%E5%85%B8/" class="post-title-link" itemprop="url">Easy SortedSet</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-10-07 16:22:56" itemprop="dateCreated datePublished" datetime="2025-10-07T16:22:56+08:00">2025-10-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-12-01 18:25:05" itemprop="dateModified" datetime="2025-12-01T18:25:05+08:00">2025-12-01</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>8 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>我们有一堆数据，希望能够支持快速的插入、删除、查询以及范围查询<br>我们都知道数组进行排序后，可以通过二分查找的方式快速定位数据，时间复杂度是$O(LogN)$，但是如果数组经常发生插入、删除操作，就需要进行大量平移，时间复杂度是$O(N)$。<br>那用平衡树呢？AVL树、红黑树都是经过深度优化的动态数据结构，他们的插入删除查找都可以在$O(LogN)$的时间内完成，但是他们实现起来较为复杂，且对于范围查询，还需要进行中序遍历，但至少比数组好多了。<br>那链表呢，链表的插入删除是很方便，但关键查询呢，它能进行二分查找吗？链表无法随机访问，怎么二分？很显然，直接对普通链表进行二分查找是困难的。1990年，Pugh发表论文《Skip Lists: A Probabilistic Alternative to Balanced Trees》，创造性的提出了自己的解决方案：”如果不能在节点间跳跃，那就建造可以跳跃的桥梁吧！”，跳跃表（SkipList）正式被提出。<br>跳跃表是一种概率性的有序数据结构，通过建立多级索引来加速查找，可以看作是在链表基础上加了“快速通道”，变相了实现对链表的二分查找，并且，范围查找也能够很轻易的完成，只要找到目标，就可以沿着链条依次访问。<br>游戏里排行榜一般是采用Redis Sorted Set，它在数据规模较大时的底层数据结构就是跳跃表+哈希表。</p>
+<ul>
+<li>跳跃表：天然支持有序插入、删除和范围查询，时间复杂度O(log n)</li>
+<li>哈希表：用于快速查找特定用户的当前位置和分数（O(1)）</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/fkjkkll/OnlineSource/refs/heads/master/Image/algorithm/SortedSet.png" alt="示意图">跳跃表的每个节点拥有一个前序指针和多层后继指针。每层后继指针都独立成链，每个节点在插入时，都会按照概率分配给它多少层后继指针（至少一层）。类似抛硬币，落到正面，就给它加一层后继指针，然后继续抛硬币；落到反面就结束。当然，硬币正面的概率不一定是50%（实际有论文提出，包括业内经验来看，25%的概率是对性能和内存占用权衡后的得到的较优选择）。实际上，作者最初考虑过确定性跳表，即第0层是全连接，第1层是隔1个连接，第2层是隔3个连接…但是这样会导致插入和删除需要进行大量调整，复杂度变高，从而引入随机性，不仅简化了插入和删除的操作，并且统计上仍然是接近二分的结构。</p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2025/10/07/%E8%B7%B3%E8%B7%83%E8%A1%A8%E7%BB%93%E5%90%88%E5%AD%97%E5%85%B8/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1113,120 +1217,8 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/27/%E7%BA%BF%E6%AE%B5%E6%A0%91/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Lizq">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Lizq的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | Lizq的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/08/27/%E7%BA%BF%E6%AE%B5%E6%A0%91/" class="post-title-link" itemprop="url">线段树</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-08-27 15:46:58" itemprop="dateCreated datePublished" datetime="2022-08-27T15:46:58+08:00">2022-08-27</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-09-19 22:20:00" itemprop="dateModified" datetime="2022-09-19T22:20:00+08:00">2022-09-19</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.1k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>4 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><ul>
-<li>数组区间内经常发生修改，但是又要频繁求得区间的各类统计信息例如最大值、最小值、区间和等等。</li>
-<li>对于一个数组频繁求区间和和修改的情况下：<ul>
-<li>普通操作：修改：O(1)；区间和：O(n)</li>
-<li>前缀和：修改：O(n)；区间和：O(1)</li>
-<li>线段树：修改：O(nlogn)；区间和：O(nlogn)</li>
-</ul>
-</li>
-</ul>
-<h2 id="线段树"><a href="#线段树" class="headerlink" title="线段树"></a>线段树</h2><ul>
-<li>将数组以二分的形式建成一棵二叉树，叶子节点为数组的值，非叶子节点保存相应的统计信息。这棵树近似完全二叉树的结构，所以可以用数组来构建</li>
-<li>下面所列举的代码只需要改变给<code>tree[node]</code>赋值相关代码即可实现求最大值、最小值、区间和，肥肠方便</li>
-<li><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/range-sum-query-mutable/">307. 区域和检索 - 数组可修改</a></li>
-</ul>
-<h2 id="1、数组版"><a href="#1、数组版" class="headerlink" title="1、数组版"></a>1、数组版</h2>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/08/27/%E7%BA%BF%E6%AE%B5%E6%A0%91/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 </div>
@@ -1248,13 +1240,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">50k</span>
+    <span title="站点总字数">53k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">3:03</span>
+    <span title="站点阅读时长">3:12</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动

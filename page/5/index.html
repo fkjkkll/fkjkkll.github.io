@@ -171,7 +171,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-count">51</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -202,6 +202,106 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/19/%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9B%B8%E4%B9%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Lizq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/03/19/%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9B%B8%E4%B9%98/" class="post-title-link" itemprop="url">字符串相乘</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-03-19 16:35:07" itemprop="dateCreated datePublished" datetime="2022-03-19T16:35:07+08:00">2022-03-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-09-07 14:45:00" itemprop="dateModified" datetime="2022-09-07T14:45:00+08:00">2022-09-07</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>472</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="43-字符串相乘"><a href="#43-字符串相乘" class="headerlink" title="43 字符串相乘"></a>43 <a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/multiply-strings/">字符串相乘</a></h1><p><em>两数A位和B位，相加后位数最大为<code>max(A, B)+1</code>；相乘后最大位数为<code>A+B</code></em></p>
+<h3 id="1-1-常规法"><a href="#1-1-常规法" class="headerlink" title="1.1 常规法"></a>1.1 常规法</h3><p>将两个串的指针位置<code>m</code>和<code>n</code>、进位<code>c</code>统一放入while循环，代码就会很<strong>优美</strong>。 代码可以继续优化速度存储：addtion函数改为原地相加，但是会破坏代码的逻辑性，就不改了。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function">string <span class="title">addtion</span><span class="params">(string&amp; num1, string&amp; num2)</span></span>&#123;</span><br><span class="line">        <span class="type">int</span> m = num<span class="number">1.</span><span class="built_in">size</span>()<span class="number">-1</span>, n = num<span class="number">2.</span><span class="built_in">size</span>()<span class="number">-1</span>;</span><br><span class="line">        <span class="type">int</span> c = <span class="number">0</span>;</span><br><span class="line">        string ret;</span><br><span class="line">        <span class="keyword">while</span>(m&gt;=<span class="number">0</span> || n&gt;=<span class="number">0</span> || c)&#123;</span><br><span class="line">            <span class="type">int</span> a = m&gt;=<span class="number">0</span> ? num1[m]-<span class="string">&#x27;0&#x27;</span> : <span class="number">0</span>; <span class="comment">// 越界定0技巧</span></span><br><span class="line">            <span class="type">int</span> b = n&gt;=<span class="number">0</span> ? num2[n]-<span class="string">&#x27;0&#x27;</span> : <span class="number">0</span>; <span class="comment">// 越界定0技巧</span></span><br><span class="line">            <span class="type">int</span> s = a + b + c;</span><br><span class="line">            ret.<span class="built_in">push_back</span>(<span class="string">&#x27;0&#x27;</span> + s % <span class="number">10</span>);</span><br><span class="line">            c = s / <span class="number">10</span>;</span><br><span class="line">            --m, --n;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">reverse</span>(ret.<span class="built_in">begin</span>(), ret.<span class="built_in">end</span>()); <span class="comment">// 反转</span></span><br><span class="line">        <span class="keyword">return</span> ret;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function">string <span class="title">multiply</span><span class="params">(string num1, string num2)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(num1==<span class="string">&quot;0&quot;</span> || num2==<span class="string">&quot;0&quot;</span>) <span class="keyword">return</span> <span class="string">&quot;0&quot;</span>;</span><br><span class="line">        string res = <span class="string">&quot;0&quot;</span>;</span><br><span class="line">        <span class="type">int</span> cnt = <span class="number">0</span>; <span class="comment">// 记录表示每次乘完左移的0的个数</span></span><br><span class="line">        <span class="type">int</span> m = num<span class="number">2.</span><span class="built_in">size</span>()<span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">while</span>(m &gt;= <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="type">int</span> n = num<span class="number">1.</span><span class="built_in">size</span>()<span class="number">-1</span>;</span><br><span class="line">            <span class="type">int</span> b = num2[m] - <span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">            <span class="type">int</span> c = <span class="number">0</span>;</span><br><span class="line">            <span class="function">string <span class="title">ret</span><span class="params">(cnt, <span class="string">&#x27;0&#x27;</span>)</span></span>; <span class="comment">// 初始化&quot;左移&quot;0</span></span><br><span class="line">            <span class="keyword">while</span>(n&gt;=<span class="number">0</span> || c)&#123;</span><br><span class="line">                <span class="type">int</span> a = n&gt;=<span class="number">0</span> ? num1[n]-<span class="string">&#x27;0&#x27;</span> : <span class="number">0</span>; <span class="comment">// 越界定0技巧</span></span><br><span class="line">                <span class="type">int</span> s = a * b + c;</span><br><span class="line">                ret.<span class="built_in">push_back</span>(<span class="string">&#x27;0&#x27;</span> + s % <span class="number">10</span>);</span><br><span class="line">                c = s / <span class="number">10</span>;</span><br><span class="line">                --n;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="built_in">reverse</span>(ret.<span class="built_in">begin</span>(), ret.<span class="built_in">end</span>()); <span class="comment">// 反转</span></span><br><span class="line">            res = <span class="built_in">addtion</span>(res, ret);</span><br><span class="line">            --m, ++cnt;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/03/19/%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9B%B8%E4%B9%98/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1123,111 +1223,8 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/24/Bitcpy/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Lizq">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Lizq的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | Lizq的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/06/24/Bitcpy/" class="post-title-link" itemprop="url">Bitcpy</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-06-24 20:17:20" itemprop="dateCreated datePublished" datetime="2021-06-24T20:17:20+08:00">2021-06-24</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-08-30 20:09:37" itemprop="dateModified" datetime="2022-08-30T20:09:37+08:00">2022-08-30</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>571</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>2 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <blockquote>
-<p><strong>两种bitcpy的实现方式</strong></p>
-</blockquote>
-<h3 id="1-显示数据bits"><a href="#1-显示数据bits" class="headerlink" title="1. 显示数据bits"></a>1. 显示数据bits</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> HALF_WORD   uint16_t</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> WORD        uint32_t</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">showBits</span><span class="params">(<span class="type">void</span>* d, <span class="type">int</span> len)</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> bytes = len / <span class="number">8</span>;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">char</span>* p = (<span class="type">unsigned</span> <span class="type">char</span>*)d;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; bytes; i++) &#123;</span><br><span class="line">        <span class="type">unsigned</span> <span class="type">char</span> tmp = <span class="number">0x80</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">0</span>; j &lt; <span class="number">8</span>; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (tmp &amp; *p)</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">&quot;1&quot;</span>);</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">&quot;0&quot;</span>);</span><br><span class="line">            tmp &gt;&gt;= <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot; &quot;</span>);</span><br><span class="line">        ++p;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-bitcpy-算术方式"><a href="#2-bitcpy-算术方式" class="headerlink" title="2. bitcpy 算术方式"></a>2. bitcpy 算术方式</h3><p><strong>拷贝方式是从单个字节的低位开始拷贝，进位式拷贝。</strong></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/06/24/Bitcpy/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
-    <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/page/4/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span>
+    <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/page/4/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/6/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 </div>
@@ -1249,13 +1246,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">50k</span>
+    <span title="站点总字数">53k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">3:03</span>
+    <span title="站点阅读时长">3:12</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动

@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 8.1.1">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="概念我们有一堆数据，希望能够支持快速的插入、删除、查询以及范围查询我们都知道数组进行排序后，可以通过二分查找的方式快速定位数据，时间复杂度是$O(LogN)$，但是如果数组经常发生插入、删除操作，就需要进行大量平移，时间复杂度是$O(N)$。那用平衡树呢？AVL树、红黑树都是经过深度优化的动态数据结构，他们的插入删除查找都可以在$O(LogN)$的时间内完成，但是他们实现起来较为复杂，且对于范围查">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Easy SortedSet">
+<meta property="og:url" content="http://example.com/2025/10/07/%E8%B7%B3%E8%B7%83%E8%A1%A8%E7%BB%93%E5%90%88%E5%AD%97%E5%85%B8/index.html">
+<meta property="og:site_name" content="Lizq的个人博客">
+<meta property="og:description" content="概念我们有一堆数据，希望能够支持快速的插入、删除、查询以及范围查询我们都知道数组进行排序后，可以通过二分查找的方式快速定位数据，时间复杂度是$O(LogN)$，但是如果数组经常发生插入、删除操作，就需要进行大量平移，时间复杂度是$O(N)$。那用平衡树呢？AVL树、红黑树都是经过深度优化的动态数据结构，他们的插入删除查找都可以在$O(LogN)$的时间内完成，但是他们实现起来较为复杂，且对于范围查">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/fkjkkll/OnlineSource/refs/heads/master/Image/algorithm/SortedSet.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/fkjkkll/OnlineSource/refs/heads/master/Image/algorithm/SortedSet_Add.png">
+<meta property="article:published_time" content="2025-10-07T08:22:56.000Z">
+<meta property="article:modified_time" content="2025-12-01T10:25:05.378Z">
+<meta property="article:author" content="Lizq">
+<meta property="article:tag" content="算法">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/fkjkkll/OnlineSource/refs/heads/master/Image/algorithm/SortedSet.png">
+
+
+<link rel="canonical" href="http://example.com/2025/10/07/%E8%B7%B3%E8%B7%83%E8%A1%A8%E7%BB%93%E5%90%88%E5%AD%97%E5%85%B8/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2025/10/07/%E8%B7%B3%E8%B7%83%E8%A1%A8%E7%BB%93%E5%90%88%E5%AD%97%E5%85%B8/","path":"2025/10/07/跳跃表结合字典/","title":"Easy SortedSet"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Easy SortedSet | Lizq的个人博客</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js" defer></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Lizq的个人博客</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E5%BF%B5"><span class="nav-number">1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81"><span class="nav-number">2.</span> <span class="nav-text">代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E8%AF%B4%E6%98%8E"><span class="nav-number">3.</span> <span class="nav-text">代码说明</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Lizq</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">51</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fkjkkll" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fkjkkll" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:lzq0225@qq.com" title="E-Mail → mailto:lzq0225@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/10/07/%E8%B7%B3%E8%B7%83%E8%A1%A8%E7%BB%93%E5%90%88%E5%AD%97%E5%85%B8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Lizq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Easy SortedSet | Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Easy SortedSet
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-10-07 16:22:56" itemprop="dateCreated datePublished" datetime="2025-10-07T16:22:56+08:00">2025-10-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-12-01 18:25:05" itemprop="dateModified" datetime="2025-12-01T18:25:05+08:00">2025-12-01</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>8 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>我们有一堆数据，希望能够支持快速的插入、删除、查询以及范围查询<br>我们都知道数组进行排序后，可以通过二分查找的方式快速定位数据，时间复杂度是$O(LogN)$，但是如果数组经常发生插入、删除操作，就需要进行大量平移，时间复杂度是$O(N)$。<br>那用平衡树呢？AVL树、红黑树都是经过深度优化的动态数据结构，他们的插入删除查找都可以在$O(LogN)$的时间内完成，但是他们实现起来较为复杂，且对于范围查询，还需要进行中序遍历，但至少比数组好多了。<br>那链表呢，链表的插入删除是很方便，但关键查询呢，它能进行二分查找吗？链表无法随机访问，怎么二分？很显然，直接对普通链表进行二分查找是困难的。1990年，Pugh发表论文《Skip Lists: A Probabilistic Alternative to Balanced Trees》，创造性的提出了自己的解决方案：”如果不能在节点间跳跃，那就建造可以跳跃的桥梁吧！”，跳跃表（SkipList）正式被提出。<br>跳跃表是一种概率性的有序数据结构，通过建立多级索引来加速查找，可以看作是在链表基础上加了“快速通道”，变相了实现对链表的二分查找，并且，范围查找也能够很轻易的完成，只要找到目标，就可以沿着链条依次访问。<br>游戏里排行榜一般是采用Redis Sorted Set，它在数据规模较大时的底层数据结构就是跳跃表+哈希表。</p>
+<ul>
+<li>跳跃表：天然支持有序插入、删除和范围查询，时间复杂度O(log n)</li>
+<li>哈希表：用于快速查找特定用户的当前位置和分数（O(1)）</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/fkjkkll/OnlineSource/refs/heads/master/Image/algorithm/SortedSet.png" alt="示意图">跳跃表的每个节点拥有一个前序指针和多层后继指针。每层后继指针都独立成链，每个节点在插入时，都会按照概率分配给它多少层后继指针（至少一层）。类似抛硬币，落到正面，就给它加一层后继指针，然后继续抛硬币；落到反面就结束。当然，硬币正面的概率不一定是50%（实际有论文提出，包括业内经验来看，25%的概率是对性能和内存占用权衡后的得到的较优选择）。实际上，作者最初考虑过确定性跳表，即第0层是全连接，第1层是隔1个连接，第2层是隔3个连接…但是这样会导致插入和删除需要进行大量调整，复杂度变高，从而引入随机性，不仅简化了插入和删除的操作，并且统计上仍然是接近二分的结构。</p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 简化的 SortedSet 实现，基于跳跃表</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">SimpleSortedSet</span>&lt;<span class="title">T</span>&gt; <span class="keyword">where</span> <span class="title">T</span> : <span class="title">IComparable</span>&lt;<span class="title">T</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">class</span> <span class="title">SkipListNode</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">public</span> T Value &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">        <span class="keyword">public</span> <span class="built_in">double</span> Score &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">        <span class="keyword">public</span> SkipListNode Backward &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;  <span class="comment">// 后退指针</span></span><br><span class="line">        <span class="keyword">public</span> SkipListNode[] Forward &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125; <span class="comment">// 前进指针数组</span></span><br><span class="line">        <span class="keyword">public</span> <span class="built_in">int</span>[] Span &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;             <span class="comment">// 跨度数组</span></span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">SkipListNode</span>(<span class="params">T <span class="keyword">value</span>, <span class="built_in">double</span> score, <span class="built_in">int</span> level</span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            Value = <span class="keyword">value</span>;</span><br><span class="line">            Score = score;</span><br><span class="line">            Forward = <span class="keyword">new</span> SkipListNode[level];</span><br><span class="line">            Span = <span class="keyword">new</span> <span class="built_in">int</span>[level];</span><br><span class="line">            Backward = <span class="literal">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">const</span> <span class="built_in">int</span> MAX_LEVEL = <span class="number">32</span>;         <span class="comment">// 最大层数</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">const</span> <span class="built_in">double</span> PROBABILITY = <span class="number">0.5</span>;   <span class="comment">// 层数增长概率（论文和实践都表明0.25或许是更好的选择）</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> SkipListNode _header;             <span class="comment">// 头节点（纯虚拟</span></span><br><span class="line">    <span class="keyword">private</span> SkipListNode _tail;               <span class="comment">// 尾节点（指向真实存在的</span></span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">int</span> _level;                       <span class="comment">// 当前最大层数</span></span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">int</span> _count;                       <span class="comment">// 元素数量</span></span><br><span class="line">    <span class="keyword">private</span> Random _random;                   <span class="comment">// 随机数生成器</span></span><br><span class="line">    <span class="keyword">private</span> Dictionary&lt;T, <span class="built_in">double</span>&gt; _dict;      <span class="comment">// 字典：Value -&gt; Score</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">SimpleSortedSet</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        _random = <span class="keyword">new</span> Random();</span><br><span class="line">        _dict = <span class="keyword">new</span> Dictionary&lt;T, <span class="built_in">double</span>&gt;();</span><br><span class="line">        _level = <span class="number">1</span>;</span><br><span class="line">        _count = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 初始化头节点（分数为最小值）</span></span><br><span class="line">        _header = <span class="keyword">new</span> SkipListNode(<span class="literal">default</span>, <span class="built_in">double</span>.MinValue, MAX_LEVEL);</span><br><span class="line">        _tail = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 初始化头节点的跨度</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; MAX_LEVEL; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            _header.Forward[i] = <span class="literal">null</span>;</span><br><span class="line">            _header.Span[i] = <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="built_in">bool</span> <span class="title">Add</span>(<span class="params">T <span class="keyword">value</span>, <span class="built_in">double</span> score</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 如果已存在，返回false（简化实现，不支持更新）</span></span><br><span class="line">        <span class="keyword">if</span> (_dict.ContainsKey(<span class="keyword">value</span>))</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">        SkipListNode[] update = <span class="keyword">new</span> SkipListNode[MAX_LEVEL];</span><br><span class="line">        <span class="built_in">int</span>[] rank = <span class="keyword">new</span> <span class="built_in">int</span>[MAX_LEVEL];</span><br><span class="line">        SkipListNode current = _header;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 从最高层开始查找插入位置</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">int</span> i = _level - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--)</span><br><span class="line">        &#123;</span><br><span class="line">            rank[i] = (i == _level - <span class="number">1</span>) ? <span class="number">0</span> : rank[i + <span class="number">1</span>];</span><br><span class="line"></span><br><span class="line">            <span class="keyword">while</span> (current.Forward[i] != <span class="literal">null</span> &amp;&amp;</span><br><span class="line">                  (current.Forward[i].Score &lt; score ||</span><br><span class="line">                  (current.Forward[i].Score == score &amp;&amp;</span><br><span class="line">                   current.Forward[i].Value.CompareTo(<span class="keyword">value</span>) &lt; <span class="number">0</span>)))</span><br><span class="line">            &#123;</span><br><span class="line">                rank[i] += current.Span[i];</span><br><span class="line">                current = current.Forward[i];</span><br><span class="line">            &#125;</span><br><span class="line">            update[i] = current;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 随机生成层数</span></span><br><span class="line">        <span class="built_in">int</span> newLevel = RandomLevel();</span><br><span class="line">        <span class="keyword">if</span> (newLevel &gt; _level)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="built_in">int</span> i = _level; i &lt; newLevel; i++)</span><br><span class="line">            &#123;</span><br><span class="line">                rank[i] = <span class="number">0</span>; <span class="comment">// 新节点是通过虚拟head直接跳过来的，所以前面的累加span是0</span></span><br><span class="line">                update[i] = _header;</span><br><span class="line">                update[i].Span[i] = _count; <span class="comment">// 后面会处理，新节点会进行中间截断</span></span><br><span class="line">            &#125;</span><br><span class="line">            _level = newLevel;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 创建新节点</span></span><br><span class="line">        SkipListNode newNode = <span class="keyword">new</span> SkipListNode(<span class="keyword">value</span>, score, newLevel);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 更新指针和跨度</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; newLevel; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 普通的链表插入</span></span><br><span class="line">            newNode.Forward[i] = update[i].Forward[i];</span><br><span class="line">            update[i].Forward[i] = newNode;</span><br><span class="line">            <span class="comment">// 更新跨度</span></span><br><span class="line">            newNode.Span[i] = update[i].Span[i] - (rank[<span class="number">0</span>] - rank[i]);</span><br><span class="line">            update[i].Span[i] = (rank[<span class="number">0</span>] - rank[i]) + <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 更新更高层的跨度</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">int</span> i = newLevel; i &lt; _level; i++)</span><br><span class="line">            update[i].Span[i]++;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 更新后退指针</span></span><br><span class="line">        newNode.Backward = (update[<span class="number">0</span>] == _header) ? <span class="literal">null</span> : update[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">if</span> (newNode.Forward[<span class="number">0</span>] != <span class="literal">null</span>)</span><br><span class="line">            newNode.Forward[<span class="number">0</span>].Backward = newNode;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            _tail = newNode; <span class="comment">// 如果是最后一个节点，更新尾指针</span></span><br><span class="line"></span><br><span class="line">        _count++;</span><br><span class="line">        _dict[<span class="keyword">value</span>] = score;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="built_in">bool</span> <span class="title">Remove</span>(<span class="params">T <span class="keyword">value</span></span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (!_dict.TryGetValue(<span class="keyword">value</span>, <span class="keyword">out</span> <span class="keyword">var</span> score))</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">        SkipListNode[] update = <span class="keyword">new</span> SkipListNode[MAX_LEVEL];</span><br><span class="line">        SkipListNode current = _header;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">int</span> i = _level - <span class="number">1</span>; i &gt;= <span class="number">0</span>; --i)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">while</span> (current.Forward[i] != <span class="literal">null</span> &amp;&amp; </span><br><span class="line">                  (current.Forward[i].Score &lt; score ||</span><br><span class="line">                  (current.Forward[i].Score == score &amp;&amp;</span><br><span class="line">                   current.Forward[i].Value.CompareTo(<span class="keyword">value</span>) &lt; <span class="number">0</span>)))</span><br><span class="line">            &#123;</span><br><span class="line">                current = current.Forward[i];</span><br><span class="line">            &#125;</span><br><span class="line">            update[i] = current;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">var</span> deleteNode = update[<span class="number">0</span>].Forward[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">if</span> (deleteNode == <span class="literal">null</span> || !deleteNode.Value.Equals(<span class="keyword">value</span>) || Math.Abs(deleteNode.Score - score) &gt; <span class="number">1e-10</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 更新各层的指针和跨度</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; _level; ++i)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 普通链表删除操作</span></span><br><span class="line">            <span class="keyword">if</span> (update[i].Forward[i] == deleteNode)</span><br><span class="line">            &#123;</span><br><span class="line">                update[i].Span[i] += (deleteNode.Span[i] - <span class="number">1</span>); <span class="comment">// +=</span></span><br><span class="line">                update[i].Forward[i] = deleteNode.Forward[i];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 该层链表不包含，仅需要改变span</span></span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (update[i].Span[i] &gt; <span class="number">0</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                --update[i].Span[i];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 更新后退指针</span></span><br><span class="line">        <span class="keyword">if</span> (deleteNode.Forward[<span class="number">0</span>] != <span class="literal">null</span>)</span><br><span class="line">            deleteNode.Forward[<span class="number">0</span>].Backward = deleteNode.Backward;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            _tail = deleteNode.Backward;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 更新最高层数（循环）</span></span><br><span class="line">        <span class="keyword">while</span> (_level &gt; <span class="number">1</span> &amp;&amp; _header.Forward[_level - <span class="number">1</span>] == <span class="literal">null</span>)</span><br><span class="line">            --_level;</span><br><span class="line"></span><br><span class="line">        --_count;</span><br><span class="line">        _dict.Remove(<span class="keyword">value</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取元素的排名（从0开始，分数从低到高）</span></span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span>? GetRank(T <span class="keyword">value</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (!_dict.TryGetValue(<span class="keyword">value</span>, <span class="keyword">out</span> <span class="built_in">double</span> score))</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">        SkipListNode current = _header;</span><br><span class="line">        <span class="built_in">int</span> rank = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">int</span> i = _level - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">while</span> (current.Forward[i] != <span class="literal">null</span> &amp;&amp;</span><br><span class="line">                  (current.Forward[i].Score &lt; score ||</span><br><span class="line">                  (current.Forward[i].Score == score &amp;&amp;</span><br><span class="line">                   current.Forward[i].Value.CompareTo(<span class="keyword">value</span>) &lt;= <span class="number">0</span>)))</span><br><span class="line">            &#123;</span><br><span class="line">                rank += current.Span[i];</span><br><span class="line">                current = current.Forward[i];</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (current.Value != <span class="literal">null</span> &amp;&amp; current.Value.Equals(<span class="keyword">value</span>))</span><br><span class="line">                <span class="keyword">return</span> rank;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取逆序排名（从0开始，分数从高到低）</span></span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span>? GetReverseRank(T <span class="keyword">value</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">int</span>? rank = GetRank(<span class="keyword">value</span>);</span><br><span class="line">        <span class="keyword">return</span> rank.HasValue ? _count - rank.Value + <span class="number">1</span> : <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取前N名（分数从高到低）</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;T&gt; <span class="title">GetTopN</span>(<span class="params"><span class="built_in">int</span> n</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (n &lt;= <span class="number">0</span>) <span class="keyword">return</span> <span class="keyword">new</span> List&lt;T&gt;();</span><br><span class="line">        <span class="keyword">if</span> (n &gt; _count) n = _count;</span><br><span class="line"></span><br><span class="line">        List&lt;T&gt; result = <span class="keyword">new</span> List&lt;T&gt;();</span><br><span class="line">        SkipListNode current = _tail;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 从尾部向前遍历</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; n &amp;&amp; current != <span class="literal">null</span>; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            result.Add(current.Value);</span><br><span class="line">            current = current.Backward;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取分数范围内的元素（利用跳跃表特性，O(log N + M)）</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">List</span>&lt;<span class="title">T</span>&gt; <span class="title">GetRangeByScore</span>(<span class="params"><span class="built_in">double</span> minScore, <span class="built_in">double</span> maxScore</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (minScore &gt; maxScore) <span class="keyword">return</span> <span class="keyword">new</span> List&lt;T&gt;();</span><br><span class="line"></span><br><span class="line">        List&lt;T&gt; result = <span class="keyword">new</span>();</span><br><span class="line">        SkipListNode current = _header;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 步骤1：使用高层索引快速定位到第一个 &gt;= minScore 的节点 (O(log N))</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">int</span> i = _level - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">while</span> (current.Forward[i] != <span class="literal">null</span> &amp;&amp; current.Forward[i].Score &lt; minScore)</span><br><span class="line">            &#123;</span><br><span class="line">                current = current.Forward[i];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 现在 current 是最后一个 &lt; minScore 的节点，下一个就是第一个 &gt;= minScore 的节点</span></span><br><span class="line">        current = current.Forward[<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 步骤2：从定位点开始顺序遍历，直到超过 maxScore (O(M))</span></span><br><span class="line">        <span class="keyword">while</span> (current != <span class="literal">null</span> &amp;&amp; current.Score &lt;= maxScore)</span><br><span class="line">        &#123;</span><br><span class="line">            result.Add(current.Value);</span><br><span class="line">            current = current.Forward[<span class="number">0</span>];</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;T&gt; <span class="title">GetRangeByRank</span>(<span class="params"><span class="built_in">int</span> start, <span class="built_in">int</span> end</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> ret = <span class="keyword">new</span> List&lt;T&gt;();</span><br><span class="line">        <span class="keyword">if</span> (start &gt; end)</span><br><span class="line">            <span class="keyword">return</span> ret;</span><br><span class="line">        <span class="keyword">if</span> (start &lt;= <span class="number">0</span>) start = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span> (end &gt; _count) end = _count;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">var</span> rank = _count - start + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">var</span> current = _header;</span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">int</span> i = _level - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">while</span> (current.Forward[i] != <span class="literal">null</span> &amp;&amp; current.Span[i] &lt;= rank)</span><br><span class="line">            &#123;</span><br><span class="line">                rank -= current.Span[i];</span><br><span class="line">                current = current.Forward[i];</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (rank == <span class="number">0</span>)</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> cnt = end - start + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span> (cnt-- &gt; <span class="number">0</span> &amp;&amp; current != <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            ret.Add(current.Value);</span><br><span class="line">            current = current.Backward;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ret;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 随机生成节点层数（抛硬币算法）</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="built_in">int</span> <span class="title">RandomLevel</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">int</span> level = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span> (_random.NextDouble() &lt; PROBABILITY &amp;&amp; level &lt; MAX_LEVEL)</span><br><span class="line">            ++level;</span><br><span class="line">        <span class="keyword">return</span> level;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 打印跳跃表结构（用于调试）</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">PrintStructure</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        Console.WriteLine(<span class="string">$&quot;跳跃表结构 (元素数量: <span class="subst">&#123;_count&#125;</span>, 最大层数: <span class="subst">&#123;_level&#125;</span>):&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">int</span> i = _level - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--)</span><br><span class="line">        &#123;</span><br><span class="line">            StringBuilder sb = <span class="keyword">new</span>();</span><br><span class="line">            sb.Append(<span class="string">$&quot;Layer<span class="subst">&#123;i&#125;</span>\t&quot;</span>);</span><br><span class="line">            SkipListNode current = _header;</span><br><span class="line">            <span class="keyword">while</span> (current != <span class="literal">null</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                sb.Append(<span class="string">$&quot;<span class="subst">&#123;current.Span[i]&#125;</span>\t&quot;</span>);</span><br><span class="line">                <span class="keyword">if</span> (current.Forward[i] != <span class="literal">null</span>)</span><br><span class="line">                    sb.Append(<span class="keyword">new</span> <span class="built_in">string</span>(<span class="string">&#x27;\t&#x27;</span>, current.Span[i] - <span class="number">1</span>));</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                    sb.Append(<span class="keyword">new</span> <span class="built_in">string</span>(<span class="string">&#x27;\t&#x27;</span>, current.Span[i]));</span><br><span class="line">                current = current.Forward[i];</span><br><span class="line">            &#125;</span><br><span class="line">            Console.WriteLine(sb);</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">var</span> cur = _header;</span><br><span class="line">        <span class="built_in">string</span> o = <span class="string">&quot;Data\t&quot;</span>;</span><br><span class="line">        <span class="built_in">string</span> s = <span class="string">&quot;Score\t&quot;</span>;</span><br><span class="line">        <span class="keyword">while</span> (cur != <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (cur.Value == <span class="literal">null</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                o += <span class="string">&quot;Head\t&quot;</span>;</span><br><span class="line">                s += <span class="string">&quot;Head\t&quot;</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                o += cur.Value.ToString() + <span class="string">&#x27;\t&#x27;</span>;</span><br><span class="line">                s += cur.Score.ToString() + <span class="string">&#x27;\t&#x27;</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            cur = cur.Forward[<span class="number">0</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        Console.WriteLine();</span><br><span class="line">        Console.WriteLine(o);</span><br><span class="line">        Console.WriteLine(s);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="代码说明"><a href="#代码说明" class="headerlink" title="代码说明"></a>代码说明</h2><p>更新跨度的代码：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; newLevel; i++)</span><br><span class="line">&#123;</span><br><span class="line">    ...</span><br><span class="line">    newNode.Span[i] = update[i].Span[i] - (rank[<span class="number">0</span>] - rank[i]);</span><br><span class="line">    update[i].Span[i] = (rank[<span class="number">0</span>] - rank[i]) + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里的<code>rank[0]-rank[i]</code>需要说明下，首先每个节点里的<code>Span[i]</code>存储的是当前层级下，该节点到下一个节点的跨度，是一个相对跨度。但是注意的是，<code>rank</code>数组是一个累加和跨度，<code>rank[i]</code>指的是，查找该目标时，在当前层级下走过的最远累计跨度。这个累计跨度是从高层级到最低层级一步步求来的，在较高层级时，由于层级节点的跨度都比较大，因此只能得到粗略的跨度，但是随着层级一点点降低，这个值会在<code>rank[0]</code>得到最终的实际跨度。因此也就能理解了：<code>rank[0]-rank[i]</code>代表的是在第<code>i</code>层，该层的前一个节点，到新节点的相对跨度是多少。<br>因此，<code>newNode.Span[i] = update[i].Span[i] - (rank[0] - rank[i]);</code>代表，新加入的节点，它自身的跨度是多少；<code>update[i].Span[i] = (rank[0] - rank[i]) + 1;</code>则代表该层的前一个节点，到新节点的跨度是多少，+1是因为增加了新节点。<br><img src="https://raw.githubusercontent.com/fkjkkll/OnlineSource/refs/heads/master/Image/algorithm/SortedSet_Add.png" alt="插入示意图"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%AE%97%E6%B3%95/" rel="tag"># 算法</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/10/20/YOLOv4-v5-X%E7%90%86%E8%A7%A3/" rel="prev" title="YOLOv4,v5,X理解">
+                  <i class="fa fa-angle-left"></i> YOLOv4,v5,X理解
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2025/11/25/AVL%E6%A0%91%E5%AE%9E%E7%8E%B0/" rel="next" title="AVL树实现">
+                  AVL树实现 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Lizq</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">53k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">3:12</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>
