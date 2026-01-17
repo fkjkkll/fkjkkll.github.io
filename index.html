@@ -171,7 +171,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">51</span>
+          <span class="site-state-item-count">52</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -202,6 +202,107 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/01/17/C-snack-001/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Lizq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2026/01/17/C-snack-001/" class="post-title-link" itemprop="url">C# snack 001</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-01-17 22:35:24" itemprop="dateCreated datePublished" datetime="2026-01-17T22:35:24+08:00">2026-01-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-01-18 01:12:22" itemprop="dateModified" datetime="2026-01-18T01:12:22+08:00">2026-01-18</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.9k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>7 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>新项目，在学习FairyGUI，看到官方Demo里的Window示例有这么一段代码</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 业务层BasicsMain</span></span><br><span class="line"><span class="keyword">private</span> Window _winA; <span class="comment">// 实例变量</span></span><br><span class="line"><span class="keyword">private</span> Window _winB; <span class="comment">// 实例变量</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">PlayWindow</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    GComponent obj = _demoObjects[<span class="string">&quot;Window&quot;</span>];</span><br><span class="line">    obj.GetChild(<span class="string">&quot;n0&quot;</span>).onClick.Add(() =&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (_winA == <span class="literal">null</span>)</span><br><span class="line">            _winA = <span class="keyword">new</span> Window1();</span><br><span class="line">        _winA.Show();</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    obj.GetChild(<span class="string">&quot;n1&quot;</span>).onClick.Add(() =&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (_winB == <span class="literal">null</span>)</span><br><span class="line">            _winB = <span class="keyword">new</span> Window2();</span><br><span class="line">        _winB.Show();</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// FairyGUI.EventListener.cs</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Add</span>(<span class="params">EventCallback0 callback</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    _bridge.Add(callback);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// FairyGUI.EventBridge.cs</span></span><br><span class="line">EventCallback0 _callback0;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Add</span>(<span class="params">EventCallback0 callback</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    _callback0 -= callback;</span><br><span class="line">    _callback0 += callback;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个PlayWindow函数是每次点击对应按钮都会调用的，但是里面的注册回调却用的匿名函数，虽然内部会先对委托进行解绑再绑定，但是匿名函数，怎敢断定两次调用传入的是同一个函数的？我立马嗅到一丝内存泄漏的恶臭味😡，但是实际并没有发生。<br></p>
+<h3 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h3>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2026/01/17/C-snack-001/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1117,106 +1218,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/01/%E9%80%86%E5%BA%8F%E5%AF%B9/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Lizq">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Lizq的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | Lizq的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/09/01/%E9%80%86%E5%BA%8F%E5%AF%B9/" class="post-title-link" itemprop="url">逆序对</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-09-01 14:53:56" itemprop="dateCreated datePublished" datetime="2022-09-01T14:53:56+08:00">2022-09-01</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-09-19 22:32:20" itemprop="dateModified" datetime="2022-09-19T22:32:20+08:00">2022-09-19</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>968</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>4 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="逆序对计算"><a href="#逆序对计算" class="headerlink" title="逆序对计算"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/shu-zu-zhong-de-ni-xu-dui-lcof/">逆序对计算</a></h1><h2 id="1-归并排序"><a href="#1-归并排序" class="headerlink" title="1 归并排序"></a>1 归并排序</h2><p>归并排序天然就可统计逆序对，在归并时有以下两种方式统计：</p>
-<p>当左侧当前指针指向位置的数字CUR较小时，本轮将其加入归并后的数组，注意到右数组当前指针左边的都是小于CUR的，但是他们位置却在其右侧，所以逆序对贡献为<code>l2-old_l2</code></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (a &lt;= b) &#123; <span class="comment">// 这里包含等于 可以用全1数组模拟想想</span></span><br><span class="line">    trr[p++] = arr[l1++];</span><br><span class="line">    ret += (l2-old_l2);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> </span><br><span class="line">    trr[p++] = arr[l2++];</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/09/01/%E9%80%86%E5%BA%8F%E5%AF%B9/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1229,7 +1230,7 @@
 
   <div class="copyright">
     &copy; 
-    <span itemprop="copyrightYear">2025</span>
+    <span itemprop="copyrightYear">2026</span>
     <span class="with-love">
       <i class="fa fa-heart"></i>
     </span>
@@ -1240,13 +1241,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">53k</span>
+    <span title="站点总字数">55k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">3:12</span>
+    <span title="站点阅读时长">3:19</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
