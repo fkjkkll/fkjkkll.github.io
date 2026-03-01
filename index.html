@@ -171,7 +171,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">57</span>
+          <span class="site-state-item-count">58</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -202,6 +202,105 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/02/23/%E7%A2%B0%E6%92%9E%E6%A3%80%E6%B5%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Lizq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2026/02/23/%E7%A2%B0%E6%92%9E%E6%A3%80%E6%B5%8B/" class="post-title-link" itemprop="url">碰撞检测</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-02-23 10:17:46" itemprop="dateCreated datePublished" datetime="2026-02-23T10:17:46+08:00">2026-02-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-03-01 23:52:28" itemprop="dateModified" datetime="2026-03-01T23:52:28+08:00">2026-03-01</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>17 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="粗筛阶段（Broad-Phase）"><a href="#粗筛阶段（Broad-Phase）" class="headerlink" title="粗筛阶段（Broad Phase）"></a>粗筛阶段（Broad Phase）</h1><h2 id="SAP（扫描线算法）"><a href="#SAP（扫描线算法）" class="headerlink" title="SAP（扫描线算法）"></a>SAP（扫描线算法）</h2><p>不论碰撞体本身是圆形、OBB、多边形，都可以获得顶点集合的<code>minPoint: (minX, minZ)</code>和<code>maxPoint: (maxX, maxZ)</code>，得到最大外接矩形也就是AABB，将所有待检测对象的AABB投影到对应的轴上。每个对象在每个轴上都会得到一个线段，两个不同对象的线段如果在某一个轴上没有交集，就证明一定不存在碰撞，反之，在所有轴上都存在交集，则这两个对象的AABB一定发生了碰撞，如果对象本身就是AABB那就检测完毕，否则需要进一步判断两个对象是否实际碰撞。<br></p>
+<h2 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h2><p>先从X轴开始，遍历每个对象，投影可以产生两个端点<code>minValue, maxValue</code>，将所有对象的投影端点都放入一个数组内，并按坐标从小到大进行排序。维护两个列表：活跃列表<code>[]</code>和重叠对列表<code>[]</code>。扫描线从左到右扫描这些端点。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2026/02/23/%E7%A2%B0%E6%92%9E%E6%A3%80%E6%B5%8B/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -304,7 +403,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2026/02/13/CSharp-fixed/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/02/13/Csharp-fixed/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -322,7 +421,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2026/02/13/CSharp-fixed/" class="post-title-link" itemprop="url">CSharp fixed</a>
+          <a href="/2026/02/13/Csharp-fixed/" class="post-title-link" itemprop="url">Csharp fixed</a>
         </h2>
 
         <div class="post-meta-container">
@@ -340,7 +439,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-02-14 12:21:20" itemprop="dateModified" datetime="2026-02-14T12:21:20+08:00">2026-02-14</time>
+      <time title="修改时间：2026-02-14 12:49:30" itemprop="dateModified" datetime="2026-02-14T12:49:30+08:00">2026-02-14</time>
     </span>
 
   
@@ -377,7 +476,7 @@
 <h2 id="2、固定大小缓冲区字段fixed-buffer"><a href="#2、固定大小缓冲区字段fixed-buffer" class="headerlink" title="2、固定大小缓冲区字段fixed buffer"></a>2、固定大小缓冲区字段fixed buffer</h2>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2026/02/13/CSharp-fixed/#more" rel="contents">
+              <a class="btn" href="/2026/02/13/Csharp-fixed/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -608,7 +707,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2026/02/01/CSharp%E6%9E%9A%E4%B8%BE%E7%B1%BB%E5%9E%8B%E7%9A%84%E8%A3%85%E6%8B%86%E7%AE%B1/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/02/01/Csharp%E6%9E%9A%E4%B8%BE%E7%B1%BB%E5%9E%8B%E7%9A%84%E8%A3%85%E6%8B%86%E7%AE%B1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -626,7 +725,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2026/02/01/CSharp%E6%9E%9A%E4%B8%BE%E7%B1%BB%E5%9E%8B%E7%9A%84%E8%A3%85%E6%8B%86%E7%AE%B1/" class="post-title-link" itemprop="url">CSharp枚举类型的装拆箱</a>
+          <a href="/2026/02/01/Csharp%E6%9E%9A%E4%B8%BE%E7%B1%BB%E5%9E%8B%E7%9A%84%E8%A3%85%E6%8B%86%E7%AE%B1/" class="post-title-link" itemprop="url">Csharp枚举类型的装拆箱</a>
         </h2>
 
         <div class="post-meta-container">
@@ -644,7 +743,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-02-14 00:25:48" itemprop="dateModified" datetime="2026-02-14T00:25:48+08:00">2026-02-14</time>
+      <time title="修改时间：2026-02-14 12:49:27" itemprop="dateModified" datetime="2026-02-14T12:49:27+08:00">2026-02-14</time>
     </span>
 
   
@@ -682,7 +781,7 @@
 <h4 id="1-2-内部发生了什么"><a href="#1-2-内部发生了什么" class="headerlink" title="1.2 内部发生了什么"></a>1.2 内部发生了什么</h4>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2026/02/01/CSharp%E6%9E%9A%E4%B8%BE%E7%B1%BB%E5%9E%8B%E7%9A%84%E8%A3%85%E6%8B%86%E7%AE%B1/#more" rel="contents">
+              <a class="btn" href="/2026/02/01/Csharp%E6%9E%9A%E4%B8%BE%E7%B1%BB%E5%9E%8B%E7%9A%84%E8%A3%85%E6%8B%86%E7%AE%B1/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -713,7 +812,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2026/01/17/CSharp%E5%8C%BF%E5%90%8D%E5%87%BD%E6%95%B0%E7%9A%84%E6%9A%97%E5%9D%91/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/01/17/Csharp%E5%8C%BF%E5%90%8D%E5%87%BD%E6%95%B0%E7%9A%84%E6%9A%97%E5%9D%91/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -731,7 +830,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2026/01/17/CSharp%E5%8C%BF%E5%90%8D%E5%87%BD%E6%95%B0%E7%9A%84%E6%9A%97%E5%9D%91/" class="post-title-link" itemprop="url">CSharp匿名函数的暗坑</a>
+          <a href="/2026/01/17/Csharp%E5%8C%BF%E5%90%8D%E5%87%BD%E6%95%B0%E7%9A%84%E6%9A%97%E5%9D%91/" class="post-title-link" itemprop="url">Csharp匿名函数的暗坑</a>
         </h2>
 
         <div class="post-meta-container">
@@ -749,7 +848,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-02-14 00:24:52" itemprop="dateModified" datetime="2026-02-14T00:24:52+08:00">2026-02-14</time>
+      <time title="修改时间：2026-02-14 12:49:20" itemprop="dateModified" datetime="2026-02-14T12:49:20+08:00">2026-02-14</time>
     </span>
 
   
@@ -783,7 +882,7 @@
 <h3 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h3>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2026/01/17/CSharp%E5%8C%BF%E5%90%8D%E5%87%BD%E6%95%B0%E7%9A%84%E6%9A%97%E5%9D%91/#more" rel="contents">
+              <a class="btn" href="/2026/01/17/Csharp%E5%8C%BF%E5%90%8D%E5%87%BD%E6%95%B0%E7%9A%84%E6%9A%97%E5%9D%91/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1114,114 +1213,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/10/20/YOLOv4-v5-X%E7%90%86%E8%A7%A3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Lizq">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Lizq的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | Lizq的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/10/20/YOLOv4-v5-X%E7%90%86%E8%A7%A3/" class="post-title-link" itemprop="url">YOLOv4,v5,X理解</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-10-20 22:06:44" itemprop="dateCreated datePublished" datetime="2022-10-20T22:06:44+08:00">2022-10-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2025-11-21 15:27:44" itemprop="dateModified" datetime="2025-11-21T15:27:44+08:00">2025-11-21</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>973</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>4 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="YOLOv4"><a href="#YOLOv4" class="headerlink" title="YOLOv4"></a>YOLOv4</h1><p>YOLOv4是在YOLOv3的基础上进行了一些改进，但是整个流程依旧是YOLOv3，比如正负样本的划分、忽略样本等等。<br>其中添加的改进主要有如下几点：</p>
-<ul>
-<li>跨阶段局部网络（Cross-Stage-Partial, CSP）作为主干网络进行特征提取</li>
-<li>Mish激活函数（backbone）和Leaky ReLU（neck）</li>
-<li>Mosaic数据增强、MixUP数据增强</li>
-<li>添加注意力机制模块</li>
-<li>CIoU作为边框回归损失</li>
-<li>在neck中添加空间金字塔池化（Spatial Pyramid Pooling, SPP）提升感受野</li>
-<li>在原先YOLOv3 neck的特征金字塔网络（Feature Pyramid Netword, FPN）的基础上改进为路径聚合网络（Path Aggregation Network, PAN）</li>
-</ul>
-<h1 id="YOLOv5"><a href="#YOLOv5" class="headerlink" title="YOLOv5"></a>YOLOv5</h1><p>YOLOv5并无论文，我以开源代码中的实现来说明（version 5.0）。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/10/20/YOLOv4-v5-X%E7%90%86%E8%A7%A3/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1245,13 +1236,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">61k</span>
+    <span title="站点总字数">65k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">3:41</span>
+    <span title="站点阅读时长">3:58</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动

@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 8.1.1">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="粗筛阶段（Broad Phase）SAP（扫描线算法）不论碰撞体本身是圆形、OBB、多边形，都可以获得顶点集合的minPoint: (minX, minZ)和maxPoint: (maxX, maxZ)，得到最大外接矩形也就是AABB，将所有待检测对象的AABB投影到对应的轴上。每个对象在每个轴上都会得到一个线段，两个不同对象的线段如果在某一个轴上没有交集，就证明一定不存在碰撞，反之，在所有轴上都">
+<meta property="og:type" content="article">
+<meta property="og:title" content="碰撞检测">
+<meta property="og:url" content="http://example.com/2026/02/23/%E7%A2%B0%E6%92%9E%E6%A3%80%E6%B5%8B/index.html">
+<meta property="og:site_name" content="Lizq的个人博客">
+<meta property="og:description" content="粗筛阶段（Broad Phase）SAP（扫描线算法）不论碰撞体本身是圆形、OBB、多边形，都可以获得顶点集合的minPoint: (minX, minZ)和maxPoint: (maxX, maxZ)，得到最大外接矩形也就是AABB，将所有待检测对象的AABB投影到对应的轴上。每个对象在每个轴上都会得到一个线段，两个不同对象的线段如果在某一个轴上没有交集，就证明一定不存在碰撞，反之，在所有轴上都">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-02-23T02:17:46.000Z">
+<meta property="article:modified_time" content="2026-03-01T15:52:28.116Z">
+<meta property="article:author" content="Lizq">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2026/02/23/%E7%A2%B0%E6%92%9E%E6%A3%80%E6%B5%8B/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2026/02/23/%E7%A2%B0%E6%92%9E%E6%A3%80%E6%B5%8B/","path":"2026/02/23/碰撞检测/","title":"碰撞检测"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>碰撞检测 | Lizq的个人博客</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js" defer></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Lizq的个人博客</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%B2%97%E7%AD%9B%E9%98%B6%E6%AE%B5%EF%BC%88Broad-Phase%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">粗筛阶段（Broad Phase）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#SAP%EF%BC%88%E6%89%AB%E6%8F%8F%E7%BA%BF%E7%AE%97%E6%B3%95%EF%BC%89"><span class="nav-number">1.1.</span> <span class="nav-text">SAP（扫描线算法）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%97%E6%B3%95"><span class="nav-number">1.2.</span> <span class="nav-text">算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%B6%E7%A9%BA%E7%9B%B8%E5%85%B3%E6%80%A7"><span class="nav-number">1.3.</span> <span class="nav-text">时空相关性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AD%96%E7%95%A5"><span class="nav-number">1.4.</span> <span class="nav-text">策略</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%B2%BE%E7%BB%86%E9%98%B6%E6%AE%B5%EF%BC%88Narrow-Phase%EF%BC%89"><span class="nav-number">2.</span> <span class="nav-text">精细阶段（Narrow Phase）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-SAT"><span class="nav-number">2.1.</span> <span class="nav-text">1. SAT</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-OBB%E4%BC%98%E5%8C%96"><span class="nav-number">2.1.1.</span> <span class="nav-text">1.1 OBB优化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-GJK"><span class="nav-number">2.2.</span> <span class="nav-text">2. GJK</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E9%97%B5%E5%8F%AF%E5%A4%AB%E6%96%AF%E5%9F%BA%E5%92%8C-%E5%B7%AE"><span class="nav-number">2.2.1.</span> <span class="nav-text">2.1 闵可夫斯基和&#x2F;差</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E8%8E%B7%E5%8F%96%E6%94%AF%E6%92%91%E7%82%B9"><span class="nav-number">2.2.2.</span> <span class="nav-text">2.2 获取支撑点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-%E5%85%B7%E4%BD%93%E6%AD%A5%E9%AA%A4"><span class="nav-number">2.2.3.</span> <span class="nav-text">2.3 具体步骤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="nav-number">2.2.4.</span> <span class="nav-text">2.4 代码实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-EPA"><span class="nav-number">2.2.5.</span> <span class="nav-text">2.5 EPA</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#profiler"><span class="nav-number">2.3.</span> <span class="nav-text">profiler</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="nav-number">3.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Lizq</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">58</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fkjkkll" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fkjkkll" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:lzq0225@qq.com" title="E-Mail → mailto:lzq0225@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/02/23/%E7%A2%B0%E6%92%9E%E6%A3%80%E6%B5%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Lizq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="碰撞检测 | Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          碰撞检测
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-02-23 10:17:46" itemprop="dateCreated datePublished" datetime="2026-02-23T10:17:46+08:00">2026-02-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-03-01 23:52:28" itemprop="dateModified" datetime="2026-03-01T23:52:28+08:00">2026-03-01</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>17 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="粗筛阶段（Broad-Phase）"><a href="#粗筛阶段（Broad-Phase）" class="headerlink" title="粗筛阶段（Broad Phase）"></a>粗筛阶段（Broad Phase）</h1><h2 id="SAP（扫描线算法）"><a href="#SAP（扫描线算法）" class="headerlink" title="SAP（扫描线算法）"></a>SAP（扫描线算法）</h2><p>不论碰撞体本身是圆形、OBB、多边形，都可以获得顶点集合的<code>minPoint: (minX, minZ)</code>和<code>maxPoint: (maxX, maxZ)</code>，得到最大外接矩形也就是AABB，将所有待检测对象的AABB投影到对应的轴上。每个对象在每个轴上都会得到一个线段，两个不同对象的线段如果在某一个轴上没有交集，就证明一定不存在碰撞，反之，在所有轴上都存在交集，则这两个对象的AABB一定发生了碰撞，如果对象本身就是AABB那就检测完毕，否则需要进一步判断两个对象是否实际碰撞。<br></p>
+<h2 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h2><p>先从X轴开始，遍历每个对象，投影可以产生两个端点<code>minValue, maxValue</code>，将所有对象的投影端点都放入一个数组内，并按坐标从小到大进行排序。维护两个列表：活跃列表<code>[]</code>和重叠对列表<code>[]</code>。扫描线从左到右扫描这些端点。</p>
+<ul>
+<li>当遇到对象A的<code>minValue</code>时，将其加入活跃列表<code>[A]</code>，表示它的区间开始了。</li>
+<li>当遇到对象B的<code>minValue</code>时，将其加入活跃列表<code>[A, B]</code>，在当前轴，B与活跃列表的所有对象发生了重叠，因此将所有重叠对加入重叠对列表<code>[(A, B)]</code>。</li>
+<li>当遇到对象C的<code>minValue</code>时，将其加入活跃列表<code>[A, B, C]</code>，在当前轴，C与活跃列表的所有对象发生了重叠，因此将所有重叠对加入重叠对列表<code>[(A, B), (A, C), (B, C)]</code>。</li>
+<li>当遇到A的<code>maxValue</code>时，将A移除活跃列表<code>[B, C]</code></li>
+<li>当遇到B的<code>maxValue</code>时，将B移除活跃列表<code>[C]</code></li>
+<li>当遇到C的<code>maxValue</code>时，将C移除活跃列表<code>[]</code></li>
+</ul>
+<p>遍历上一步得到的X轴重叠对列表，按照先前相同的思路进行Z轴的重叠判定，可以得到XZ轴重叠列表，如果是二维碰撞，此时已经完成了SAP判断；否则遍历XZ轴重叠列表，进行Y轴的重叠判定，最终得到XYZ轴重叠列表。<br><br>如果物体本就是AABB，那最终的XYZ轴重叠列表就是碰撞对，否则需要对这些碰撞对进行更精确的碰撞检测。</p>
+<h2 id="时空相关性"><a href="#时空相关性" class="headerlink" title="时空相关性"></a>时空相关性</h2><p>游戏里，物体每一帧之间的位置变化通常非常小，意味着上一帧排好的顺序，在这一帧几乎还是对的，只需要用<a target="_blank" rel="noopener" href="https://fkjkkll.github.io/2022/04/03/%E5%8D%81%E5%A4%A7%E6%8E%92%E5%BA%8F%E6%80%BB%E7%BB%93/#2-%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F">插入排序</a>即可以接近<code>O(N)</code>的复杂度重新恢复顺序，只有物体“互相超车”端点顺序发生交换、新物体加入、旧物体删除时才会进行调整<br><br>补充：对于逆序对较少的列表，插入排序的速度极快，这也是<a target="_blank" rel="noopener" href="https://fkjkkll.github.io/2022/04/03/%E5%8D%81%E5%A4%A7%E6%8E%92%E5%BA%8F%E6%80%BB%E7%BB%93/?highlight=%E5%8D%81%E5%A4%A7#4-%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F%EF%BC%88%E7%94%B1%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F%E8%BF%9B%E5%8C%96%E8%80%8C%E6%9D%A5%EF%BC%89">希尔排序</a>的中心思想</p>
+<h2 id="策略"><a href="#策略" class="headerlink" title="策略"></a>策略</h2><p>之前的例子是从X轴开始，这肯定不是必须的，最好的方法是从<strong>物体分布最稀疏的轴开始</strong></p>
+<h1 id="精细阶段（Narrow-Phase）"><a href="#精细阶段（Narrow-Phase）" class="headerlink" title="精细阶段（Narrow Phase）"></a>精细阶段（Narrow Phase）</h1><p>下面介绍的两个算法都是基于凸多边形的，如果是凹多边形，需要将其划分成多个凸多边形来进行处理（所有凹面多边形都可以拆成凸面多边形）。</p>
+<ul>
+<li>凸多边形：多边形任意两点的连线都在多边形内部，凹多边形总能找到反例</li>
+</ul>
+<h2 id="1-SAT"><a href="#1-SAT" class="headerlink" title="1. SAT"></a>1. SAT</h2><p><strong>从分离的角度判断物体间的碰撞</strong><br><br>SAT非常简单，核心思路就几点：</p>
+<ul>
+<li>取两个多边形所有的边</li>
+<li>对每条边求一个垂直轴（法线、分离轴）<ul>
+<li>把两个多边形的每个边依次投影到该轴上，求得投影的$(min, max)$区间</li>
+</ul>
+</li>
+<li>如果存在某个轴，求得的两个区间不重叠，代表不碰撞；反之，不存在这样的轴，则表明碰撞</li>
+<li>且可以通过重叠区域在对应轴的投影长度，求得最小平移向量（MTV, Minimum Translation Vector）</li>
+</ul>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">Sat</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">bool</span> <span class="title">Intersects</span>(<span class="params">ConvexPolygon polyA, ConvexPolygon polyB, <span class="keyword">out</span> Vector2 mtv</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        mtv = <span class="literal">default</span>;</span><br><span class="line">        <span class="keyword">var</span> minSeparateDist = <span class="built_in">float</span>.MaxValue;</span><br><span class="line">        Vector2 smallestAxis = <span class="literal">default</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (!TestPolygonAxes(polyA, polyB, <span class="keyword">ref</span> minSeparateDist, <span class="keyword">ref</span> smallestAxis))</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (!TestPolygonAxes(polyB, polyA, <span class="keyword">ref</span> minSeparateDist, <span class="keyword">ref</span> smallestAxis))</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">var</span> centerA = ComputeCenter(polyA);</span><br><span class="line">        <span class="keyword">var</span> centerB = ComputeCenter(polyB);</span><br><span class="line">        <span class="comment">// 方向修正：保证从A指向B</span></span><br><span class="line">        <span class="keyword">if</span> (Vector2.Dot(centerB-centerA, smallestAxis) &lt; <span class="number">0</span>) smallestAxis *= <span class="number">-1f</span>;</span><br><span class="line">        mtv = smallestAxis * minSeparateDist;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="built_in">bool</span> <span class="title">TestPolygonAxes</span>(<span class="params">ConvexPolygon polyA, ConvexPolygon polyB, <span class="keyword">ref</span> <span class="built_in">float</span> minSeparateDist, <span class="keyword">ref</span> Vector2 smallestAxis</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> count = polyA.Vertices.Length;</span><br><span class="line">        </span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; count; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> p1 = polyA.Vertices[i];</span><br><span class="line">            <span class="keyword">var</span> p2 = polyA.Vertices[(i + <span class="number">1</span>) % count];</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> edge = p2 - p1;</span><br><span class="line">            <span class="keyword">var</span> axis = <span class="keyword">new</span> Vector2(-edge.y, edge.x).normalized; <span class="comment">// 2D垂直向量</span></span><br><span class="line"></span><br><span class="line">            Project(polyA, axis, <span class="keyword">out</span> <span class="keyword">var</span> minA, <span class="keyword">out</span> <span class="keyword">var</span> maxA);</span><br><span class="line">            Project(polyB, axis, <span class="keyword">out</span> <span class="keyword">var</span> minB, <span class="keyword">out</span> <span class="keyword">var</span> maxB);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (maxA &lt; minB || maxB &lt; minA) <span class="keyword">return</span> <span class="literal">false</span>; <span class="comment">// 找到分离轴</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> separateDist = Mathf.Min(maxA - minB, maxB - minA); <span class="comment">// 脱离距离：在当前轴完成脱离的最小距离</span></span><br><span class="line">            <span class="comment">// var overlap = Mathf.Min(maxA, maxB) - Mathf.Max(minA, minB); // overlap在包含的情况下失去意义</span></span><br><span class="line">            <span class="keyword">if</span> (separateDist &gt;= minSeparateDist) <span class="keyword">continue</span>;</span><br><span class="line">            </span><br><span class="line">            minSeparateDist = separateDist;</span><br><span class="line">            smallestAxis = axis;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Project</span>(<span class="params">ConvexPolygon poly, Vector2 axis, <span class="keyword">out</span> <span class="built_in">float</span> min, <span class="keyword">out</span> <span class="built_in">float</span> max</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> projection = Vector2.Dot(poly.Vertices[<span class="number">0</span>], axis);</span><br><span class="line">        min = projection;</span><br><span class="line">        max = projection;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">1</span>; i &lt; poly.Vertices.Length; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            projection = Vector2.Dot(poly.Vertices[i], axis);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (projection &lt; min) min = projection;</span><br><span class="line">            <span class="keyword">if</span> (projection &gt; max) max = projection;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> Vector2 <span class="title">ComputeCenter</span>(<span class="params">ConvexPolygon poly</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> x = <span class="number">0f</span>;</span><br><span class="line">        <span class="keyword">var</span> y = <span class="number">0f</span>;</span><br><span class="line">        <span class="keyword">var</span> length = poly.Vertices.Length;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; poly.Vertices.Length; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            x += poly.Vertices[i].x;</span><br><span class="line">            y += poly.Vertices[i].y;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Vector2(x / length, y / length);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>代码里不需要MTV可以去掉，同时也可以去掉向量的标准化，优化效率。</p>
+<h3 id="1-1-OBB优化"><a href="#1-1-OBB优化" class="headerlink" title="1.1 OBB优化"></a>1.1 OBB优化</h3><p>OBB是平行四边形，每个图形只需要取两个边的轴进行判断，节省一半运算。此外根据OBB的实现还可以进一步优化：</p>
+<ul>
+<li>OBB包含顺时针或逆时针顺序的顶点相对坐标：可以取连续两个顶点，进行投影取其中最大值，这就是该OBB的“半径”。然后计算两个OBB的中心距离，两个半径减去中心距离即可得出沿当前轴的分离距离，如果不相交，则分离距离小于0</li>
+<li>OBB包含分离的单位向量axisX、axisY和两个轴的伸展extend：我们可以分别计算OBB的两个朝向的投影长度，乘以对应轴的extend，然后将结果相加，此时得到的值也是“半径”，后续操作和上述一致</li>
+</ul>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">SatObb</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// mtv: A推开B（B远离A）</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">bool</span> <span class="title">Intersects</span>(<span class="params">Obb obbA, Obb obbB, <span class="keyword">out</span> Vector2 mtv</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        mtv = <span class="literal">default</span>;</span><br><span class="line">        <span class="keyword">var</span> minSeparateDist = <span class="built_in">float</span>.MaxValue;</span><br><span class="line">        Vector2 smallestAxis = <span class="literal">default</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (!TestObbAxes(obbA, obbB, <span class="keyword">ref</span> minSeparateDist, <span class="keyword">ref</span> smallestAxis))</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (!TestObbAxes(obbB, obbA, <span class="keyword">ref</span> minSeparateDist, <span class="keyword">ref</span> smallestAxis))</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    </span><br><span class="line">        <span class="comment">// 方向修正：保证从A指向B</span></span><br><span class="line">        <span class="keyword">if</span> (Vector3.Dot(obbB.Center - obbA.Center, smallestAxis) &lt; <span class="number">0</span>) smallestAxis *= <span class="number">-1f</span>;</span><br><span class="line">        mtv = smallestAxis * minSeparateDist;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="built_in">bool</span> <span class="title">TestObbAxes</span>(<span class="params">Obb obbA, Obb obbB, <span class="keyword">ref</span> <span class="built_in">float</span> minSeparateDist, <span class="keyword">ref</span> Vector2 smallestAxis</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> separateDist = CalcSeparateDistInAxis(obbA, obbB, obbA.AxisX);</span><br><span class="line">        <span class="keyword">if</span> (separateDist &lt;= <span class="number">0</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">if</span> (separateDist &lt; minSeparateDist)</span><br><span class="line">        &#123;</span><br><span class="line">            minSeparateDist = separateDist;</span><br><span class="line">            smallestAxis = obbA.AxisX;</span><br><span class="line">        &#125;</span><br><span class="line">        separateDist = CalcSeparateDistInAxis(obbA, obbB, obbA.AxisY);</span><br><span class="line">        <span class="keyword">if</span> (separateDist &lt;= <span class="number">0</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">if</span> (separateDist &lt; minSeparateDist)</span><br><span class="line">        &#123;</span><br><span class="line">            minSeparateDist = separateDist;</span><br><span class="line">            smallestAxis = obbA.AxisY;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="built_in">float</span> <span class="title">CalcSeparateDistInAxis</span>(<span class="params">Obb obbA, Obb obbB, Vector2 axis</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> dist = MathF.Abs(Vector2.Dot(obbA.Center - obbB.Center, axis));</span><br><span class="line">        <span class="keyword">var</span> aXProj = MathF.Abs(Vector2.Dot(obbA.AxisX , axis)) * obbA.Extend.x;</span><br><span class="line">        <span class="keyword">var</span> aYProj = MathF.Abs(Vector2.Dot(obbA.AxisY , axis)) * obbA.Extend.y;</span><br><span class="line">        <span class="keyword">var</span> aRadius = aXProj + aYProj;</span><br><span class="line">    </span><br><span class="line">        <span class="keyword">var</span> bXProj = MathF.Abs(Vector2.Dot(obbB.AxisX, axis)) * obbB.Extend.x;</span><br><span class="line">        <span class="keyword">var</span> bYProj = MathF.Abs(Vector2.Dot(obbB.AxisY, axis)) * obbB.Extend.y;</span><br><span class="line">        <span class="keyword">var</span> bRadius = bXProj + bYProj;</span><br><span class="line">        <span class="keyword">return</span> aRadius + bRadius - dist;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="2-GJK"><a href="#2-GJK" class="headerlink" title="2. GJK"></a>2. GJK</h2><p><strong>从重叠的角度判断物体间的碰撞</strong><br>现在我们要判断两个图形相交，我们不再考虑图形的边界线，而是将图形视为一组无限点集。这种情况下，如何判断两个图形相交呢？本能的，只要确定了两个点集有一个共同点就可以判定他们相交：$(A_{x}, A_{y})&#x3D;(B_{x}, B_{y})$，我们将他们挪到等号一侧：$(A_{x}, A_{y})-(B_{x}, B_{y})&#x3D;0$，而在数学上，存在两个点集的运算：闵可夫斯基和&#x2F;差。</p>
+<h3 id="2-1-闵可夫斯基和-差"><a href="#2-1-闵可夫斯基和-差" class="headerlink" title="2.1 闵可夫斯基和&#x2F;差"></a>2.1 闵可夫斯基和&#x2F;差</h3><p>两个图形的每个点都当成从原点出发的向量，然后两两相加，得到新的一堆坐标点。换句话说，就像把一个图形在另一个图形边上扫描一圈，形成的一个膨胀区域。下面就是闵可夫斯基和的数学公式：<br>$$<br>A⊕B&#x3D;{{a+b|a∈A,b∈B}}<br>$$<br>而在刚才推导的等式形式上则是闵可夫斯基差，说白了，其实就是其中一个图形与另一个图形取反（原点中心对称）后的闵可夫斯基和：<br>$$<br>A⊖B&#x3D;{{a+(-b)|a∈A,b∈B}}<br>$$<br>GJK中两条关键特性：</p>
+<ul>
+<li>两个凸多边形的闵可夫斯基和&#x2F;差，结果依旧是凸多边形<ul>
+<li>A和B是凸集 -&gt; $A⊖B convex$</li>
+</ul>
+</li>
+<li>如果两个形状相交，那么他们的闵可夫斯基差集合一定包含原点（意味着他们至少有一个共同点）<ul>
+<li>A和B相交 -&gt; $(0,0)∈A⊖B$</li>
+</ul>
+</li>
+</ul>
+<p>至此，判断两个图形相交被转化为判断两个图形的闵可夫斯基差是否包含原点。但问题来了，这样无限点集的定义，如何用计算机来计算呢？实际上，我们压根不需要去求得完整的闵可夫斯基差集，我们只需要判断所得出的新图形包含原点就行了。进一步，由于图形是凸的，他们的闵可夫斯基差也是凸的，内部任意三个点形成的三角形区域必然在差集内，只要存在某个构建的三角形包含了原点，那就证明了两个图形相交。<br><br>在数学上，这个“三角形”被称为“单纯形”，指代能推广到任意维度的广义三角形概念，简单来说，单纯形就是能包住某个维度点的最基础形状，所以二维空间的单纯形就是三角形，三维空间的单纯形就是四面体，这块不是重点，在本文，理解为三角形就行了。<br><br>现在问题就是如何从无限点集内，合理快速的找到这个包围原点的三角形呢？在考虑该问题前，需要介绍凸集的另一个特性：形状上的每个顶点，都存在一个方向，使它成为凸多边形最远的点。换句话说，只要我挨个检查所有方向，找出凸多边形在该方向最远的点，就能得到图形上所有的顶点。<br><br>现在，咱们可以把某个方向，对应到凸多边形上的顶点了：$S_A(\vec{d})$-&gt;凸多边形某个顶点。我们将“输入某个方向向量，返回最远顶点”的函数称为<strong>支撑函数</strong>，对应的那个顶点就叫做<strong>支撑点</strong>。用原始形状的支撑点，就能算出闵可夫斯基和与差的支撑点：<br>$$<br>S_A(\vec{d}) + S_B(\vec{d}) &#x3D; S_C(\vec{d})<br>$$<br>计算闵可夫斯基差很简单：随便选一个方向$\vec{d}$，找到第一个图形在$\vec{d}$的支撑点，然后找到第二个图形在反方向$-\vec{d}$的支撑点，然后将这两个点相减，即可得到最终闵可夫斯基差集合中$\vec{d}$方向最远的顶点。简单来说：我们其实是在两个图形上分别用正反方向的最远点相减，来找出闵可夫斯基差集的边界点。<br>$$<br>S_A(\vec{d}) - S_B(-\vec{d}) &#x3D; S_C(\vec{d})<br>$$<br>现在我们不用完整计算闵可夫斯基差集就能直接找到差集图形边界上的顶点了！这样一来，我们就可以按方向来选点，等会儿要在闵可夫斯基差集边界上找包围原点的三角形时，这个技巧就可以派上大用场。<br></p>
+<h3 id="2-2-获取支撑点"><a href="#2-2-获取支撑点" class="headerlink" title="2.2 获取支撑点"></a>2.2 获取支撑点</h3><p>支撑函数输入某个方向向量$\vec{d}$，返回凸集$B$中最远的顶点$v$，数学上就是遍历顶点，找到某个顶点，它与$\vec{d}$的点积最大。$\vec{d}$是单位向量，点积的结果就是投影长度，也就是该凸集在该方向的“最远点”。<br>$$<br>S_B(\vec{d}) &#x3D; v &#x3D; \underset{v \in B}{\argmax} \ v^T\vec{d}<br>$$</p>
+<ul>
+<li>凸多边形：只需要计算每个顶点与$\vec{d}$的点积，找到最大值的那一个顶点</li>
+<li>圆形：直接用方向向量乘以半径加上圆心偏移就能得到支撑点$S_B(\vec{d}) &#x3D; C + r\vec{d}$</li>
+<li>其他几何图形都可以自定义计算支撑点的方法，因此GJK压根不关心具体的形状（要凸）</li>
+</ul>
+<h3 id="2-3-具体步骤"><a href="#2-3-具体步骤" class="headerlink" title="2.3 具体步骤"></a>2.3 具体步骤</h3><p>具体步骤参考文献内Youtuber Reducible的视频讲解的非常好。思想就是朝向原点方向迭代构建三角形尝试去包围原点，涉及到操作有：点积判断是否越过原点、向量三重积求取线段的有向垂线、根据构建得出的三角形沃罗诺伊区域（Voronoi）判断点在三角形内以及后续的操作。视频结合动画实在效果一流，远非博客文字和图片所能代替，因此这里不再赘述。</p>
+<h3 id="2-4-代码实现"><a href="#2-4-代码实现" class="headerlink" title="2.4 代码实现"></a>2.4 代码实现</h3><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">Gjk</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">readonly</span> List&lt;Vector2&gt; Simplex = <span class="keyword">new</span>();</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">bool</span> <span class="title">Intersects</span>(<span class="params">ConvexPolygon a, ConvexPolygon b</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        Simplex.Clear();</span><br><span class="line">        <span class="keyword">var</span> d = Vector2.right;</span><br><span class="line"></span><br><span class="line">        Simplex.Add(Support(a, b, d));</span><br><span class="line">        d = -Simplex[<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> (<span class="literal">true</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> p = Support(a, b, d);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (Vector2.Dot(p, d) &lt;= <span class="number">0</span>)</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>; <span class="comment">// 不相交</span></span><br><span class="line"></span><br><span class="line">            Simplex.Add(p);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (HandleSimplex(Simplex, <span class="keyword">ref</span> d))</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">true</span>; <span class="comment">// 相交</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Vector2 <span class="title">Support</span>(<span class="params">ConvexPolygon a, ConvexPolygon b, Vector2 d</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> a.Support(d) - b.Support(-d);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 2D 只有两种情况：</span></span><br><span class="line">    <span class="comment">// 当前 simplex 是线段</span></span><br><span class="line">    <span class="comment">// 当前 simplex 是三角形</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">bool</span> <span class="title">HandleSimplex</span>(<span class="params">List&lt;Vector2&gt; simplex, <span class="keyword">ref</span> Vector2 d</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (simplex.Count == <span class="number">2</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// simplex: [B, A]（注意：最后加入的是 A）</span></span><br><span class="line">            <span class="keyword">var</span> a = simplex[<span class="number">1</span>];</span><br><span class="line">            <span class="keyword">var</span> b = simplex[<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> ab = b - a;</span><br><span class="line">            <span class="keyword">var</span> ao = -a;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// AB 垂直方向，指向原点那边</span></span><br><span class="line">            d = TripleProduct(ab, ao, ab);</span><br><span class="line">            </span><br><span class="line">            <span class="comment">// 防止出现共线情况（两个正方形紧邻，交集是一条线）</span></span><br><span class="line">            <span class="keyword">if</span> (d.sqrMagnitude &lt; <span class="number">1e-6</span>f)</span><br><span class="line">            &#123;</span><br><span class="line">                d = <span class="keyword">new</span> Vector2(-ab.y, ab.x);</span><br><span class="line">                <span class="comment">// 这里主要是防止浮点数误差，对于数学上严格共线的情况下，点积必然为0，法向量方向不用在意</span></span><br><span class="line">                <span class="keyword">if</span> (Vector2.Dot(ao, d) &lt; <span class="number">0</span>) d = -d;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// simplex: [C, B, A]（注意：最后加入的是 A）</span></span><br><span class="line">            <span class="keyword">var</span> a = simplex[<span class="number">2</span>];</span><br><span class="line">            <span class="keyword">var</span> b = simplex[<span class="number">1</span>];</span><br><span class="line">            <span class="keyword">var</span> c = simplex[<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> ab = b - a;</span><br><span class="line">            <span class="keyword">var</span> ac = c - a;</span><br><span class="line">            <span class="keyword">var</span> ao = -a;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> abPerp = TripleProduct(ac, ab, ab);</span><br><span class="line">            <span class="keyword">var</span> acPerp = TripleProduct(ab, ac, ac);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 原点在 AB 外侧</span></span><br><span class="line">            <span class="keyword">if</span> (Vector2.Dot(abPerp, ao) &gt; <span class="number">0</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                simplex.RemoveAt(<span class="number">0</span>); <span class="comment">// 移除 C</span></span><br><span class="line">                d = abPerp;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 原点在 AC 外侧</span></span><br><span class="line">            <span class="keyword">if</span> (Vector2.Dot(acPerp, ao) &gt; <span class="number">0</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                simplex.RemoveAt(<span class="number">1</span>); <span class="comment">// 移除 B</span></span><br><span class="line">                d = acPerp;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 原点在三角形内部</span></span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 向量三重积公式来求取向量A向原点的法向量</span></span><br><span class="line">    <span class="comment">// aXbXc结果是c的垂线（与(b-a)点积大于0的方向）</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Vector2 <span class="title">TripleProduct</span>(<span class="params">Vector2 a, Vector2 b, Vector2 c</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> ac = Vector2.Dot(a, c);</span><br><span class="line">        <span class="keyword">var</span> bc = Vector2.Dot(b, c);</span><br><span class="line">        <span class="keyword">return</span> b * ac - a * bc;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在求解点是否在三角形内时没有使用传统的循环变叉积（inside test）同向方法。因为我们没有“完整三角形”，这些点也不是固定顺序，不知道逆时针&#x2F;顺时针，simplex也是动态变化的。此外不仅仅只判断点在三角形内，还需要知道在哪个边外，从而丢掉离远点最远的点并且更新方向。实际上由一个三角形，可以划分七个区域：沃罗诺伊区域（Voronoi），而原点只会存在于3个区域。<br><br>此外，求某个线的垂线为什么用三重积，因为可以推广到三维，此外三重积自动确认方向，如果写$(-y,x)$只能确保垂直，无法确认方向，还需要额外做点积。</p>
+<h3 id="2-5-EPA"><a href="#2-5-EPA" class="headerlink" title="2.5 EPA"></a>2.5 EPA</h3><p>全称Expanding Polytope Algorithm，就是用来在GJK碰撞确认后，求穿透深度和穿透向量的算法。理解完GJK后，该算法非常简单。思路就是：</p>
+<ul>
+<li>在GJK求取的包含原点的单纯形内，继续扩展。</li>
+<li>不断地去找到离原点最近的边然后向原点的反方向作垂向量，然后得到新的闵可夫斯基差顶点，将它加入定点列表</li>
+<li>如果下一个多边形顶点加入后，其正好是该方向的最远点，就代表找到了</li>
+</ul>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">Epa</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">const</span> <span class="built_in">float</span> Epsilon = <span class="number">1e-3</span>f; <span class="comment">// 太小，float会误判</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">const</span> <span class="built_in">int</span> MaxIterations = <span class="number">32</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">readonly</span> List&lt;Vector2&gt; Simplex = <span class="keyword">new</span>();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">bool</span> <span class="title">Intersects</span>(<span class="params">ConvexPolygon a, ConvexPolygon b, <span class="keyword">out</span> Vector2 mtv</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        mtv = <span class="literal">default</span>;</span><br><span class="line">        Simplex.Clear();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (!GjkInternal(a, b, Simplex)) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 进入 EPA</span></span><br><span class="line">        mtv = EPA(a, b, Simplex);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">#<span class="keyword">region</span> GJK</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="built_in">bool</span> <span class="title">GjkInternal</span>(<span class="params">ConvexPolygon a, ConvexPolygon b, List&lt;Vector2&gt; simplex</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> d = Vector2.right;</span><br><span class="line"></span><br><span class="line">        simplex.Add(Gjk.Support(a, b, d));</span><br><span class="line">        d = -simplex[<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> (<span class="literal">true</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> p = Gjk.Support(a, b, d);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (Vector2.Dot(p, d) &lt;= <span class="number">0</span>)</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">            simplex.Add(p);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (Gjk.HandleSimplex(simplex, <span class="keyword">ref</span> d))</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">#<span class="keyword">endregion</span></span></span><br><span class="line"></span><br><span class="line">    <span class="meta">#<span class="keyword">region</span> EPA</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> Vector2 <span class="title">EPA</span>(<span class="params">ConvexPolygon A, ConvexPolygon B, List&lt;Vector2&gt; simplex</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 包含三个顶点</span></span><br><span class="line">        <span class="keyword">var</span> polytope = <span class="keyword">new</span> List&lt;Vector2&gt;(simplex);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> iter = <span class="number">0</span>; iter &lt; MaxIterations; iter++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> closestEdgeIndex = <span class="number">-1</span>;</span><br><span class="line">            <span class="keyword">var</span> minDist = <span class="built_in">float</span>.MaxValue;</span><br><span class="line">            <span class="keyword">var</span> closestNormal = Vector2.zero;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 找离原点最近的边</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; polytope.Count; i++)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">var</span> j = (i + <span class="number">1</span>) % polytope.Count;</span><br><span class="line">                <span class="keyword">var</span> a = polytope[i];</span><br><span class="line">                <span class="keyword">var</span> b = polytope[j];</span><br><span class="line">                <span class="keyword">var</span> edge = b - a;</span><br><span class="line">                <span class="keyword">var</span> toOrigin = -a;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">var</span> normal = Gjk.TripleProduct(edge, toOrigin, edge).normalized; <span class="comment">// 指向原点</span></span><br><span class="line">                <span class="keyword">if</span> (normal.sqrMagnitude &lt; Epsilon)</span><br><span class="line">                &#123;</span><br><span class="line">                    normal = <span class="keyword">new</span> Vector2(a.y, -a.x);</span><br><span class="line">                    <span class="keyword">if</span> (Vector2.Dot(normal, toOrigin) &lt; <span class="number">0</span>) normal = -normal;</span><br><span class="line">                    normal = normal.normalized;</span><br><span class="line">                &#125;</span><br><span class="line">                </span><br><span class="line">                <span class="keyword">var</span> dist = Mathf.Abs(Vector2.Dot(normal, a));</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> (dist &gt;= minDist) <span class="keyword">continue</span>;</span><br><span class="line">                minDist = dist;</span><br><span class="line">                closestEdgeIndex = j;</span><br><span class="line">                closestNormal = -normal; <span class="comment">// 背向原点</span></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 沿背向原点的法线做 support</span></span><br><span class="line">            <span class="keyword">var</span> p = Gjk.Support(A, B, closestNormal);</span><br><span class="line">            <span class="keyword">var</span> d = Vector2.Dot(p, closestNormal);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (d - minDist &lt; Epsilon) <span class="keyword">return</span> closestNormal * d;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 插入新点</span></span><br><span class="line">            polytope.Insert(closestEdgeIndex, p);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> Vector2.zero;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">#<span class="keyword">endregion</span></span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>EPA实现起来坑很多：</p>
+<ul>
+<li>浮点数误差，Epsilon不要搞太小</li>
+<li>初始的单纯形的边可能会非常接近甚至经过原点，此时求出的法线是接近零向量，用$(-y,x)$坐标直接获取法向量并做点积，尝试拿到原点反向的法向量，方向不对就换成$(y,-x)$。但是对于经过原点的边，就只能默认$(-y,x)$，后面收集的顶点列表里可能会重复，甚至就不是一个纯粹的图形了，但是最终结果确实对的。（比如两个2x2正方形，都在原点，此时就会遇到这个情况）</li>
+<li>里面技巧的一点是<code>polytope.Insert(closestEdgeIndex, p)</code>，正常情况插入的新顶点是在本轮循环找到的最近边的两个顶点之间的，这样依旧能保证顶点是顺序的（虽然上一条发现，不是顺序的也能求）</li>
+</ul>
+<h2 id="profiler"><a href="#profiler" class="headerlink" title="profiler"></a>profiler</h2><p>在进行OBB检测，每帧1k次</p>
+<center>
+
+<table>
+<thead>
+<tr>
+<th align="center">算法</th>
+<th align="center">时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">SAT-OBB</td>
+<td align="center">10ms</td>
+</tr>
+<tr>
+<td align="center">SAT</td>
+<td align="center">20ms</td>
+</tr>
+<tr>
+<td align="center">GJK</td>
+<td align="center">15ms</td>
+</tr>
+<tr>
+<td align="center">EPA</td>
+<td align="center">50ms</td>
+</tr>
+</tbody></table>
+</center>
+
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1UWFXz2EDV/?spm_id_from=333.1387.upload.video_card.click&vd_source=5def309c50dba10ca2a52c71628df16d">游戏中的碰撞检测算法：扫描与裁剪（SAP-Sweep And Prune）</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/508874496">算法集市-碰撞检测算法之分离轴定理</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/177006015">ACRL-2D凸多边形碰撞检测算法</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/710821113">夏沫陌年-2D碰撞检测算法——GJK</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=ajv46BSqcK4&t=1675s">Youtuber Reducible的GJK教程</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1e7S1BGEwF/?spm_id_from=333.337.search-card.all.click&vd_source=5def309c50dba10ca2a52c71628df16d">Youtuber Reducible的GJK教程（AI配音翻译）</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2026/02/14/Csharp-span/" rel="prev" title="Csharp Span">
+                  <i class="fa fa-angle-left"></i> Csharp Span
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Lizq</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">65k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">3:58</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>
