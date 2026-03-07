@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 8.1.1">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="参数传递Out参数只用于输出结果  调用前不需要初始化 方法内部必须赋值 引用传递  In参数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iCsharp in &amp; out &amp; ref">
+<meta property="og:url" content="http://example.com/2026/03/07/iCsharp-in-out/index.html">
+<meta property="og:site_name" content="Lizq的个人博客">
+<meta property="og:description" content="参数传递Out参数只用于输出结果  调用前不需要初始化 方法内部必须赋值 引用传递  In参数">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-03-07T09:26:15.000Z">
+<meta property="article:modified_time" content="2026-03-07T13:08:43.653Z">
+<meta property="article:author" content="Lizq">
+<meta property="article:tag" content="C#">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2026/03/07/iCsharp-in-out/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2026/03/07/iCsharp-in-out/","path":"2026/03/07/iCsharp-in-out/","title":"iCsharp in & out & ref"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>iCsharp in & out & ref | Lizq的个人博客</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js" defer></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Lizq的个人博客</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92"><span class="nav-number">1.</span> <span class="nav-text">参数传递</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Out%E5%8F%82%E6%95%B0"><span class="nav-number">1.1.</span> <span class="nav-text">Out参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#In%E5%8F%82%E6%95%B0"><span class="nav-number">1.2.</span> <span class="nav-text">In参数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%AD%90%E9%9A%90%E5%BC%8F%E6%8B%B7%E8%B4%9D%E2%AD%90"><span class="nav-number">1.2.1.</span> <span class="nav-text">⭐隐式拷贝⭐</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ref%E5%8F%82%E6%95%B0"><span class="nav-number">1.3.</span> <span class="nav-text">Ref参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E2%AD%90%E5%BC%95%E7%94%A8%E4%BC%A0%E9%80%92%E8%A1%A5%E5%85%85%E2%AD%90"><span class="nav-number">1.4.</span> <span class="nav-text">⭐引用传递补充⭐</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%99%AE%E9%80%9A%E5%87%BD%E6%95%B0%E4%BC%A0%E5%8F%82%EF%BC%9A%E5%8F%98%E9%87%8F%E5%80%BC%E8%A2%AB%E5%A4%8D%E5%88%B6"><span class="nav-number">1.4.1.</span> <span class="nav-text">普通函数传参：变量值被复制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%9A%E8%BF%87ref-in-out%E4%BC%A0%E5%8F%82%EF%BC%9A%E5%8F%98%E9%87%8F%E6%9C%AC%E8%BA%AB%E7%9A%84%E5%9C%B0%E5%9D%80"><span class="nav-number">1.4.2.</span> <span class="nav-text">通过ref&#x2F;in&#x2F;out传参：变量本身的地址</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%8F%E5%8F%98%E5%92%8C%E9%80%86%E5%8F%98"><span class="nav-number">2.</span> <span class="nav-text">协变和逆变</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%AE%E9%A2%98"><span class="nav-number">2.1.</span> <span class="nav-text">问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%AA%E8%AF%BB%E6%83%85%E5%86%B5"><span class="nav-number">2.1.1.</span> <span class="nav-text">只读情况</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AF%BB%E5%86%99%E6%83%85%E5%86%B5"><span class="nav-number">2.1.2.</span> <span class="nav-text">读写情况</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%84%E5%88%99"><span class="nav-number">2.1.3.</span> <span class="nav-text">规则</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8D%E5%8F%98%EF%BC%88Invariant%EF%BC%89"><span class="nav-number">2.2.</span> <span class="nav-text">不变（Invariant）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%8F%E5%8F%98%EF%BC%88Covariant%EF%BC%89"><span class="nav-number">2.3.</span> <span class="nav-text">协变（Covariant）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8E%A5%E5%8F%A3"><span class="nav-number">2.3.1.</span> <span class="nav-text">接口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A7%94%E6%89%98"><span class="nav-number">2.3.2.</span> <span class="nav-text">委托</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%86%E5%8F%98%EF%BC%88Contravariant%EF%BC%89"><span class="nav-number">2.4.</span> <span class="nav-text">逆变（Contravariant）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8E%A5%E5%8F%A3-1"><span class="nav-number">2.4.1.</span> <span class="nav-text">接口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A7%94%E6%89%98-1"><span class="nav-number">2.4.2.</span> <span class="nav-text">委托</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Lizq</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">59</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fkjkkll" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fkjkkll" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:lzq0225@qq.com" title="E-Mail → mailto:lzq0225@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/03/07/iCsharp-in-out/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Lizq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="iCsharp in &amp; out &amp; ref | Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          iCsharp in & out & ref
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-03-07 17:26:15 / 修改时间：21:08:43" itemprop="dateCreated datePublished" datetime="2026-03-07T17:26:15+08:00">2026-03-07</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="参数传递"><a href="#参数传递" class="headerlink" title="参数传递"></a>参数传递</h2><h3 id="Out参数"><a href="#Out参数" class="headerlink" title="Out参数"></a>Out参数</h3><p><strong>只用于输出结果</strong></p>
+<ul>
+<li>调用前<strong>不需要</strong>初始化</li>
+<li>方法内部<strong>必须赋值</strong></li>
+<li>引用传递</li>
+</ul>
+<h3 id="In参数"><a href="#In参数" class="headerlink" title="In参数"></a>In参数</h3><p><strong>引用传递+只读</strong>。主要用途是传参时避免大型struct拷贝，并安全的只读访问</p>
+<ul>
+<li>调用前<strong>必须初始化</strong></li>
+<li>方法内部<strong>只读</strong></li>
+<li>引用传递</li>
+<li><em>传参时可以省略，编译器自动加，但是不建议省略</em></li>
+</ul>
+<h4 id="⭐隐式拷贝⭐"><a href="#⭐隐式拷贝⭐" class="headerlink" title="⭐隐式拷贝⭐"></a>⭐隐式拷贝⭐</h4><p>如果结构体不是readonly的，在通过in传递到只读上下文时，如果调用了该函数体内部的某个方法Change，而这个方法会修改结构体内部数据，此时Change会通过拷贝一份该函数体再进行调用，Change里任何对原结构体的修改都被施加到这个临时的拷贝体了。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> Node</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span> Id;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Change</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 任何修改都是作用域临时的拷贝副本</span></span><br><span class="line">        Id = <span class="number">111</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Test</span>(<span class="params"><span class="keyword">in</span> Node node</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// Rider提示：“在只读变量中调用可能不纯的结构方法；结构值始终在调用前复制”</span></span><br><span class="line">    node.Change();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>解决方法是给结构体加上readonly关键字，或者给Change函数加上readonly关键字，杜绝无意的调用。</p>
+<h3 id="Ref参数"><a href="#Ref参数" class="headerlink" title="Ref参数"></a>Ref参数</h3><p><strong>引用传递</strong>。</p>
+<ul>
+<li>调用前<strong>必须初始化</strong></li>
+<li>引用传递</li>
+</ul>
+<h3 id="⭐引用传递补充⭐"><a href="#⭐引用传递补充⭐" class="headerlink" title="⭐引用传递补充⭐"></a>⭐引用传递补充⭐</h3><h4 id="普通函数传参：变量值被复制"><a href="#普通函数传参：变量值被复制" class="headerlink" title="普通函数传参：变量值被复制"></a>普通函数传参：<em><strong>变量值被复制</strong></em></h4><ul>
+<li>值类型：拷贝一份</li>
+<li>引用类型：拷贝一份（引用对象的地址）</li>
+</ul>
+<h4 id="通过ref-in-out传参：变量本身的地址"><a href="#通过ref-in-out传参：变量本身的地址" class="headerlink" title="通过ref&#x2F;in&#x2F;out传参：变量本身的地址"></a>通过ref&#x2F;in&#x2F;out传参：<em><strong>变量本身的地址</strong></em><br></h4><p>无论值类型还是引用类型，传递的都是变量本身的地址；区别在于变量里存的是什么：</p>
+<ul>
+<li>值类型变量：存的是值</li>
+<li>引用类型变量：存的是对象引用</li>
+</ul>
+<p>所以说：</p>
+<ul>
+<li>对于值类型，传递的是变量的地址</li>
+<li>对于引用类型，传递的是“引用变量本身”的地址（而不是引用对象的地址，那是普通引用传递！），类似C语言里的“指针的指针”，因此像ref和out可以在内部更改其指向新的引用数据</li>
+</ul>
+<h2 id="协变和逆变"><a href="#协变和逆变" class="headerlink" title="协变和逆变"></a>协变和逆变</h2><p>in和out在泛型里可以用作“变形（variance）”，用于描述类型转换规则，主要用在<em><strong>泛型接口和泛型委托</strong></em>上</p>
+<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>假设有如下定义</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">Animal</span> &#123;&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title">Dog</span> : <span class="title">Animal</span> &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">interface</span> <span class="title">IBox</span>&lt;<span class="title">T</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="function">T <span class="title">Get</span>()</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">IBox&lt;Dog&gt; dogBox = <span class="keyword">new</span> XXX();</span><br><span class="line">IBox&lt;Animal&gt; animalBox = dogBox; <span class="comment">// ×</span></span><br></pre></td></tr></table></figure>
+<p>由于父类可以指向子类（子类赋值给父类），所以我们希望子类接口可以赋值给父类接口。但是默认泛型是不允许这样的，因为可能会有类型安全问题。</p>
+<h4 id="只读情况"><a href="#只读情况" class="headerlink" title="只读情况"></a>只读情况</h4><p>假如接口内只有一个实现<code>T Get()</code>，那么<code>IBox&lt;Dog&gt; dogBox</code>永远只返回<code>Dog</code>而<code>Dog</code>是<code>Animal</code>，所以<code>IBox&lt;Dog&gt; -&gt; IBox&lt;Animal&gt;</code>是安全的，这就是<code>out T</code></p>
+<h4 id="读写情况"><a href="#读写情况" class="headerlink" title="读写情况"></a>读写情况</h4><p>假如接口内还有一个实现<code>void Set(T value)</code>，如果允许<code>IBox&lt;Dog&gt; -&gt; IBox&lt;Animal&gt;</code>，就会发生：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">IBox&lt;Dog&gt; dogBox = ...</span><br><span class="line">IBox&lt;Animal&gt; animalBox = dogBox</span><br><span class="line">animalBox.Set(<span class="keyword">new</span> Animal());</span><br></pre></td></tr></table></figure>
+<p>现在<code>dogBox</code>装了<code>Animal</code>了，类型系统崩溃，因此不能允许同时读写</p>
+<h4 id="规则"><a href="#规则" class="headerlink" title="规则"></a>规则</h4><p>因此C#引入了两个规则：</p>
+<ul>
+<li>如果只返回<code>T</code>，那就允许<code>out T</code>，表示<code>T</code>只从里面出来，只生产<code>T</code></li>
+<li>如果只接收<code>T</code>，那就运行<code>in T</code>，表示<code>T</code>只流进去，只消费<code>T</code></li>
+</ul>
+<h3 id="不变（Invariant）"><a href="#不变（Invariant）" class="headerlink" title="不变（Invariant）"></a>不变（Invariant）</h3><p>泛型默认是不变（Invariant）的，<em><strong>父子之间无法转换</strong></em></p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Dog&gt; dogs = <span class="keyword">new</span> List&lt;Dog&gt;();</span><br><span class="line">List&lt;Animal&gt; animals = dogs; <span class="comment">// ×</span></span><br></pre></td></tr></table></figure>
+<h3 id="协变（Covariant）"><a href="#协变（Covariant）" class="headerlink" title="协变（Covariant）"></a>协变（Covariant）</h3><p>生产数据，<em><strong>子类可以转换为父类</strong></em><br></p>
+<h4 id="接口"><a href="#接口" class="headerlink" title="接口"></a>接口</h4><p>协变out表示只能作为返回值，</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title">IEnumerable</span>&lt;<span class="keyword">out</span> <span class="title">T</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="function">IEnumerator&lt;T&gt; <span class="title">GetEnumerator</span>()</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">IEnumerable&lt;Dog&gt; dogs = <span class="keyword">new</span> List&lt;Dog&gt;();</span><br><span class="line">IEnumerable&lt;Animal&gt; animals = dogs; <span class="comment">// √</span></span><br><span class="line"><span class="comment">// 狗的列表也是动物的列表</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="委托"><a href="#委托" class="headerlink" title="委托"></a>委托</h4><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="built_in">delegate</span> TResult <span class="title">TheFunc</span>&lt;<span class="keyword">out</span> <span class="title">TResult</span>&gt;()</span>;</span><br><span class="line"></span><br><span class="line">TheFunc&lt;Dog&gt; f = () =&gt; <span class="keyword">new</span> Dog();</span><br><span class="line">TheFunc&lt;Animal&gt; g = f; <span class="comment">// √</span></span><br><span class="line"><span class="comment">// 返回狗也是返回动物</span></span><br></pre></td></tr></table></figure>
+<p><em><strong>从生产者角度理解：能生产父类，肯定也可以生产子类，外部只看父类部分</strong></em></p>
+<ul>
+<li>接口中，返回子类的接口，也可以被返回父类的接口持有，<em>因为父类可以指向子类，外部只知道父类不知道子类</em></li>
+<li>委托中，返回子类的回调，也可以绑定到返回父类的委托上，<em>因为父类可以指向子类，外部只知道父类不知道子类</em></li>
+</ul>
+<h3 id="逆变（Contravariant）"><a href="#逆变（Contravariant）" class="headerlink" title="逆变（Contravariant）"></a>逆变（Contravariant）</h3><p>消费数据，<em><strong>父类可以转换为子类</strong></em><br></p>
+<h4 id="接口-1"><a href="#接口-1" class="headerlink" title="接口"></a>接口</h4><p>逆变in表示只能作为参数</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title">IComparer</span>&lt;<span class="keyword">in</span> <span class="title">T</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="built_in">int</span> <span class="title">Compare</span>(<span class="params">T x, T y</span>)</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">IComparer&lt;Animal&gt; comparer = <span class="keyword">new</span> AnimalComparer();</span><br><span class="line">IComparer&lt;Dog&gt; dogComparer = comparer; <span class="comment">// √</span></span><br><span class="line"><span class="comment">// 能够排序动物的，肯定能排序狗</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="委托-1"><a href="#委托-1" class="headerlink" title="委托"></a>委托</h4><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="built_in">delegate</span> <span class="keyword">void</span> <span class="title">TheAction</span>&lt;<span class="keyword">in</span> <span class="title">T</span>&gt;(<span class="params">T obj</span>)</span>;</span><br><span class="line"></span><br><span class="line">TheAction&lt;Animal&gt; act = (Animal a) =&gt; &#123;&#125;;</span><br><span class="line">TheAction&lt;Dog&gt; dogAct = act; <span class="comment">// √</span></span><br><span class="line"><span class="comment">// 只处理动物的回调，也能处理狗</span></span><br></pre></td></tr></table></figure>
+
+<p><em><strong>从消费者角度理解：能消费父类的，肯定也能消费子类，内部只看父类部分</strong></em></p>
+<ul>
+<li>接口中，接收父类的接口，也可以被接收子类的接口所持有，<em>因为父类可以指向子类，内部只知道父类不知道子类</em></li>
+<li>委托中，接收父类的回调，也可以绑定到接收子类的委托上，<em>因为父类可以指向子类，内部只知道父类不知道子类</em></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C/" rel="tag"># C#</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2026/02/23/%E7%A2%B0%E6%92%9E%E6%A3%80%E6%B5%8B/" rel="prev" title="碰撞检测">
+                  <i class="fa fa-angle-left"></i> 碰撞检测
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Lizq</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">67k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">4:03</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

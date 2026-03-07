@@ -171,13 +171,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">58</span>
+          <span class="site-state-item-count">59</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-count">16</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -202,6 +202,110 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/10/07/%E8%B7%B3%E8%B7%83%E8%A1%A8%E7%BB%93%E5%90%88%E5%AD%97%E5%85%B8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Lizq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/10/07/%E8%B7%B3%E8%B7%83%E8%A1%A8%E7%BB%93%E5%90%88%E5%AD%97%E5%85%B8/" class="post-title-link" itemprop="url">Easy SortedSet</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-10-07 16:22:56" itemprop="dateCreated datePublished" datetime="2025-10-07T16:22:56+08:00">2025-10-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-12-01 18:25:05" itemprop="dateModified" datetime="2025-12-01T18:25:05+08:00">2025-12-01</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>8 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>我们有一堆数据，希望能够支持快速的插入、删除、查询以及范围查询<br>我们都知道数组进行排序后，可以通过二分查找的方式快速定位数据，时间复杂度是$O(LogN)$，但是如果数组经常发生插入、删除操作，就需要进行大量平移，时间复杂度是$O(N)$。<br>那用平衡树呢？AVL树、红黑树都是经过深度优化的动态数据结构，他们的插入删除查找都可以在$O(LogN)$的时间内完成，但是他们实现起来较为复杂，且对于范围查询，还需要进行中序遍历，但至少比数组好多了。<br>那链表呢，链表的插入删除是很方便，但关键查询呢，它能进行二分查找吗？链表无法随机访问，怎么二分？很显然，直接对普通链表进行二分查找是困难的。1990年，Pugh发表论文《Skip Lists: A Probabilistic Alternative to Balanced Trees》，创造性的提出了自己的解决方案：”如果不能在节点间跳跃，那就建造可以跳跃的桥梁吧！”，跳跃表（SkipList）正式被提出。<br>跳跃表是一种概率性的有序数据结构，通过建立多级索引来加速查找，可以看作是在链表基础上加了“快速通道”，变相了实现对链表的二分查找，并且，范围查找也能够很轻易的完成，只要找到目标，就可以沿着链条依次访问。<br>游戏里排行榜一般是采用Redis Sorted Set，它在数据规模较大时的底层数据结构就是跳跃表+哈希表。</p>
+<ul>
+<li>跳跃表：天然支持有序插入、删除和范围查询，时间复杂度O(log n)</li>
+<li>哈希表：用于快速查找特定用户的当前位置和分数（O(1)）</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/fkjkkll/OnlineSource/refs/heads/master/Image/algorithm/SortedSet.png" alt="示意图">跳跃表的每个节点拥有一个前序指针和多层后继指针。每层后继指针都独立成链，每个节点在插入时，都会按照概率分配给它多少层后继指针（至少一层）。类似抛硬币，落到正面，就给它加一层后继指针，然后继续抛硬币；落到反面就结束。当然，硬币正面的概率不一定是50%（实际有论文提出，包括业内经验来看，25%的概率是对性能和内存占用权衡后的得到的较优选择）。实际上，作者最初考虑过确定性跳表，即第0层是全连接，第1层是隔1个连接，第2层是隔3个连接…但是这样会导致插入和删除需要进行大量调整，复杂度变高，从而引入随机性，不仅简化了插入和删除的操作，并且统计上仍然是接近二分的结构。</p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2025/10/07/%E8%B7%B3%E8%B7%83%E8%A1%A8%E7%BB%93%E5%90%88%E5%AD%97%E5%85%B8/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1125,112 +1229,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/19/const%E8%A6%81%E7%82%B9/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Lizq">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Lizq的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | Lizq的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/08/19/const%E8%A6%81%E7%82%B9/" class="post-title-link" itemprop="url">const要点</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-08-19 20:14:02" itemprop="dateCreated datePublished" datetime="2022-08-19T20:14:02+08:00">2022-08-19</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-08-30 20:01:18" itemprop="dateModified" datetime="2022-08-30T20:01:18+08:00">2022-08-30</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>455</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>2 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="const要点"><a href="#const要点" class="headerlink" title="const要点"></a>const要点</h1><ul>
-<li>C的const是虚假的，就是个只读量，只是说不能通过变量名进行修改，但是拿到指针就可修改；</li>
-<li>C++的const会保险一些，会有类似符号表的东西；但是类内的const普通成员变量则依旧会被通过指针改变</li>
-<li>静态const和全局const虽然可以通过指针修改，编译时期可能不会报错，但是运行到那个地方就会报错</li>
-<li>const只在编译期间保证常量被使用时的不变性，无法保证运行期间的行为。</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">A</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> val2 = <span class="number">22</span>;</span><br><span class="line">    <span class="type">static</span> <span class="type">int</span> val3;</span><br><span class="line">    <span class="type">static</span> <span class="type">const</span> <span class="type">int</span> val4 = <span class="number">44</span>; <span class="comment">// !</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="type">int</span> A::val3 = <span class="number">33</span>;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> val5 = <span class="number">55</span>;</span><br><span class="line"><span class="type">int</span> val6 = <span class="number">66</span>;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> val1 = <span class="number">11</span>;</span><br><span class="line">    <span class="type">int</span>* p1 = (<span class="type">int</span>*)&amp;val1; <span class="comment">// 栈区，拿到地址随便改，但是符号表会覆盖</span></span><br><span class="line">    *p1 = <span class="number">1111</span>;</span><br><span class="line">    cout &lt;&lt; &amp;val1 &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; val1 &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; p1 &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; *p1 &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;===&quot;</span> &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    A ins;</span><br><span class="line">    <span class="type">int</span>* p2 = (<span class="type">int</span>*)&amp;ins.val2;</span><br><span class="line">    *p2 = <span class="number">2222</span>; <span class="comment">// 栈区，拿到地址随便改</span></span><br><span class="line">    cout &lt;&lt; &amp;ins.val2 &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; ins.val2 &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; p2 &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; *p2 &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;===&quot;</span> &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span>* p3 = (<span class="type">int</span>*)&amp;A::val3;</span><br><span class="line">    *p3 = <span class="number">3333</span>; <span class="comment">// 全局数据区，但是不在常量区，可以修改</span></span><br><span class="line">    cout &lt;&lt; p3 &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; *p3 &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; &amp;A::val3 &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; A::val3 &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;===&quot;</span> &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span>* p4 = (<span class="type">int</span>*)&amp;A::val4;</span><br><span class="line">    <span class="comment">//*p4 = 4444; // 编译不出错，运行会异常（常量区不能修改）</span></span><br><span class="line">    cout &lt;&lt; p4 &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; *p4 &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; &amp;A::val4 &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; A::val4 &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;===&quot;</span> &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span>* p5 = (<span class="type">int</span>*)&amp;val5;</span><br><span class="line">    <span class="comment">//*p5 = 5555; // 编译不出错，运行会异常（常量区不能修改）</span></span><br><span class="line">    cout &lt;&lt; p5 &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; *p5 &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; &amp;val5 &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; val5 &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;===&quot;</span> &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span>* p6 = (<span class="type">int</span>*)&amp;val6;</span><br><span class="line">    *p6 = <span class="number">6666</span>; <span class="comment">// 全局数据区，但是不在常量区，可以修改</span></span><br><span class="line">    cout &lt;&lt; p6 &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; *p6 &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; &amp;val6 &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; val6 &lt;&lt; endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>输出结果：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">00EFFD98 11</span></span><br><span class="line"><span class="comment">00EFFD98 1111</span></span><br><span class="line"><span class="comment">===</span></span><br><span class="line"><span class="comment">00EFFD80 2222</span></span><br><span class="line"><span class="comment">00EFFD80 2222</span></span><br><span class="line"><span class="comment">===</span></span><br><span class="line"><span class="comment">0027C038 3333</span></span><br><span class="line"><span class="comment">0027C038 3333</span></span><br><span class="line"><span class="comment">===</span></span><br><span class="line"><span class="comment">00279B38 44</span></span><br><span class="line"><span class="comment">00279B38 44</span></span><br><span class="line"><span class="comment">===</span></span><br><span class="line"><span class="comment">00279B30 55</span></span><br><span class="line"><span class="comment">00279B30 55</span></span><br><span class="line"><span class="comment">===</span></span><br><span class="line"><span class="comment">0027C03C 6666</span></span><br><span class="line"><span class="comment">0027C03C 6666</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/08/19/const%E8%A6%81%E7%82%B9/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1254,13 +1252,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">65k</span>
+    <span title="站点总字数">67k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">3:58</span>
+    <span title="站点阅读时长">4:03</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
