@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 8.1.1">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="问题新项目，在学习FairyGUI，看到官方Demo里的Window示例有这么一段代码 12345678910111213141516171819202122232425262728293031323334&#x2F;&#x2F; 业务层BasicsMainprivate Window _winA; &#x2F;&#x2F; 实例变量private Window _winB; &#x2F;&#x2F; 实例变量private void PlayWindow">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Csharp匿名函数的暗坑">
+<meta property="og:url" content="http://example.com/2026/01/17/Csharp%E5%8C%BF%E5%90%8D%E5%87%BD%E6%95%B0%E7%9A%84%E6%9A%97%E5%9D%91/index.html">
+<meta property="og:site_name" content="Lizq的个人博客">
+<meta property="og:description" content="问题新项目，在学习FairyGUI，看到官方Demo里的Window示例有这么一段代码 12345678910111213141516171819202122232425262728293031323334&#x2F;&#x2F; 业务层BasicsMainprivate Window _winA; &#x2F;&#x2F; 实例变量private Window _winB; &#x2F;&#x2F; 实例变量private void PlayWindow">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-01-17T14:35:24.000Z">
+<meta property="article:modified_time" content="2026-03-20T11:31:57.112Z">
+<meta property="article:author" content="Lizq">
+<meta property="article:tag" content="C#">
+<meta property="article:tag" content="FGUI">
+<meta property="article:tag" content="Unity">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2026/01/17/Csharp%E5%8C%BF%E5%90%8D%E5%87%BD%E6%95%B0%E7%9A%84%E6%9A%97%E5%9D%91/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2026/01/17/Csharp%E5%8C%BF%E5%90%8D%E5%87%BD%E6%95%B0%E7%9A%84%E6%9A%97%E5%9D%91/","path":"2026/01/17/Csharp匿名函数的暗坑/","title":"Csharp匿名函数的暗坑"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Csharp匿名函数的暗坑 | Lizq的个人博客</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js" defer></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Lizq的个人博客</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%AE%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%AA%8C%E8%AF%81"><span class="nav-number">2.</span> <span class="nav-text">验证</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%84%86%E5%BC%B1"><span class="nav-number">3.</span> <span class="nav-text">脆弱</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BB%B6%E5%B1%95"><span class="nav-number">4.</span> <span class="nav-text">延展</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SharpLab"><span class="nav-number">5.</span> <span class="nav-text">SharpLab</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%A7%94%E6%89%98%E6%98%AF%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95"><span class="nav-number">5.1.</span> <span class="nav-text">1. 委托是静态方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E5%A7%94%E6%89%98%E6%8D%95%E8%8E%B7%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F"><span class="nav-number">5.2.</span> <span class="nav-text">2. 委托捕获局部变量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E5%A7%94%E6%89%98%E6%8D%95%E8%8E%B7%E5%AE%9E%E4%BE%8B%E5%8F%98%E9%87%8F"><span class="nav-number">5.3.</span> <span class="nav-text">3. 委托捕获实例变量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E5%A7%94%E6%89%98%E6%98%AF%E5%AE%9E%E4%BE%8B%E6%96%B9%E6%B3%95"><span class="nav-number">5.4.</span> <span class="nav-text">4. 委托是实例方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%93%E8%AE%BA"><span class="nav-number">6.</span> <span class="nav-text">结论</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Lizq</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">59</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fkjkkll" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fkjkkll" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:lzq0225@qq.com" title="E-Mail → mailto:lzq0225@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/01/17/Csharp%E5%8C%BF%E5%90%8D%E5%87%BD%E6%95%B0%E7%9A%84%E6%9A%97%E5%9D%91/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Lizq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Csharp匿名函数的暗坑 | Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Csharp匿名函数的暗坑
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-01-17 22:35:24" itemprop="dateCreated datePublished" datetime="2026-01-17T22:35:24+08:00">2026-01-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-03-20 19:31:57" itemprop="dateModified" datetime="2026-03-20T19:31:57+08:00">2026-03-20</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.9k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>7 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>新项目，在学习FairyGUI，看到官方Demo里的Window示例有这么一段代码</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 业务层BasicsMain</span></span><br><span class="line"><span class="keyword">private</span> Window _winA; <span class="comment">// 实例变量</span></span><br><span class="line"><span class="keyword">private</span> Window _winB; <span class="comment">// 实例变量</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">PlayWindow</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    GComponent obj = _demoObjects[<span class="string">&quot;Window&quot;</span>];</span><br><span class="line">    obj.GetChild(<span class="string">&quot;n0&quot;</span>).onClick.Add(() =&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (_winA == <span class="literal">null</span>)</span><br><span class="line">            _winA = <span class="keyword">new</span> Window1();</span><br><span class="line">        _winA.Show();</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    obj.GetChild(<span class="string">&quot;n1&quot;</span>).onClick.Add(() =&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (_winB == <span class="literal">null</span>)</span><br><span class="line">            _winB = <span class="keyword">new</span> Window2();</span><br><span class="line">        _winB.Show();</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// FairyGUI.EventListener.cs</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Add</span>(<span class="params">EventCallback0 callback</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    _bridge.Add(callback);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// FairyGUI.EventBridge.cs</span></span><br><span class="line">EventCallback0 _callback0;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Add</span>(<span class="params">EventCallback0 callback</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    _callback0 -= callback;</span><br><span class="line">    _callback0 += callback;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个PlayWindow函数是每次点击对应按钮都会调用的，但是里面的注册回调却用的匿名函数，虽然内部会先对委托进行解绑再绑定，但是匿名函数，怎敢断定两次调用传入的是同一个函数的？我立马嗅到一丝内存泄漏的异味，但是实际并没有发生。<br></p>
+<h3 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h3><p>噢，我知道了一定是编译器又在暗中帮忙，我立马打开的ILSpy打开对应程序集文件（Project&#x2F;Library&#x2F;ScriptAssemblis&#x2F;YourAssembly.dll）”，然后看到了编译器暗中做的事情：（记得取消勾选ILSpy视图&#x2F;选项里的“反编译匿名方法或lambda”，不然ILSpy会将内部细节优化掉，你只能看到传入的是lambda {}）</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">PlayWindow</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    GComponent obj = _demoObjects[<span class="string">&quot;Window&quot;</span>];</span><br><span class="line">    obj.GetChild(<span class="string">&quot;n0&quot;</span>).onClick.Add(&lt;PlayWindow&gt;b__18_0);</span><br><span class="line">    obj.GetChild(<span class="string">&quot;n1&quot;</span>).onClick.Add(&lt;PlayWindow&gt;b__18_1);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">[<span class="meta">CompilerGenerated</span>]</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> &lt;PlayWindow&gt;b__18_0()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (_winA == <span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        _winA = <span class="keyword">new</span> Window1();</span><br><span class="line">    &#125;</span><br><span class="line">    _winA.Show();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">[<span class="meta">CompilerGenerated</span>]</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> &lt;PlayWindow&gt;b__18_1()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (_winB == <span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        _winB = <span class="keyword">new</span> Window2();</span><br><span class="line">    &#125;</span><br><span class="line">    _winB.Show();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到，对于这两个匿名函数的注册，编译器直接优化成了类的实例函数（因为匿名函数只捕获了实例变量），有了确定的地址！因此取消注册也能顺利完成。</p>
+<h3 id="脆弱"><a href="#脆弱" class="headerlink" title="脆弱"></a>脆弱</h3><p>实际使用过程中，这种方式需要被杜绝掉，因为假如，匿名函数捕获的不是当前上下文的实例变量，而是局部变量呢，我改了下代码：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> Window _winA;</span><br><span class="line"><span class="keyword">private</span> Window _winB;</span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">PlayWindow</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">int</span> a = <span class="number">1</span>;</span><br><span class="line">    GComponent obj = _demoObjects[<span class="string">&quot;Window&quot;</span>];</span><br><span class="line">    obj.GetChild(<span class="string">&quot;n0&quot;</span>).onClick.Add(() =&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log(a);</span><br><span class="line">        <span class="keyword">if</span> (_winA == <span class="literal">null</span>)</span><br><span class="line">            _winA = <span class="keyword">new</span> Window1();</span><br><span class="line">        _winA.Show();</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    obj.GetChild(<span class="string">&quot;n1&quot;</span>).onClick.Add(() =&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (_winB == <span class="literal">null</span>)</span><br><span class="line">            _winB = <span class="keyword">new</span> Window2();</span><br><span class="line">        _winB.Show();</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>刷新下ILSpy：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">PlayWindow</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    &lt;&gt;c__DisplayClass18_0 &lt;&gt;c__DisplayClass18_ = <span class="keyword">new</span> &lt;&gt;c__DisplayClass18_0();</span><br><span class="line">    &lt;&gt;c__DisplayClass18_.&lt;&gt;<span class="number">4</span>__this = <span class="keyword">this</span>;</span><br><span class="line">    &lt;&gt;c__DisplayClass18_.a = <span class="number">1</span>;</span><br><span class="line">    GComponent obj = _demoObjects[<span class="string">&quot;Window&quot;</span>];</span><br><span class="line">    obj.GetChild(<span class="string">&quot;n0&quot;</span>).onClick.Add(&lt;&gt;c__DisplayClass18_.&lt;PlayWindow&gt;b__0);</span><br><span class="line">    obj.GetChild(<span class="string">&quot;n1&quot;</span>).onClick.Add(&lt;&gt;c__DisplayClass18_.&lt;PlayWindow&gt;b__1);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">[<span class="meta">CompilerGenerated</span>]</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">sealed</span> <span class="keyword">class</span> &lt;&gt;<span class="title">c__DisplayClass18_0</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span> a;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> BasicsMain &lt;&gt;<span class="number">4</span>__this;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">void</span> &lt;PlayWindow&gt;b__0()</span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log((<span class="built_in">object</span>)a);</span><br><span class="line">        <span class="keyword">if</span> (&lt;&gt;<span class="number">4</span>__this._winA == <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            &lt;&gt;<span class="number">4</span>__this._winA = <span class="keyword">new</span> Window1();</span><br><span class="line">        &#125;</span><br><span class="line">        &lt;&gt;<span class="number">4</span>__this._winA.Show();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">void</span> &lt;PlayWindow&gt;b__1()</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (&lt;&gt;<span class="number">4</span>__this._winB == <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            &lt;&gt;<span class="number">4</span>__this._winB = <span class="keyword">new</span> Window2();</span><br><span class="line">        &#125;</span><br><span class="line">        &lt;&gt;<span class="number">4</span>__this._winB.Show();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这次编译器采用的策略是生成一个匿名类，将捕获的变量作为自身的实例变量，每次执行PlayWindow，都重新创建一个匿名类，这样传入的实例函数的target属于不同对象（委托的相等需满足target相等 + method相等），自然无法正确解绑，实测也是如此，发生了内存泄漏。</p>
+<h3 id="延展"><a href="#延展" class="headerlink" title="延展"></a>延展</h3><p>那如果，匿名函数内部不捕获任何变量呢？调用的改动如下，只在匿名函数内输出一条日志：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> Window _winA;</span><br><span class="line"><span class="keyword">private</span> Window _winB;</span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">PlayWindow</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    GComponent obj = _demoObjects[<span class="string">&quot;Window&quot;</span>];</span><br><span class="line">    obj.GetChild(<span class="string">&quot;n0&quot;</span>).onClick.Add(() =&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log(<span class="string">&quot;a&quot;</span>);</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    obj.GetChild(<span class="string">&quot;n1&quot;</span>).onClick.Add(() =&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (_winB == <span class="literal">null</span>)</span><br><span class="line">            _winB = <span class="keyword">new</span> Window2();</span><br><span class="line">        _winB.Show();</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>刷新下ILSpy：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">PlayWindow</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    GComponent obj = _demoObjects[<span class="string">&quot;Window&quot;</span>];</span><br><span class="line">    obj.GetChild(<span class="string">&quot;n0&quot;</span>).onClick.Add(&lt;&gt;c.&lt;&gt;<span class="number">9</span>__18_0 ?? (&lt;&gt;c.&lt;&gt;<span class="number">9</span>__18_0 = &lt;&gt;c.&lt;&gt;<span class="number">9.</span>&lt;PlayWindow&gt;b__18_0));</span><br><span class="line">    obj.GetChild(<span class="string">&quot;n1&quot;</span>).onClick.Add(&lt;PlayWindow&gt;b__18_1);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">    [<span class="meta">Serializable</span>]</span><br><span class="line">[<span class="meta">CompilerGenerated</span>]</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">sealed</span> <span class="keyword">class</span> &lt;&gt;<span class="title">c</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 不要在意，类种其他函数调用的匿名函数所生成的内容</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">readonly</span> &lt;&gt;c &lt;&gt;<span class="number">9</span> = <span class="keyword">new</span> &lt;&gt;c();</span><br><span class="line">    <span class="comment">// 不要在意，类种其他函数调用的匿名函数所生成的内容</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="title">GTweenCallback1</span> &lt;&gt;9__11_0</span>;</span><br><span class="line">    <span class="comment">// 不要在意，类种其他函数调用的匿名函数所生成的内容</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="title">EventCallback0</span> &lt;&gt;9__12_0</span>;</span><br><span class="line">    <span class="comment">// 不要在意，类种其他函数调用的匿名函数所生成的内容</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="title">EventCallback1</span> &lt;&gt;9__13_0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// here</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="title">EventCallback0</span> &lt;&gt;9__18_0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 不要在意，类种其他函数调用的匿名函数所生成的内容</span></span><br><span class="line">    <span class="function"><span class="keyword">internal</span> <span class="title">void</span> &lt;PlayGraph&gt;<span class="title">b__11_0</span>(<span class="params">GTweener t</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        ((NGraphics)t.target).GetMeshFactory&lt;LineMesh&gt;().fillEnd = t.<span class="keyword">value</span>.x;</span><br><span class="line">        ((NGraphics)t.target).SetMeshDirty();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 不要在意，类种其他函数调用的匿名函数所生成的内容</span></span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">void</span> &lt;PlayButton&gt;b__12_0()</span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log((<span class="built_in">object</span>)<span class="string">&quot;click button&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 不要在意，类种其他函数调用的匿名函数所生成的内容</span></span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">void</span> &lt;PlayText&gt;b__13_0(EventContext context)</span><br><span class="line">    &#123;</span><br><span class="line">        GRichTextField t = context.sender <span class="keyword">as</span> GRichTextField;</span><br><span class="line">        t.text = <span class="string">&quot;[img]ui://Basics/pet[/img][color=#FF0000]You click the link[/color]：&quot;</span> + context.data;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// here</span></span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">void</span> &lt;PlayWindow&gt;b__18_0()</span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log((<span class="built_in">object</span>)<span class="string">&quot;a&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到，这时编译器依旧会生成一个匿名类+静态字段，并且还是一个单例类，匿名方法是该匿名单例类的实例方法，因此绑定和解绑的也都会是同一个委托，不会发生内存泄漏。</p>
+<h3 id="SharpLab"><a href="#SharpLab" class="headerlink" title="SharpLab"></a>SharpLab</h3><p>与ILSpy反编译不同，SharpLab可以直接用Roslyn生成编译后的C#，或许会看到更详细的信息，针对类似情况的匿名函数，做了如下模拟：</p>
+<h4 id="1-委托是静态方法"><a href="#1-委托是静态方法" class="headerlink" title="1. 委托是静态方法"></a>1. 委托是静态方法</h4><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">B</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> A a = <span class="keyword">new</span>();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Test</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        a.Bind(Del);</span><br><span class="line">        a.Fire();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Del</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        Console.WriteLine(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title">A</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> Action act;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Bind</span>(<span class="params">Action ac</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        act -= ac;</span><br><span class="line">        act += ac;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Fire</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        act?.Invoke();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>生成的结果和之前反编译的有所不同，这次生成的是静态匿名类+静态字段来指向我的静态方法（上文ILSpy是单例类+静态字段），虽然形式上不一样，但是结果没什么区别，反正不捕获。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">internal</span> <span class="keyword">class</span> <span class="title">B</span></span><br><span class="line">&#123;</span><br><span class="line">    [<span class="meta">CompilerGenerated</span>]</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">class</span> &lt;&gt;<span class="title">O</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> Action &lt;<span class="number">0</span>&gt;__Del;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    [<span class="meta">Nullable(1)</span>]</span><br><span class="line">    <span class="keyword">private</span> A a = <span class="keyword">new</span> A();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Test</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        a.Bind(&lt;&gt;O.&lt;<span class="number">0</span>&gt;__Del ?? (&lt;&gt;O.&lt;<span class="number">0</span>&gt;__Del = <span class="keyword">new</span> Action(Del)));</span><br><span class="line">        a.Fire();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Del</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        Console.WriteLine(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">[<span class="meta">NullableContext(1)</span>]</span><br><span class="line">[<span class="meta">Nullable(0)</span>]</span><br><span class="line"><span class="keyword">internal</span> <span class="keyword">class</span> <span class="title">A</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> Action act;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Bind</span>(<span class="params">Action ac</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        act = (Action)Delegate.Remove(act, ac);</span><br><span class="line">        act = (Action)Delegate.Combine(act, ac);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Fire</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        Action action = act;</span><br><span class="line">        <span class="keyword">if</span> (action != <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            action();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-委托捕获局部变量"><a href="#2-委托捕获局部变量" class="headerlink" title="2. 委托捕获局部变量"></a>2. 委托捕获局部变量</h4><p>将Test作如下修改：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Test</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">int</span> aa = <span class="number">1</span>;</span><br><span class="line">    a.Bind(() =&gt; &#123; aa = <span class="number">2</span>;&#125;);</span><br><span class="line">    a.Fire();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对应的B类发生了变化，和之前ILSpy结果是一致的，生成了一个匿名实例类和它的匿名实例方法。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">internal</span> <span class="keyword">class</span> <span class="title">B</span></span><br><span class="line">&#123;</span><br><span class="line">    [<span class="meta">CompilerGenerated</span>]</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">sealed</span> <span class="keyword">class</span> &lt;&gt;<span class="title">c__DisplayClass1_0</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="built_in">int</span> aa;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">internal</span> <span class="keyword">void</span> &lt;Test&gt;b__0()</span><br><span class="line">        &#123;</span><br><span class="line">            aa = <span class="number">2</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    [<span class="meta">Nullable(1)</span>]</span><br><span class="line">    <span class="keyword">private</span> A a = <span class="keyword">new</span> A();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Test</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        &lt;&gt;c__DisplayClass1_0 &lt;&gt;c__DisplayClass1_ = <span class="keyword">new</span> &lt;&gt;c__DisplayClass1_0();</span><br><span class="line">        &lt;&gt;c__DisplayClass1_.aa = <span class="number">1</span>;</span><br><span class="line">        a.Bind(<span class="keyword">new</span> Action(&lt;&gt;c__DisplayClass1_.&lt;Test&gt;b__0));</span><br><span class="line">        a.Fire();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-委托捕获实例变量"><a href="#3-委托捕获实例变量" class="headerlink" title="3. 委托捕获实例变量"></a>3. 委托捕获实例变量</h4><p>将类B作如下修改：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">B</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> A a = <span class="keyword">new</span>();</span><br><span class="line">    <span class="built_in">int</span> aa = <span class="number">1</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Test</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        a.Bind(() =&gt; &#123; aa = <span class="number">2</span>; &#125;);</span><br><span class="line">        a.Fire();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对应的B类发生了变化，和之前ILSpy结果也是一致的，直接嵌入当前上下文实力类，作为实例匿名方法</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">internal</span> <span class="keyword">class</span> <span class="title">B</span></span><br><span class="line">&#123;</span><br><span class="line">    [<span class="meta">Nullable(1)</span>]</span><br><span class="line">    <span class="keyword">private</span> A a = <span class="keyword">new</span> A();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">int</span> aa = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Test</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        a.Bind(<span class="keyword">new</span> Action(&lt;Test&gt;b__2_0));</span><br><span class="line">        a.Fire();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    [<span class="meta">CompilerGenerated</span>]</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> &lt;Test&gt;b__2_0()</span><br><span class="line">    &#123;</span><br><span class="line">        aa = <span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-委托是实例方法"><a href="#4-委托是实例方法" class="headerlink" title="4. 委托是实例方法"></a>4. 委托是实例方法</h4><p>将类B作如下修改：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">B</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> A a = <span class="keyword">new</span>();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Test</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        a.Bind(Del);</span><br><span class="line">        a.Fire();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Del</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        Console.WriteLine(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>生成的代码如下：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">internal</span> <span class="keyword">class</span> <span class="title">B</span></span><br><span class="line">&#123;</span><br><span class="line">    [<span class="meta">Nullable(1)</span>]</span><br><span class="line">    <span class="keyword">private</span> A a = <span class="keyword">new</span> A();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Test</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        a.Bind(<span class="keyword">new</span> Action(Del));</span><br><span class="line">        a.Fire();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Del</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        Console.WriteLine(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>刚才，委托捕获实例变量我就发现了，每次调用都会new个Action，所以这里也是这样，为了GC，我们或许可以将这个new优化掉。对类B进一步修改（用一个实例变量委托在 [构造函数&#x2F;初始化阶段&#x2F;使用前] 赋值成目标函数，然后传入委托时，传入该实例变量）：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">B</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> A a = <span class="keyword">new</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">readonly</span> Action _p;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">B</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        _p = Del;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Test</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        a.Bind(_p);</span><br><span class="line">        a.Fire();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Del</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        Console.WriteLine(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>结果如下，看起来就跟没进行任何处理一样，这样一来，就不会每次调用都new一个Action了。为什么编译器不这样做呢，因为会隐式引入额外内存大小？委托如果只传递一次确实是负优化了哈哈。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">NullableContext(1)</span>]</span><br><span class="line">[<span class="meta">Nullable(0)</span>]</span><br><span class="line"><span class="keyword">internal</span> <span class="keyword">class</span> <span class="title">B</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> A a = <span class="keyword">new</span> A();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">readonly</span> Action _p;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">B</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        _p = <span class="keyword">new</span> Action(Del);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Test</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        a.Bind(_p);</span><br><span class="line">        a.Fire();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Del</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        Console.WriteLine(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h3><ol>
+<li>不要用匿名方法绑定事件，很容易内存泄漏</li>
+<li>委托是静态方法，直接传递</li>
+<li>委托是实例方法，如果可能多次绑定，可以考虑存一个实例委托变量而不是直接传入实例方法，用以优化GC。</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C/" rel="tag"># C#</a>
+              <a href="/tags/Unity/" rel="tag"># Unity</a>
+              <a href="/tags/FGUI/" rel="tag"># FGUI</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2025/11/26/%E7%BA%A2%E9%BB%91%E6%A0%91%E5%AE%9E%E7%8E%B0/" rel="prev" title="红黑树实现">
+                  <i class="fa fa-angle-left"></i> 红黑树实现
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2026/02/01/Csharp%E6%9E%9A%E4%B8%BE%E7%B1%BB%E5%9E%8B%E7%9A%84%E8%A3%85%E6%8B%86%E7%AE%B1/" rel="next" title="Csharp枚举类型的装拆箱">
+                  Csharp枚举类型的装拆箱 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Lizq</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">67k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">4:03</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 8.1.1">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="1 优化位枚举1.1 原生HasFlag问题 原生的HasFlag方法会将枚举装箱为Enum类型，产生性能开销 Enum本身是一个引用类型，所有具体的枚举类型比如MyColor都是值类型，并且继承自Enum（特殊的继承规则，就像所有C#对象都继承自object，它也是引用类型）。当调用基类Enum的方法时，自身需要装箱成Enum，参数也需要传递给Enum flag，会进行两次装箱 HasFlagF">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Csharp枚举类型的装拆箱">
+<meta property="og:url" content="http://example.com/2026/02/01/Csharp%E6%9E%9A%E4%B8%BE%E7%B1%BB%E5%9E%8B%E7%9A%84%E8%A3%85%E6%8B%86%E7%AE%B1/index.html">
+<meta property="og:site_name" content="Lizq的个人博客">
+<meta property="og:description" content="1 优化位枚举1.1 原生HasFlag问题 原生的HasFlag方法会将枚举装箱为Enum类型，产生性能开销 Enum本身是一个引用类型，所有具体的枚举类型比如MyColor都是值类型，并且继承自Enum（特殊的继承规则，就像所有C#对象都继承自object，它也是引用类型）。当调用基类Enum的方法时，自身需要装箱成Enum，参数也需要传递给Enum flag，会进行两次装箱 HasFlagF">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-02-01T03:29:15.000Z">
+<meta property="article:modified_time" content="2026-03-20T11:31:57.119Z">
+<meta property="article:author" content="Lizq">
+<meta property="article:tag" content="C#">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2026/02/01/Csharp%E6%9E%9A%E4%B8%BE%E7%B1%BB%E5%9E%8B%E7%9A%84%E8%A3%85%E6%8B%86%E7%AE%B1/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2026/02/01/Csharp%E6%9E%9A%E4%B8%BE%E7%B1%BB%E5%9E%8B%E7%9A%84%E8%A3%85%E6%8B%86%E7%AE%B1/","path":"2026/02/01/Csharp枚举类型的装拆箱/","title":"Csharp枚举类型的装拆箱"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Csharp枚举类型的装拆箱 | Lizq的个人博客</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js" defer></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Lizq的个人博客</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E4%BC%98%E5%8C%96%E4%BD%8D%E6%9E%9A%E4%B8%BE"><span class="nav-number">1.</span> <span class="nav-text">1 优化位枚举</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-%E5%8E%9F%E7%94%9FHasFlag%E9%97%AE%E9%A2%98"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 原生HasFlag问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-%E5%86%85%E9%83%A8%E5%8F%91%E7%94%9F%E4%BA%86%E4%BB%80%E4%B9%88"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 内部发生了什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-%E4%B8%BA%E4%BB%80%E4%B9%88%E6%9E%9A%E4%B8%BE%E6%98%AFstruct%EF%BC%8C%E4%BD%86%E6%98%AF%E5%8D%B4%E8%83%BD%E7%BB%A7%E6%89%BFclass"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 为什么枚举是struct，但是却能继承class</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-%E5%80%BC%E7%B1%BB%E5%9E%8B%E6%B2%A1%E6%9C%89%E6%96%B9%E6%B3%95%E8%A1%A8%E7%9A%84%E8%A7%A3%E9%87%8A"><span class="nav-number">1.4.</span> <span class="nav-text">1.4 值类型没有方法表的解释</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Lizq</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">59</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fkjkkll" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fkjkkll" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:lzq0225@qq.com" title="E-Mail → mailto:lzq0225@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/02/01/Csharp%E6%9E%9A%E4%B8%BE%E7%B1%BB%E5%9E%8B%E7%9A%84%E8%A3%85%E6%8B%86%E7%AE%B1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Lizq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Csharp枚举类型的装拆箱 | Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Csharp枚举类型的装拆箱
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-02-01 11:29:15" itemprop="dateCreated datePublished" datetime="2026-02-01T11:29:15+08:00">2026-02-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-03-20 19:31:57" itemprop="dateModified" datetime="2026-03-20T19:31:57+08:00">2026-03-20</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="1-优化位枚举"><a href="#1-优化位枚举" class="headerlink" title="1 优化位枚举"></a>1 优化位枚举</h3><h4 id="1-1-原生HasFlag问题"><a href="#1-1-原生HasFlag问题" class="headerlink" title="1.1 原生HasFlag问题"></a>1.1 原生HasFlag问题</h4><ul>
+<li>原生的HasFlag方法会将枚举装箱为Enum类型，产生性能开销</li>
+<li>Enum本身是一个引用类型，所有具体的枚举类型比如MyColor都是值类型，并且继承自Enum（特殊的继承规则，就像所有C#对象都继承自object，它也是引用类型）。当调用基类Enum的方法时，自身需要装箱成Enum，参数也需要传递给Enum flag，会进行两次装箱</li>
+<li>HasFlagFast 用泛型值类型参数替代 Enum 引用类型参数，从根源上避免了装箱。Unsafe.As 只是进一步优化了类型转换的性能，而泛型值类型参数才是避免装箱的关键</li>
+</ul>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 原生判断函数是Enum的实例方法，Enum本身是抽象类（引用类型）</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="built_in">bool</span> <span class="title">HasFlag</span>(<span class="params">Enum flag</span>)</span>&#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 替换 HasFlag 方法，避免装箱，仅适用于Int32枚举</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">bool</span> <span class="title">HasFlagFast</span>&lt;<span class="title">T</span>&gt;(<span class="params"><span class="keyword">this</span> T flags, T <span class="keyword">value</span></span>) <span class="keyword">where</span> T : <span class="keyword">struct</span>, Enum</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (Enum.GetUnderlyingType(<span class="keyword">typeof</span>(T)) != <span class="keyword">typeof</span>(<span class="built_in">int</span>))</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> ArgumentException(<span class="string">$&quot;枚举类型 <span class="subst">&#123;<span class="keyword">typeof</span>(T).Name&#125;</span> 的底层类型不是 Int32，无法使用此方法&quot;</span>, <span class="keyword">nameof</span>(T));</span><br><span class="line">    <span class="keyword">var</span> f = Unsafe.As&lt;T, <span class="built_in">int</span>&gt;(<span class="keyword">ref</span> flags);</span><br><span class="line">    <span class="keyword">var</span> v = Unsafe.As&lt;T, <span class="built_in">int</span>&gt;(<span class="keyword">ref</span> <span class="keyword">value</span>);</span><br><span class="line">    <span class="keyword">return</span> (f &amp; v) == v;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="1-2-内部发生了什么"><a href="#1-2-内部发生了什么" class="headerlink" title="1.2 内部发生了什么"></a>1.2 内部发生了什么</h4><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">bool</span> result1 = myEnum.HasFlag(TestEnum.Flag2); </span><br></pre></td></tr></table></figure>
+<p>通过SharpLab查看IL如下，发现进行了两次装箱</p>
+<figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">IL_0003: ldloc.0</span><br><span class="line">IL_0004: box TestEnum</span><br><span class="line">IL_0009: ldc.i4.2</span><br><span class="line">IL_000a: box TestEnum</span><br><span class="line">IL_000f: call<span class="built_in"> instance </span>bool [System.Runtime]System.Enum::HasFlag(class [System.Runtime]System.Enum)</span><br><span class="line">IL_0014: stloc.1</span><br></pre></td></tr></table></figure>
+<ul>
+<li>不只是Enum，所有值类型（int&#x2F;struct）调用其引用类型基类（Enum&#x2F;ValueType&#x2F;object）的实例方法，（大部分）都会触发装箱。<ul>
+<li>因为值类型存储在栈上，没有方法表；引用类型存储在堆上，有方法表</li>
+<li>要调用引用类型基类的实例方法，必须先把值类型 “包装” 成堆上的引用类型对象（装箱），才能通过方法表找到对应的方法。</li>
+</ul>
+</li>
+<li>但是有例外：如果值类型重写了基类方法，就不会触发装箱（比如 int 重写了 Equals&#x2F;ToString），调用该方法时不会装箱 —— 因为方法已经属于值类型本身，直接在栈上执行<ul>
+<li>然而，如果你在重写方法里调用base.ParentFunc()，内部依旧会装箱的！</li>
+</ul>
+</li>
+<li>调用引用基类的静态方法也不需要装箱，因为压根不依赖实例</li>
+</ul>
+<h4 id="1-3-为什么枚举是struct，但是却能继承class"><a href="#1-3-为什么枚举是struct，但是却能继承class" class="headerlink" title="1.3 为什么枚举是struct，但是却能继承class"></a>1.3 为什么枚举是struct，但是却能继承class</h4><ul>
+<li>从语法上，枚举声明为 enum TestEnum { … }，编译器会自动把它编译为 struct TestEnum : Enum；</li>
+<li>但 CLR 对枚举做了特殊处理：枚举的基类虽然是 Enum（class），但枚举实例本身是值类型，存储在栈上；</li>
+<li>当需要将枚举转换为 Enum 类型（比如传给 HasFlag 的参数），就必须装箱 —— 因为引用类型参数只能接收堆上的对象。</li>
+</ul>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">TestEnum a = TestEnum.Flag1;</span><br><span class="line">TestEnum b = TestEnum.Flag1;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 直接比较值类型：true（栈上比较）</span></span><br><span class="line"><span class="built_in">bool</span> isEqual1 = a.Equals(b); </span><br><span class="line"></span><br><span class="line"><span class="comment">// 转换为Enum后比较：false（两次装箱产生不同的堆对象）</span></span><br><span class="line"><span class="built_in">bool</span> isEqual2 = ReferenceEquals((Enum)a, (Enum)b); </span><br><span class="line"></span><br><span class="line">Console.WriteLine(isEqual1); <span class="comment">// True</span></span><br><span class="line">Console.WriteLine(isEqual2); <span class="comment">// False</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">enum</span> TestEnum</span><br><span class="line">&#123;</span><br><span class="line">    Flag1,</span><br><span class="line">    Flag2</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="1-4-值类型没有方法表的解释"><a href="#1-4-值类型没有方法表的解释" class="headerlink" title="1.4 值类型没有方法表的解释"></a>1.4 值类型没有方法表的解释</h4><ul>
+<li>引用类型的方法调用逻辑（有方法表指针）</li>
+</ul>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">堆上的引用类型实例：<span class="selector-attr">[对象头（含方法表指针）]</span> + <span class="selector-attr">[字段数据]</span></span><br><span class="line">调用方法时：</span><br><span class="line"><span class="number">1</span>. 通过对象头的方法表指针找到类型的方法表；</span><br><span class="line"><span class="number">2</span>. 从方法表中找到要调用的方法地址；</span><br><span class="line"><span class="number">3</span>. 执行方法。</span><br><span class="line">哪怕是空对象（new <span class="selector-tag">object</span>()），对象头也会占用 <span class="number">8</span>/<span class="number">16</span> 字节（取决于 <span class="number">32</span>/<span class="number">64</span> 位），核心就是存方法表指针。</span><br></pre></td></tr></table></figure>
+<ul>
+<li>值类型的方法调用逻辑（无方法表指针）<br><br>值类型实例存储在栈上，结构是：[字段数据]（无对象头、无方法表指针），调用方法分两种情况：<ul>
+<li>情况 1：调用值类型自定义 &#x2F; 重写的方法（比如 A.ToString()）<br>CLR 直接从程序集元数据中找到该方法的静态地址（编译期已确定）；<br>把栈上值类型实例的地址（this）传给方法，直接执行；<br>全程不需要方法表指针，也不需要装箱 —— 这就是你定义的结构体方法能正常执行的原因。</li>
+<li>情况 2：调用基类（object&#x2F;ValueType） 的方法（比如 base.ToString()）<br>基类方法需要依赖方法表执行（比如 object.ToString() 是虚方法）；<br>但值类型实例没有方法表指针，因此 CLR 必须先把值类型装箱（堆上创建引用类型对象，带方法表指针）；<br>通过装箱对象的方法表指针找到基类方法，执行调用。</li>
+</ul>
+</li>
+</ul>
+<p><strong>总结：</strong></p>
+<ul>
+<li>“值类型没有方法表” → 准确表述是：值类型实例（栈上）没有方法表指针，方法表不随实例分配（引用类型实例必须带方法表指针）；</li>
+<li>值类型可以定义 &#x2F; 执行方法 → 因为自定义 &#x2F; 重写方法的地址编译期已确定，CLR 直接通过静态地址调用，无需方法表；</li>
+<li>调用基类（引用类型）方法时 → 必须先装箱（生成带方法表指针的堆对象），才能通过方法表找到并执行基类方法。</li>
+<li>所以，struct没有方法表，不能被继承</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C/" rel="tag"># C#</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2026/01/17/Csharp%E5%8C%BF%E5%90%8D%E5%87%BD%E6%95%B0%E7%9A%84%E6%9A%97%E5%9D%91/" rel="prev" title="Csharp匿名函数的暗坑">
+                  <i class="fa fa-angle-left"></i> Csharp匿名函数的暗坑
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2026/02/01/%E7%BB%99%E5%AE%9A%E8%B7%AF%E5%BE%84%E8%8A%82%E7%82%B9%E4%B8%8BNPC%E5%A6%82%E4%BD%95%E5%B9%B3%E6%BB%91%E7%A7%BB%E5%8A%A8/" rel="next" title="给定路径节点下NPC如何平滑移动">
+                  给定路径节点下NPC如何平滑移动 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Lizq</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">67k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">4:03</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

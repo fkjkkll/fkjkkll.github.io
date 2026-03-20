@@ -171,7 +171,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">56</span>
+          <span class="site-state-item-count">59</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -202,6 +202,321 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/19/const%E8%A6%81%E7%82%B9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Lizq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/08/19/const%E8%A6%81%E7%82%B9/" class="post-title-link" itemprop="url">const要点</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-08-19 20:14:02" itemprop="dateCreated datePublished" datetime="2022-08-19T20:14:02+08:00">2022-08-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-08-30 20:01:18" itemprop="dateModified" datetime="2022-08-30T20:01:18+08:00">2022-08-30</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>455</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="const要点"><a href="#const要点" class="headerlink" title="const要点"></a>const要点</h1><ul>
+<li>C的const是虚假的，就是个只读量，只是说不能通过变量名进行修改，但是拿到指针就可修改；</li>
+<li>C++的const会保险一些，会有类似符号表的东西；但是类内的const普通成员变量则依旧会被通过指针改变</li>
+<li>静态const和全局const虽然可以通过指针修改，编译时期可能不会报错，但是运行到那个地方就会报错</li>
+<li>const只在编译期间保证常量被使用时的不变性，无法保证运行期间的行为。</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">A</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> val2 = <span class="number">22</span>;</span><br><span class="line">    <span class="type">static</span> <span class="type">int</span> val3;</span><br><span class="line">    <span class="type">static</span> <span class="type">const</span> <span class="type">int</span> val4 = <span class="number">44</span>; <span class="comment">// !</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="type">int</span> A::val3 = <span class="number">33</span>;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> val5 = <span class="number">55</span>;</span><br><span class="line"><span class="type">int</span> val6 = <span class="number">66</span>;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> val1 = <span class="number">11</span>;</span><br><span class="line">    <span class="type">int</span>* p1 = (<span class="type">int</span>*)&amp;val1; <span class="comment">// 栈区，拿到地址随便改，但是符号表会覆盖</span></span><br><span class="line">    *p1 = <span class="number">1111</span>;</span><br><span class="line">    cout &lt;&lt; &amp;val1 &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; val1 &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; p1 &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; *p1 &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;===&quot;</span> &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    A ins;</span><br><span class="line">    <span class="type">int</span>* p2 = (<span class="type">int</span>*)&amp;ins.val2;</span><br><span class="line">    *p2 = <span class="number">2222</span>; <span class="comment">// 栈区，拿到地址随便改</span></span><br><span class="line">    cout &lt;&lt; &amp;ins.val2 &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; ins.val2 &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; p2 &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; *p2 &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;===&quot;</span> &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span>* p3 = (<span class="type">int</span>*)&amp;A::val3;</span><br><span class="line">    *p3 = <span class="number">3333</span>; <span class="comment">// 全局数据区，但是不在常量区，可以修改</span></span><br><span class="line">    cout &lt;&lt; p3 &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; *p3 &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; &amp;A::val3 &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; A::val3 &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;===&quot;</span> &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span>* p4 = (<span class="type">int</span>*)&amp;A::val4;</span><br><span class="line">    <span class="comment">//*p4 = 4444; // 编译不出错，运行会异常（常量区不能修改）</span></span><br><span class="line">    cout &lt;&lt; p4 &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; *p4 &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; &amp;A::val4 &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; A::val4 &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;===&quot;</span> &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span>* p5 = (<span class="type">int</span>*)&amp;val5;</span><br><span class="line">    <span class="comment">//*p5 = 5555; // 编译不出错，运行会异常（常量区不能修改）</span></span><br><span class="line">    cout &lt;&lt; p5 &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; *p5 &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; &amp;val5 &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; val5 &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;===&quot;</span> &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span>* p6 = (<span class="type">int</span>*)&amp;val6;</span><br><span class="line">    *p6 = <span class="number">6666</span>; <span class="comment">// 全局数据区，但是不在常量区，可以修改</span></span><br><span class="line">    cout &lt;&lt; p6 &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; *p6 &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; &amp;val6 &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; val6 &lt;&lt; endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出结果：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">00EFFD98 11</span></span><br><span class="line"><span class="comment">00EFFD98 1111</span></span><br><span class="line"><span class="comment">===</span></span><br><span class="line"><span class="comment">00EFFD80 2222</span></span><br><span class="line"><span class="comment">00EFFD80 2222</span></span><br><span class="line"><span class="comment">===</span></span><br><span class="line"><span class="comment">0027C038 3333</span></span><br><span class="line"><span class="comment">0027C038 3333</span></span><br><span class="line"><span class="comment">===</span></span><br><span class="line"><span class="comment">00279B38 44</span></span><br><span class="line"><span class="comment">00279B38 44</span></span><br><span class="line"><span class="comment">===</span></span><br><span class="line"><span class="comment">00279B30 55</span></span><br><span class="line"><span class="comment">00279B30 55</span></span><br><span class="line"><span class="comment">===</span></span><br><span class="line"><span class="comment">0027C03C 6666</span></span><br><span class="line"><span class="comment">0027C03C 6666</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/08/19/const%E8%A6%81%E7%82%B9/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/16/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Lizq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/08/16/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8F/" class="post-title-link" itemprop="url">设计模式-状态模式</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-08-16 15:04:27" itemprop="dateCreated datePublished" datetime="2022-08-16T15:04:27+08:00">2022-08-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-09-16 15:10:00" itemprop="dateModified" datetime="2022-09-16T15:10:00+08:00">2022-09-16</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="1-状态模式"><a href="#1-状态模式" class="headerlink" title="1 状态模式"></a>1 状态模式</h2><ul>
+<li>在软件构建过程中，某些对象的状态如果改变，其行为也会随之改变，比如文档处于只读状态，其支持的行为和读写状态支持的行为可能完全不同</li>
+<li>允许一个对象在其内部状态改变时改变它的行为。从而使对象看起来似乎修改了其行为</li>
+<li>用类表示状态，通过切换类改变对象状态</li>
+<li>跟Strategy模式很像，区别是：状态模式采用单例模式，抽象类包含指向下一个状态的指针</li>
+</ul>
+<h2 id="2-问题"><a href="#2-问题" class="headerlink" title="2 问题"></a>2 问题</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="title class_">NetworkState</span>&#123;</span><br><span class="line">    Network_Open,</span><br><span class="line">    Network_Close,</span><br><span class="line">    Network_Connect</span><br><span class="line">    <span class="comment">// 假设未来有新状态：Network_Wait，怎么办？</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">NetworkProcessor</span>&#123;</span><br><span class="line">    NetworkState state;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">Operation1</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (state == Network_Open)&#123;</span><br><span class="line">            <span class="comment">//**********</span></span><br><span class="line">            state = Network_Close;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (state == Network_Close)&#123;</span><br><span class="line">            <span class="comment">//..........</span></span><br><span class="line">            state = Network_Connect;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (state == Network_Connect)&#123;</span><br><span class="line">            <span class="comment">//$$$$$$$$$$</span></span><br><span class="line">            state = Network_Open;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">Operation2</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (state == Network_Open)&#123;</span><br><span class="line">            <span class="comment">//**********</span></span><br><span class="line">            state = Network_Connect;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (state == Network_Close)&#123;</span><br><span class="line">            <span class="comment">//..........</span></span><br><span class="line">            state = Network_Open;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (state == Network_Connect)&#123;</span><br><span class="line">            <span class="comment">//$$$$$$$$$$</span></span><br><span class="line">            state = Network_Close;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">Operation3</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-状态v1"><a href="#3-状态v1" class="headerlink" title="3 状态v1"></a>3 状态v1</h2>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/08/16/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8F/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/07/26/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Lizq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/07/26/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F/" class="post-title-link" itemprop="url">设计模式-适配器模式</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-07-26 15:04:21" itemprop="dateCreated datePublished" datetime="2022-07-26T15:04:21+08:00">2022-07-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-09-19 21:44:57" itemprop="dateModified" datetime="2022-09-19T21:44:57+08:00">2022-09-19</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>740</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="1-适配器模式"><a href="#1-适配器模式" class="headerlink" title="1 适配器模式"></a>1 适配器模式</h2><ul>
+<li>在软件系统中，由于应用环境的变化，常常需要将“一些现存的对象”放在新的环境中应用，但是新环境要求的接口是这些现存对象所不满足的。</li>
+<li>将一个类的接口转换成客户希望的另一个接口，Adapter模式使得原本由于接口不兼容而不能一起工作的那些类可以一起工作</li>
+</ul>
+<h2 id="2-适配器v1"><a href="#2-适配器v1" class="headerlink" title="2 适配器v1"></a>2 适配器v1</h2><p><img src="https://raw.githubusercontent.com/fkjkkll/OnlineSource/master/Image/CPP/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F.jpg" alt="适配器模式"></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 目标接口（新接口）</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ITarget</span>&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">process</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 遗留接口（老接口）</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">IAdaptee</span>&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">foo</span><span class="params">(<span class="type">int</span> data)</span> </span>= <span class="number">0</span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">int</span> <span class="title">bar</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 遗留类型</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">OldClass</span>: <span class="keyword">public</span> IAdaptee&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">foo</span><span class="params">(<span class="type">int</span> data)</span></span>&#123;</span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">int</span> <span class="title">bar</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 对象适配器（推荐）</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Adapter</span>: <span class="keyword">public</span> ITarget&#123; <span class="comment">// 继承</span></span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">    IAdaptee* pAdaptee; <span class="comment">// 组合（多态）</span></span><br><span class="line">    </span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Adapter</span>(IAdaptee* pAdaptee)&#123;</span><br><span class="line">        <span class="keyword">this</span>-&gt;pAdaptee=pAdaptee;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">process</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="type">int</span> data=pAdaptee-&gt;<span class="built_in">bar</span>();</span><br><span class="line">        pAdaptee-&gt;<span class="built_in">foo</span>(data);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 类适配器（十分不推荐）</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Adapter</span>: <span class="keyword">public</span> ITarget, <span class="keyword">protected</span> OldClass&#123; <span class="comment">// 多继承（无复用性，绑死OldClass）</span></span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    IAdaptee* pAdaptee = <span class="keyword">new</span> <span class="built_in">OldClass</span>(); <span class="comment">// 老接口</span></span><br><span class="line">    ITarget* pTarget = <span class="keyword">new</span> <span class="built_in">Adapter</span>(pAdaptee);</span><br><span class="line">    pTarget-&gt;<span class="built_in">process</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">stack</span>&#123; <span class="comment">// STL中stack包含deque，看作是种适配器</span></span><br><span class="line">    deqeue container;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">queue</span>&#123; <span class="comment">// STL中queue包含deque，看作是种适配器</span></span><br><span class="line">    deqeue container;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/07/26/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -930,326 +1245,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/23/%E5%B9%B6%E6%9F%A5%E9%9B%86/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Lizq">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Lizq的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | Lizq的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/05/23/%E5%B9%B6%E6%9F%A5%E9%9B%86/" class="post-title-link" itemprop="url">并查集</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-05-23 15:32:06" itemprop="dateCreated datePublished" datetime="2022-05-23T15:32:06+08:00">2022-05-23</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-09-07 14:41:23" itemprop="dateModified" datetime="2022-09-07T14:41:23+08:00">2022-09-07</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>403</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="并查集"><a href="#并查集" class="headerlink" title="并查集"></a>并查集</h1><ul>
-<li>一般用于快速判断两个元素是否同属于一个集合</li>
-<li>数组形式表示树结构</li>
-<li>插入元素会被映射到从0开始的顺序整数中</li>
-</ul>
-<h1 id="实现技巧"><a href="#实现技巧" class="headerlink" title="实现技巧"></a>实现技巧</h1><ul>
-<li>路径压缩：在find时，通过递归并返回找到的祖宗节点并赋值，可以达成find后降低树高的功效</li>
-<li>按秩归并：在unite时，其中一方会挂在另一方的门下，所以希望“小的挂到大的上面”，以此来产生结果高度更小的树，有两种方式：<ul>
-<li>高度：树高：S[Root]&#x3D;-树高，代码多一步判断：即：<a target="_blank" rel="noopener" href="https://github.com/fkjkkll/My-Algorithm/blob/master/3.3%20tree(3)/3.4%20%E5%B9%B6%E6%9F%A5%E9%9B%86-%E6%8C%89%E7%A7%A9%E5%BD%92%E5%B9%B6-%E9%AB%98%E5%BA%A6.jpg">两个树相同高度时，增加树高</a></li>
-<li>数目（推荐）：S[Root]&#x3D;-元素个数。子孙节点数目，可以通过利用根节点来达成，根节点之前是-1，现在改为-n，其中n是包含根节点的整个树的节点数目</li>
-</ul>
-</li>
-</ul>
-<h1 id="LC-990"><a href="#LC-990" class="headerlink" title="LC.990"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/satisfiability-of-equality-equations/">LC.990</a></h1>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/05/23/%E5%B9%B6%E6%9F%A5%E9%9B%86/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/17/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%B0%8F%E7%9F%A5%E8%AF%86%EF%BC%88%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%EF%BC%89/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Lizq">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Lizq的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | Lizq的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/05/17/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%B0%8F%E7%9F%A5%E8%AF%86%EF%BC%88%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%EF%BC%89/" class="post-title-link" itemprop="url">数据库小知识（持续更新）</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-05-17 20:13:13" itemprop="dateCreated datePublished" datetime="2022-05-17T20:13:13+08:00">2022-05-17</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-09-19 20:53:03" itemprop="dateModified" datetime="2022-09-19T20:53:03+08:00">2022-09-19</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.4k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>5 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="1-缓存雪崩："><a href="#1-缓存雪崩：" class="headerlink" title="1. 缓存雪崩："></a>1. 缓存雪崩：</h2><p>布隆过滤器(1970)、分布式锁</p>
-<p>比如说双十一某宝，redis缓存中key大面积失效，导致某宝直接和数据库进行沟通，把请求直接打到数据库<br>解决方法：</p>
-<ol>
-<li>随机初始化缓存失效时间，让其不要在同一时间失效</li>
-<li>redis一般都是集群部署，我们把热点key放到不同的节点上去，让热点的缓存平均的分布在不同的redis节点上</li>
-<li>最暴力的方法：不设置缓存的失效时间，让它永远不失效，或者跑定时任务，让它定时刷这个缓存让其不失效</li>
-</ol>
-<h2 id="2-缓存穿透："><a href="#2-缓存穿透：" class="headerlink" title="2. 缓存穿透："></a>2. 缓存穿透：</h2>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/05/17/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%B0%8F%E7%9F%A5%E8%AF%86%EF%BC%88%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%EF%BC%89/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/08/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Lizq">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Lizq的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | Lizq的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/05/08/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F/" class="post-title-link" itemprop="url">设计模式-观察者模式</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-05-08 12:54:24" itemprop="dateCreated datePublished" datetime="2022-05-08T12:54:24+08:00">2022-05-08</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-09-16 15:08:16" itemprop="dateModified" datetime="2022-09-16T15:08:16+08:00">2022-09-16</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.2k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>5 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="1-观察者模式"><a href="#1-观察者模式" class="headerlink" title="1 观察者模式"></a>1 观察者模式</h2><ul>
-<li>在软件构建过程中，我们需要为某些对象建立一种“通知依赖关系” ——一个对象（目标对象）的状态发生改变，所有的依赖对象（观察者对象）都将得到通知。如果这样的依赖关系过于紧密，将使软件不能很好地抵御变化。</li>
-<li>定义对象间的一种一对多（变化）的依赖关系，以便当一个对象(Subject)的状态发生改变时，所有依赖于它的对象都得到通知并自动更新。</li>
-<li>观察对象的状态发生变化时，通知给观察者。 观察者模式适用于根据对象状态进行相应处理的场景。</li>
-</ul>
-<h2 id="2-问题"><a href="#2-问题" class="headerlink" title="2 问题"></a>2 问题</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// FileSplitter.cpp</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">FileSplitter</span>&#123;</span><br><span class="line">	string m_filePath;</span><br><span class="line">	<span class="type">int</span> m_fileNumber;</span><br><span class="line">	ProgressBar* m_progressBar; <span class="comment">// 不能应对变化，和具体某个平台的进度条绑死：例如UI进度条、无界面的Shell进度条等等</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="built_in">FileSplitter</span>(<span class="type">const</span> string&amp; filePath, <span class="type">int</span> fileNumber, ProgressBar* progressBar) :</span><br><span class="line">		<span class="built_in">m_filePath</span>(filePath), </span><br><span class="line">		<span class="built_in">m_fileNumber</span>(fileNumber),</span><br><span class="line">		<span class="built_in">m_progressBar</span>(progressBar)&#123;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="type">void</span> <span class="title">split</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="comment">//1.读取大文件</span></span><br><span class="line">		<span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line">		<span class="comment">//2.分批次向小文件中写入</span></span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; m_fileNumber; i++)&#123;</span><br><span class="line">			<span class="comment">//...</span></span><br><span class="line">			<span class="type">float</span> progressValue = m_fileNumber;</span><br><span class="line">			progressValue = (i + <span class="number">1</span>) / progressValue;</span><br><span class="line">			m_progressBar-&gt;<span class="built_in">setValue</span>(progressValue);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// MainForm.cpp</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MainForm</span> : <span class="keyword">public</span> Form&#123;</span><br><span class="line">	TextBox* txtFilePath;</span><br><span class="line">	TextBox* txtFileNumber;</span><br><span class="line">	ProgressBar* progressBar;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="type">void</span> <span class="title">Button1_Click</span><span class="params">()</span></span>&#123;</span><br><span class="line">		string filePath = txtFilePath-&gt;<span class="built_in">getText</span>();</span><br><span class="line">		<span class="type">int</span> number = <span class="built_in">atoi</span>(txtFileNumber-&gt;<span class="built_in">getText</span>().<span class="built_in">c_str</span>());</span><br><span class="line">		<span class="function">FileSplitter <span class="title">splitter</span><span class="params">(filePath, number, progressBar)</span></span>;</span><br><span class="line">		splitter.<span class="built_in">split</span>();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/05/08/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/4/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1273,13 +1268,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">62k</span>
+    <span title="站点总字数">67k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">3:45</span>
+    <span title="站点阅读时长">4:03</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
