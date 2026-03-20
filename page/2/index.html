@@ -65,7 +65,7 @@
 
   
 
-  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
 <script src="/js/third-party/math/mathjax.js" defer></script>
 
 
@@ -171,7 +171,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">59</span>
+          <span class="site-state-item-count">56</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -202,317 +202,6 @@
     </div>
 
     <div class="main-inner index posts-expand">
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/10/07/%E8%B7%B3%E8%B7%83%E8%A1%A8%E7%BB%93%E5%90%88%E5%AD%97%E5%85%B8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Lizq">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Lizq的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | Lizq的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2025/10/07/%E8%B7%B3%E8%B7%83%E8%A1%A8%E7%BB%93%E5%90%88%E5%AD%97%E5%85%B8/" class="post-title-link" itemprop="url">Easy SortedSet</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2025-10-07 16:22:56" itemprop="dateCreated datePublished" datetime="2025-10-07T16:22:56+08:00">2025-10-07</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2025-12-01 18:25:05" itemprop="dateModified" datetime="2025-12-01T18:25:05+08:00">2025-12-01</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>2.3k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>8 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>我们有一堆数据，希望能够支持快速的插入、删除、查询以及范围查询<br>我们都知道数组进行排序后，可以通过二分查找的方式快速定位数据，时间复杂度是$O(LogN)$，但是如果数组经常发生插入、删除操作，就需要进行大量平移，时间复杂度是$O(N)$。<br>那用平衡树呢？AVL树、红黑树都是经过深度优化的动态数据结构，他们的插入删除查找都可以在$O(LogN)$的时间内完成，但是他们实现起来较为复杂，且对于范围查询，还需要进行中序遍历，但至少比数组好多了。<br>那链表呢，链表的插入删除是很方便，但关键查询呢，它能进行二分查找吗？链表无法随机访问，怎么二分？很显然，直接对普通链表进行二分查找是困难的。1990年，Pugh发表论文《Skip Lists: A Probabilistic Alternative to Balanced Trees》，创造性的提出了自己的解决方案：”如果不能在节点间跳跃，那就建造可以跳跃的桥梁吧！”，跳跃表（SkipList）正式被提出。<br>跳跃表是一种概率性的有序数据结构，通过建立多级索引来加速查找，可以看作是在链表基础上加了“快速通道”，变相了实现对链表的二分查找，并且，范围查找也能够很轻易的完成，只要找到目标，就可以沿着链条依次访问。<br>游戏里排行榜一般是采用Redis Sorted Set，它在数据规模较大时的底层数据结构就是跳跃表+哈希表。</p>
-<ul>
-<li>跳跃表：天然支持有序插入、删除和范围查询，时间复杂度O(log n)</li>
-<li>哈希表：用于快速查找特定用户的当前位置和分数（O(1)）</li>
-</ul>
-<p><img src="https://raw.githubusercontent.com/fkjkkll/OnlineSource/refs/heads/master/Image/algorithm/SortedSet.png" alt="示意图">跳跃表的每个节点拥有一个前序指针和多层后继指针。每层后继指针都独立成链，每个节点在插入时，都会按照概率分配给它多少层后继指针（至少一层）。类似抛硬币，落到正面，就给它加一层后继指针，然后继续抛硬币；落到反面就结束。当然，硬币正面的概率不一定是50%（实际有论文提出，包括业内经验来看，25%的概率是对性能和内存占用权衡后的得到的较优选择）。实际上，作者最初考虑过确定性跳表，即第0层是全连接，第1层是隔1个连接，第2层是隔3个连接…但是这样会导致插入和删除需要进行大量调整，复杂度变高，从而引入随机性，不仅简化了插入和删除的操作，并且统计上仍然是接近二分的结构。</p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2025/10/07/%E8%B7%B3%E8%B7%83%E8%A1%A8%E7%BB%93%E5%90%88%E5%AD%97%E5%85%B8/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/10/20/YOLOv4-v5-X%E7%90%86%E8%A7%A3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Lizq">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Lizq的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | Lizq的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/10/20/YOLOv4-v5-X%E7%90%86%E8%A7%A3/" class="post-title-link" itemprop="url">YOLOv4,v5,X理解</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-10-20 22:06:44" itemprop="dateCreated datePublished" datetime="2022-10-20T22:06:44+08:00">2022-10-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2025-11-21 15:27:44" itemprop="dateModified" datetime="2025-11-21T15:27:44+08:00">2025-11-21</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>973</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>4 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="YOLOv4"><a href="#YOLOv4" class="headerlink" title="YOLOv4"></a>YOLOv4</h1><p>YOLOv4是在YOLOv3的基础上进行了一些改进，但是整个流程依旧是YOLOv3，比如正负样本的划分、忽略样本等等。<br>其中添加的改进主要有如下几点：</p>
-<ul>
-<li>跨阶段局部网络（Cross-Stage-Partial, CSP）作为主干网络进行特征提取</li>
-<li>Mish激活函数（backbone）和Leaky ReLU（neck）</li>
-<li>Mosaic数据增强、MixUP数据增强</li>
-<li>添加注意力机制模块</li>
-<li>CIoU作为边框回归损失</li>
-<li>在neck中添加空间金字塔池化（Spatial Pyramid Pooling, SPP）提升感受野</li>
-<li>在原先YOLOv3 neck的特征金字塔网络（Feature Pyramid Netword, FPN）的基础上改进为路径聚合网络（Path Aggregation Network, PAN）</li>
-</ul>
-<h1 id="YOLOv5"><a href="#YOLOv5" class="headerlink" title="YOLOv5"></a>YOLOv5</h1><p>YOLOv5并无论文，我以开源代码中的实现来说明（version 5.0）。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/10/20/YOLOv4-v5-X%E7%90%86%E8%A7%A3/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/10/08/YOLOv3%E6%BA%90%E7%A0%81%E7%90%86%E8%A7%A3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Lizq">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Lizq的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | Lizq的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/10/08/YOLOv3%E6%BA%90%E7%A0%81%E7%90%86%E8%A7%A3/" class="post-title-link" itemprop="url">YOLOv3源码理解</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2022-10-08 19:31:54 / 修改时间：20:34:32" itemprop="dateCreated datePublished" datetime="2022-10-08T19:31:54+08:00">2022-10-08</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.3k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>5 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="0-主干网络"><a href="#0-主干网络" class="headerlink" title="0 主干网络"></a>0 主干网络</h2><p>YOLOv3采用DarkNet-53网络，结构如下图（DarkNet-53预训练于ImageNet，由于是1000类的分类，所以网络最后输出经过全连接层。但是目标检测不需要那个全连接层，因此实际上只使用了“DarkNet-52”，共52层卷积层）：</p>
-<p><img src="https://raw.githubusercontent.com/fkjkkll/OnlineSource/master/Image/object%20detection/YOLOv3_Backbone.jpg" alt="YOLOv3 Backbone"></p>
-<ul>
-<li>BN为批归一化层，Acti为激活函数，YOLOv3采用LeakyReLU</li>
-<li>输入批次经过一个3X3卷积改变通道数为32，然后经过5个降残差块。每个降残差块包含一次步幅为2的3X3卷积加上一系列残差块。每个残差块包含一次1X1卷积降低通道数，再经过一次3X3卷积提升通道数，最后和残差边进行连接。</li>
-<li>整体主干网络清晰，每经过一个降残差块，通道数翻倍，特征图宽高减半。</li>
-</ul>
-<h2 id="1-预测分支网络"><a href="#1-预测分支网络" class="headerlink" title="1 预测分支网络"></a>1 预测分支网络</h2>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/10/08/YOLOv3%E6%BA%90%E7%A0%81%E7%90%86%E8%A7%A3/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
 
     
 
@@ -1229,6 +918,321 @@
 
 
 
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/19/const%E8%A6%81%E7%82%B9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Lizq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/08/19/const%E8%A6%81%E7%82%B9/" class="post-title-link" itemprop="url">const要点</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-08-19 20:14:02" itemprop="dateCreated datePublished" datetime="2022-08-19T20:14:02+08:00">2022-08-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-08-30 20:01:18" itemprop="dateModified" datetime="2022-08-30T20:01:18+08:00">2022-08-30</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>455</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="const要点"><a href="#const要点" class="headerlink" title="const要点"></a>const要点</h1><ul>
+<li>C的const是虚假的，就是个只读量，只是说不能通过变量名进行修改，但是拿到指针就可修改；</li>
+<li>C++的const会保险一些，会有类似符号表的东西；但是类内的const普通成员变量则依旧会被通过指针改变</li>
+<li>静态const和全局const虽然可以通过指针修改，编译时期可能不会报错，但是运行到那个地方就会报错</li>
+<li>const只在编译期间保证常量被使用时的不变性，无法保证运行期间的行为。</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">A</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> val2 = <span class="number">22</span>;</span><br><span class="line">    <span class="type">static</span> <span class="type">int</span> val3;</span><br><span class="line">    <span class="type">static</span> <span class="type">const</span> <span class="type">int</span> val4 = <span class="number">44</span>; <span class="comment">// !</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="type">int</span> A::val3 = <span class="number">33</span>;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> val5 = <span class="number">55</span>;</span><br><span class="line"><span class="type">int</span> val6 = <span class="number">66</span>;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> val1 = <span class="number">11</span>;</span><br><span class="line">    <span class="type">int</span>* p1 = (<span class="type">int</span>*)&amp;val1; <span class="comment">// 栈区，拿到地址随便改，但是符号表会覆盖</span></span><br><span class="line">    *p1 = <span class="number">1111</span>;</span><br><span class="line">    cout &lt;&lt; &amp;val1 &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; val1 &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; p1 &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; *p1 &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;===&quot;</span> &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    A ins;</span><br><span class="line">    <span class="type">int</span>* p2 = (<span class="type">int</span>*)&amp;ins.val2;</span><br><span class="line">    *p2 = <span class="number">2222</span>; <span class="comment">// 栈区，拿到地址随便改</span></span><br><span class="line">    cout &lt;&lt; &amp;ins.val2 &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; ins.val2 &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; p2 &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; *p2 &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;===&quot;</span> &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span>* p3 = (<span class="type">int</span>*)&amp;A::val3;</span><br><span class="line">    *p3 = <span class="number">3333</span>; <span class="comment">// 全局数据区，但是不在常量区，可以修改</span></span><br><span class="line">    cout &lt;&lt; p3 &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; *p3 &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; &amp;A::val3 &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; A::val3 &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;===&quot;</span> &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span>* p4 = (<span class="type">int</span>*)&amp;A::val4;</span><br><span class="line">    <span class="comment">//*p4 = 4444; // 编译不出错，运行会异常（常量区不能修改）</span></span><br><span class="line">    cout &lt;&lt; p4 &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; *p4 &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; &amp;A::val4 &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; A::val4 &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;===&quot;</span> &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span>* p5 = (<span class="type">int</span>*)&amp;val5;</span><br><span class="line">    <span class="comment">//*p5 = 5555; // 编译不出错，运行会异常（常量区不能修改）</span></span><br><span class="line">    cout &lt;&lt; p5 &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; *p5 &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; &amp;val5 &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; val5 &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;===&quot;</span> &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span>* p6 = (<span class="type">int</span>*)&amp;val6;</span><br><span class="line">    *p6 = <span class="number">6666</span>; <span class="comment">// 全局数据区，但是不在常量区，可以修改</span></span><br><span class="line">    cout &lt;&lt; p6 &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; *p6 &lt;&lt; endl;</span><br><span class="line">    cout &lt;&lt; &amp;val6 &lt;&lt; <span class="string">&quot; &quot;</span> &lt;&lt; val6 &lt;&lt; endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出结果：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">00EFFD98 11</span></span><br><span class="line"><span class="comment">00EFFD98 1111</span></span><br><span class="line"><span class="comment">===</span></span><br><span class="line"><span class="comment">00EFFD80 2222</span></span><br><span class="line"><span class="comment">00EFFD80 2222</span></span><br><span class="line"><span class="comment">===</span></span><br><span class="line"><span class="comment">0027C038 3333</span></span><br><span class="line"><span class="comment">0027C038 3333</span></span><br><span class="line"><span class="comment">===</span></span><br><span class="line"><span class="comment">00279B38 44</span></span><br><span class="line"><span class="comment">00279B38 44</span></span><br><span class="line"><span class="comment">===</span></span><br><span class="line"><span class="comment">00279B30 55</span></span><br><span class="line"><span class="comment">00279B30 55</span></span><br><span class="line"><span class="comment">===</span></span><br><span class="line"><span class="comment">0027C03C 6666</span></span><br><span class="line"><span class="comment">0027C03C 6666</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/08/19/const%E8%A6%81%E7%82%B9/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/16/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Lizq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/08/16/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8F/" class="post-title-link" itemprop="url">设计模式-状态模式</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-08-16 15:04:27" itemprop="dateCreated datePublished" datetime="2022-08-16T15:04:27+08:00">2022-08-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-09-16 15:10:00" itemprop="dateModified" datetime="2022-09-16T15:10:00+08:00">2022-09-16</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="1-状态模式"><a href="#1-状态模式" class="headerlink" title="1 状态模式"></a>1 状态模式</h2><ul>
+<li>在软件构建过程中，某些对象的状态如果改变，其行为也会随之改变，比如文档处于只读状态，其支持的行为和读写状态支持的行为可能完全不同</li>
+<li>允许一个对象在其内部状态改变时改变它的行为。从而使对象看起来似乎修改了其行为</li>
+<li>用类表示状态，通过切换类改变对象状态</li>
+<li>跟Strategy模式很像，区别是：状态模式采用单例模式，抽象类包含指向下一个状态的指针</li>
+</ul>
+<h2 id="2-问题"><a href="#2-问题" class="headerlink" title="2 问题"></a>2 问题</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="title class_">NetworkState</span>&#123;</span><br><span class="line">    Network_Open,</span><br><span class="line">    Network_Close,</span><br><span class="line">    Network_Connect</span><br><span class="line">    <span class="comment">// 假设未来有新状态：Network_Wait，怎么办？</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">NetworkProcessor</span>&#123;</span><br><span class="line">    NetworkState state;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">Operation1</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (state == Network_Open)&#123;</span><br><span class="line">            <span class="comment">//**********</span></span><br><span class="line">            state = Network_Close;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (state == Network_Close)&#123;</span><br><span class="line">            <span class="comment">//..........</span></span><br><span class="line">            state = Network_Connect;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (state == Network_Connect)&#123;</span><br><span class="line">            <span class="comment">//$$$$$$$$$$</span></span><br><span class="line">            state = Network_Open;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">Operation2</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (state == Network_Open)&#123;</span><br><span class="line">            <span class="comment">//**********</span></span><br><span class="line">            state = Network_Connect;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (state == Network_Close)&#123;</span><br><span class="line">            <span class="comment">//..........</span></span><br><span class="line">            state = Network_Open;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (state == Network_Connect)&#123;</span><br><span class="line">            <span class="comment">//$$$$$$$$$$</span></span><br><span class="line">            state = Network_Close;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">Operation3</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-状态v1"><a href="#3-状态v1" class="headerlink" title="3 状态v1"></a>3 状态v1</h2>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/08/16/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8F/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/07/26/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Lizq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/07/26/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F/" class="post-title-link" itemprop="url">设计模式-适配器模式</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-07-26 15:04:21" itemprop="dateCreated datePublished" datetime="2022-07-26T15:04:21+08:00">2022-07-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-09-19 21:44:57" itemprop="dateModified" datetime="2022-09-19T21:44:57+08:00">2022-09-19</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>740</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="1-适配器模式"><a href="#1-适配器模式" class="headerlink" title="1 适配器模式"></a>1 适配器模式</h2><ul>
+<li>在软件系统中，由于应用环境的变化，常常需要将“一些现存的对象”放在新的环境中应用，但是新环境要求的接口是这些现存对象所不满足的。</li>
+<li>将一个类的接口转换成客户希望的另一个接口，Adapter模式使得原本由于接口不兼容而不能一起工作的那些类可以一起工作</li>
+</ul>
+<h2 id="2-适配器v1"><a href="#2-适配器v1" class="headerlink" title="2 适配器v1"></a>2 适配器v1</h2><p><img src="https://raw.githubusercontent.com/fkjkkll/OnlineSource/master/Image/CPP/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F.jpg" alt="适配器模式"></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 目标接口（新接口）</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ITarget</span>&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">process</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 遗留接口（老接口）</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">IAdaptee</span>&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">foo</span><span class="params">(<span class="type">int</span> data)</span> </span>= <span class="number">0</span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">int</span> <span class="title">bar</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 遗留类型</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">OldClass</span>: <span class="keyword">public</span> IAdaptee&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">foo</span><span class="params">(<span class="type">int</span> data)</span></span>&#123;</span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">int</span> <span class="title">bar</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 对象适配器（推荐）</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Adapter</span>: <span class="keyword">public</span> ITarget&#123; <span class="comment">// 继承</span></span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">    IAdaptee* pAdaptee; <span class="comment">// 组合（多态）</span></span><br><span class="line">    </span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Adapter</span>(IAdaptee* pAdaptee)&#123;</span><br><span class="line">        <span class="keyword">this</span>-&gt;pAdaptee=pAdaptee;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">process</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="type">int</span> data=pAdaptee-&gt;<span class="built_in">bar</span>();</span><br><span class="line">        pAdaptee-&gt;<span class="built_in">foo</span>(data);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 类适配器（十分不推荐）</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Adapter</span>: <span class="keyword">public</span> ITarget, <span class="keyword">protected</span> OldClass&#123; <span class="comment">// 多继承（无复用性，绑死OldClass）</span></span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    IAdaptee* pAdaptee = <span class="keyword">new</span> <span class="built_in">OldClass</span>(); <span class="comment">// 老接口</span></span><br><span class="line">    ITarget* pTarget = <span class="keyword">new</span> <span class="built_in">Adapter</span>(pAdaptee);</span><br><span class="line">    pTarget-&gt;<span class="built_in">process</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">stack</span>&#123; <span class="comment">// STL中stack包含deque，看作是种适配器</span></span><br><span class="line">    deqeue container;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">queue</span>&#123; <span class="comment">// STL中queue包含deque，看作是种适配器</span></span><br><span class="line">    deqeue container;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/07/26/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1252,13 +1256,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">67k</span>
+    <span title="站点总字数">62k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">4:03</span>
+    <span title="站点阅读时长">3:45</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动

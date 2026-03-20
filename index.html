@@ -171,7 +171,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">59</span>
+          <span class="site-state-item-count">56</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -507,110 +507,6 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2026/02/13/Csharp-fixed/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Lizq">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Lizq的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | Lizq的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2026/02/13/Csharp-fixed/" class="post-title-link" itemprop="url">Csharp fixed</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2026-02-13 23:04:24" itemprop="dateCreated datePublished" datetime="2026-02-13T23:04:24+08:00">2026-02-13</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-03-20 19:31:57" itemprop="dateModified" datetime="2026-03-20T19:31:57+08:00">2026-03-20</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.5k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>6 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="1、固定托管对象的地址"><a href="#1、固定托管对象的地址" class="headerlink" title="1、固定托管对象的地址"></a>1、固定托管对象的地址</h2><p>.NET的GC在进行可达性遍历后会将所有使用到的内存进行压缩（Compact），空出一整块未使用的内存方便后续申请使用，这时候，原先代码里还在使用的内存就可能会变动位置，指针就会失效。所以fixed在这里的作用就是告诉GC不要compact我这个托管对象，常常配合指针进行较为底层的操作。</p>
-<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">unsafe</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">int</span>[] arr = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">fixed</span> (<span class="built_in">int</span>* p = arr)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// scope范围内arr会被pin住，GC不会移动它</span></span><br><span class="line">        Console.WriteLine(p[<span class="number">0</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>这种方式会有一定内存损耗，可能会影响GC产生内存碎片。</li>
-<li>fixed只用用于内建类型数组，别用自己引用类型元素数组，它是不会递归pin的</li>
-</ul>
-<h2 id="2、固定大小缓冲区字段fixed-buffer"><a href="#2、固定大小缓冲区字段fixed-buffer" class="headerlink" title="2、固定大小缓冲区字段fixed buffer"></a>2、固定大小缓冲区字段fixed buffer</h2>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2026/02/13/Csharp-fixed/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="http://example.com/2026/02/01/%E7%8E%A9%E5%AE%B6%E6%8E%A7%E5%88%B6%E9%95%9C%E5%A4%B4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -781,212 +677,6 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2026/02/01/%E7%BB%99%E5%AE%9A%E8%B7%AF%E5%BE%84%E8%8A%82%E7%82%B9%E4%B8%8BNPC%E5%A6%82%E4%BD%95%E5%B9%B3%E6%BB%91%E7%A7%BB%E5%8A%A8/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2026/02/01/Csharp%E6%9E%9A%E4%B8%BE%E7%B1%BB%E5%9E%8B%E7%9A%84%E8%A3%85%E6%8B%86%E7%AE%B1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Lizq">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Lizq的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | Lizq的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2026/02/01/Csharp%E6%9E%9A%E4%B8%BE%E7%B1%BB%E5%9E%8B%E7%9A%84%E8%A3%85%E6%8B%86%E7%AE%B1/" class="post-title-link" itemprop="url">Csharp枚举类型的装拆箱</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2026-02-01 11:29:15" itemprop="dateCreated datePublished" datetime="2026-02-01T11:29:15+08:00">2026-02-01</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-03-20 19:31:57" itemprop="dateModified" datetime="2026-03-20T19:31:57+08:00">2026-03-20</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.3k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>5 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3 id="1-优化位枚举"><a href="#1-优化位枚举" class="headerlink" title="1 优化位枚举"></a>1 优化位枚举</h3><h4 id="1-1-原生HasFlag问题"><a href="#1-1-原生HasFlag问题" class="headerlink" title="1.1 原生HasFlag问题"></a>1.1 原生HasFlag问题</h4><ul>
-<li>原生的HasFlag方法会将枚举装箱为Enum类型，产生性能开销</li>
-<li>Enum本身是一个引用类型，所有具体的枚举类型比如MyColor都是值类型，并且继承自Enum（特殊的继承规则，就像所有C#对象都继承自object，它也是引用类型）。当调用基类Enum的方法时，自身需要装箱成Enum，参数也需要传递给Enum flag，会进行两次装箱</li>
-<li>HasFlagFast 用泛型值类型参数替代 Enum 引用类型参数，从根源上避免了装箱。Unsafe.As 只是进一步优化了类型转换的性能，而泛型值类型参数才是避免装箱的关键</li>
-</ul>
-<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 原生判断函数是Enum的实例方法，Enum本身是抽象类（引用类型）</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="built_in">bool</span> <span class="title">HasFlag</span>(<span class="params">Enum flag</span>)</span>&#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 替换 HasFlag 方法，避免装箱，仅适用于Int32枚举</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">bool</span> <span class="title">HasFlagFast</span>&lt;<span class="title">T</span>&gt;(<span class="params"><span class="keyword">this</span> T flags, T <span class="keyword">value</span></span>) <span class="keyword">where</span> T : <span class="keyword">struct</span>, Enum</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (Enum.GetUnderlyingType(<span class="keyword">typeof</span>(T)) != <span class="keyword">typeof</span>(<span class="built_in">int</span>))</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> ArgumentException(<span class="string">$&quot;枚举类型 <span class="subst">&#123;<span class="keyword">typeof</span>(T).Name&#125;</span> 的底层类型不是 Int32，无法使用此方法&quot;</span>, <span class="keyword">nameof</span>(T));</span><br><span class="line">    <span class="keyword">var</span> f = Unsafe.As&lt;T, <span class="built_in">int</span>&gt;(<span class="keyword">ref</span> flags);</span><br><span class="line">    <span class="keyword">var</span> v = Unsafe.As&lt;T, <span class="built_in">int</span>&gt;(<span class="keyword">ref</span> <span class="keyword">value</span>);</span><br><span class="line">    <span class="keyword">return</span> (f &amp; v) == v;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="1-2-内部发生了什么"><a href="#1-2-内部发生了什么" class="headerlink" title="1.2 内部发生了什么"></a>1.2 内部发生了什么</h4>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2026/02/01/Csharp%E6%9E%9A%E4%B8%BE%E7%B1%BB%E5%9E%8B%E7%9A%84%E8%A3%85%E6%8B%86%E7%AE%B1/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2026/01/17/Csharp%E5%8C%BF%E5%90%8D%E5%87%BD%E6%95%B0%E7%9A%84%E6%9A%97%E5%9D%91/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Lizq">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Lizq的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | Lizq的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2026/01/17/Csharp%E5%8C%BF%E5%90%8D%E5%87%BD%E6%95%B0%E7%9A%84%E6%9A%97%E5%9D%91/" class="post-title-link" itemprop="url">Csharp匿名函数的暗坑</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2026-01-17 22:35:24" itemprop="dateCreated datePublished" datetime="2026-01-17T22:35:24+08:00">2026-01-17</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-03-20 19:31:57" itemprop="dateModified" datetime="2026-03-20T19:31:57+08:00">2026-03-20</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.9k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>7 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>新项目，在学习FairyGUI，看到官方Demo里的Window示例有这么一段代码</p>
-<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 业务层BasicsMain</span></span><br><span class="line"><span class="keyword">private</span> Window _winA; <span class="comment">// 实例变量</span></span><br><span class="line"><span class="keyword">private</span> Window _winB; <span class="comment">// 实例变量</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">PlayWindow</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    GComponent obj = _demoObjects[<span class="string">&quot;Window&quot;</span>];</span><br><span class="line">    obj.GetChild(<span class="string">&quot;n0&quot;</span>).onClick.Add(() =&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (_winA == <span class="literal">null</span>)</span><br><span class="line">            _winA = <span class="keyword">new</span> Window1();</span><br><span class="line">        _winA.Show();</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    obj.GetChild(<span class="string">&quot;n1&quot;</span>).onClick.Add(() =&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (_winB == <span class="literal">null</span>)</span><br><span class="line">            _winB = <span class="keyword">new</span> Window2();</span><br><span class="line">        _winB.Show();</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// FairyGUI.EventListener.cs</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Add</span>(<span class="params">EventCallback0 callback</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    _bridge.Add(callback);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// FairyGUI.EventBridge.cs</span></span><br><span class="line">EventCallback0 _callback0;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Add</span>(<span class="params">EventCallback0 callback</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    _callback0 -= callback;</span><br><span class="line">    _callback0 += callback;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这个PlayWindow函数是每次点击对应按钮都会调用的，但是里面的注册回调却用的匿名函数，虽然内部会先对委托进行解绑再绑定，但是匿名函数，怎敢断定两次调用传入的是同一个函数的？我立马嗅到一丝内存泄漏的异味，但是实际并没有发生。<br></p>
-<h3 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h3>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2026/01/17/Csharp%E5%8C%BF%E5%90%8D%E5%87%BD%E6%95%B0%E7%9A%84%E6%9A%97%E5%9D%91/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1213,6 +903,317 @@
 
 
 
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/10/07/%E8%B7%B3%E8%B7%83%E8%A1%A8%E7%BB%93%E5%90%88%E5%AD%97%E5%85%B8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Lizq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/10/07/%E8%B7%B3%E8%B7%83%E8%A1%A8%E7%BB%93%E5%90%88%E5%AD%97%E5%85%B8/" class="post-title-link" itemprop="url">Easy SortedSet</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-10-07 16:22:56" itemprop="dateCreated datePublished" datetime="2025-10-07T16:22:56+08:00">2025-10-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-12-01 18:25:05" itemprop="dateModified" datetime="2025-12-01T18:25:05+08:00">2025-12-01</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>8 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>我们有一堆数据，希望能够支持快速的插入、删除、查询以及范围查询<br>我们都知道数组进行排序后，可以通过二分查找的方式快速定位数据，时间复杂度是$O(LogN)$，但是如果数组经常发生插入、删除操作，就需要进行大量平移，时间复杂度是$O(N)$。<br>那用平衡树呢？AVL树、红黑树都是经过深度优化的动态数据结构，他们的插入删除查找都可以在$O(LogN)$的时间内完成，但是他们实现起来较为复杂，且对于范围查询，还需要进行中序遍历，但至少比数组好多了。<br>那链表呢，链表的插入删除是很方便，但关键查询呢，它能进行二分查找吗？链表无法随机访问，怎么二分？很显然，直接对普通链表进行二分查找是困难的。1990年，Pugh发表论文《Skip Lists: A Probabilistic Alternative to Balanced Trees》，创造性的提出了自己的解决方案：”如果不能在节点间跳跃，那就建造可以跳跃的桥梁吧！”，跳跃表（SkipList）正式被提出。<br>跳跃表是一种概率性的有序数据结构，通过建立多级索引来加速查找，可以看作是在链表基础上加了“快速通道”，变相了实现对链表的二分查找，并且，范围查找也能够很轻易的完成，只要找到目标，就可以沿着链条依次访问。<br>游戏里排行榜一般是采用Redis Sorted Set，它在数据规模较大时的底层数据结构就是跳跃表+哈希表。</p>
+<ul>
+<li>跳跃表：天然支持有序插入、删除和范围查询，时间复杂度O(log n)</li>
+<li>哈希表：用于快速查找特定用户的当前位置和分数（O(1)）</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/fkjkkll/OnlineSource/refs/heads/master/Image/algorithm/SortedSet.png" alt="示意图">跳跃表的每个节点拥有一个前序指针和多层后继指针。每层后继指针都独立成链，每个节点在插入时，都会按照概率分配给它多少层后继指针（至少一层）。类似抛硬币，落到正面，就给它加一层后继指针，然后继续抛硬币；落到反面就结束。当然，硬币正面的概率不一定是50%（实际有论文提出，包括业内经验来看，25%的概率是对性能和内存占用权衡后的得到的较优选择）。实际上，作者最初考虑过确定性跳表，即第0层是全连接，第1层是隔1个连接，第2层是隔3个连接…但是这样会导致插入和删除需要进行大量调整，复杂度变高，从而引入随机性，不仅简化了插入和删除的操作，并且统计上仍然是接近二分的结构。</p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2025/10/07/%E8%B7%B3%E8%B7%83%E8%A1%A8%E7%BB%93%E5%90%88%E5%AD%97%E5%85%B8/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/10/20/YOLOv4-v5-X%E7%90%86%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Lizq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/10/20/YOLOv4-v5-X%E7%90%86%E8%A7%A3/" class="post-title-link" itemprop="url">YOLOv4,v5,X理解</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-10-20 22:06:44" itemprop="dateCreated datePublished" datetime="2022-10-20T22:06:44+08:00">2022-10-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-11-21 15:27:44" itemprop="dateModified" datetime="2025-11-21T15:27:44+08:00">2025-11-21</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>973</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="YOLOv4"><a href="#YOLOv4" class="headerlink" title="YOLOv4"></a>YOLOv4</h1><p>YOLOv4是在YOLOv3的基础上进行了一些改进，但是整个流程依旧是YOLOv3，比如正负样本的划分、忽略样本等等。<br>其中添加的改进主要有如下几点：</p>
+<ul>
+<li>跨阶段局部网络（Cross-Stage-Partial, CSP）作为主干网络进行特征提取</li>
+<li>Mish激活函数（backbone）和Leaky ReLU（neck）</li>
+<li>Mosaic数据增强、MixUP数据增强</li>
+<li>添加注意力机制模块</li>
+<li>CIoU作为边框回归损失</li>
+<li>在neck中添加空间金字塔池化（Spatial Pyramid Pooling, SPP）提升感受野</li>
+<li>在原先YOLOv3 neck的特征金字塔网络（Feature Pyramid Netword, FPN）的基础上改进为路径聚合网络（Path Aggregation Network, PAN）</li>
+</ul>
+<h1 id="YOLOv5"><a href="#YOLOv5" class="headerlink" title="YOLOv5"></a>YOLOv5</h1><p>YOLOv5并无论文，我以开源代码中的实现来说明（version 5.0）。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/10/20/YOLOv4-v5-X%E7%90%86%E8%A7%A3/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/10/08/YOLOv3%E6%BA%90%E7%A0%81%E7%90%86%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Lizq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/10/08/YOLOv3%E6%BA%90%E7%A0%81%E7%90%86%E8%A7%A3/" class="post-title-link" itemprop="url">YOLOv3源码理解</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-10-08 19:31:54 / 修改时间：20:34:32" itemprop="dateCreated datePublished" datetime="2022-10-08T19:31:54+08:00">2022-10-08</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="0-主干网络"><a href="#0-主干网络" class="headerlink" title="0 主干网络"></a>0 主干网络</h2><p>YOLOv3采用DarkNet-53网络，结构如下图（DarkNet-53预训练于ImageNet，由于是1000类的分类，所以网络最后输出经过全连接层。但是目标检测不需要那个全连接层，因此实际上只使用了“DarkNet-52”，共52层卷积层）：</p>
+<p><img src="https://raw.githubusercontent.com/fkjkkll/OnlineSource/master/Image/object%20detection/YOLOv3_Backbone.jpg" alt="YOLOv3 Backbone"></p>
+<ul>
+<li>BN为批归一化层，Acti为激活函数，YOLOv3采用LeakyReLU</li>
+<li>输入批次经过一个3X3卷积改变通道数为32，然后经过5个降残差块。每个降残差块包含一次步幅为2的3X3卷积加上一系列残差块。每个残差块包含一次1X1卷积降低通道数，再经过一次3X3卷积提升通道数，最后和残差边进行连接。</li>
+<li>整体主干网络清晰，每经过一个降残差块，通道数翻倍，特征图宽高减半。</li>
+</ul>
+<h2 id="1-预测分支网络"><a href="#1-预测分支网络" class="headerlink" title="1 预测分支网络"></a>1 预测分支网络</h2>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/10/08/YOLOv3%E6%BA%90%E7%A0%81%E7%90%86%E8%A7%A3/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
   <nav class="pagination">
     <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1236,13 +1237,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">67k</span>
+    <span title="站点总字数">62k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">4:03</span>
+    <span title="站点阅读时长">3:45</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
