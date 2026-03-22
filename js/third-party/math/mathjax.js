@@ -5,9 +5,16 @@ document.addEventListener('page:loaded', () => {
 
   if (typeof MathJax === 'undefined') {
     window.MathJax = {
+      loader: {
+        load: ['[tex]/boldsymbol']
+      },
       tex: {
         inlineMath: { '[+]': [['$', '$']] },
-        tags      : CONFIG.mathjax.tags
+        tags      : CONFIG.mathjax.tags,
+        packages  : { '[+]': ['boldsymbol'] },
+        macros    : {
+          bm: ['\\boldsymbol{#1}', 1]
+        }
       },
       options: {
         renderActions: {
@@ -34,3 +41,4 @@ document.addEventListener('page:loaded', () => {
     MathJax.typesetPromise();
   }
 });
+
