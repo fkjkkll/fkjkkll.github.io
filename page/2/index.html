@@ -171,7 +171,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">62</span>
+          <span class="site-state-item-count">63</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -202,6 +202,111 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/02/01/Csharp%E6%9E%9A%E4%B8%BE%E7%B1%BB%E5%9E%8B%E7%9A%84%E8%A3%85%E6%8B%86%E7%AE%B1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Lizq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2026/02/01/Csharp%E6%9E%9A%E4%B8%BE%E7%B1%BB%E5%9E%8B%E7%9A%84%E8%A3%85%E6%8B%86%E7%AE%B1/" class="post-title-link" itemprop="url">Csharp枚举类型的装拆箱</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-02-01 11:29:15" itemprop="dateCreated datePublished" datetime="2026-02-01T11:29:15+08:00">2026-02-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-03-20 19:31:57" itemprop="dateModified" datetime="2026-03-20T19:31:57+08:00">2026-03-20</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="1-优化位枚举"><a href="#1-优化位枚举" class="headerlink" title="1 优化位枚举"></a>1 优化位枚举</h3><h4 id="1-1-原生HasFlag问题"><a href="#1-1-原生HasFlag问题" class="headerlink" title="1.1 原生HasFlag问题"></a>1.1 原生HasFlag问题</h4><ul>
+<li>原生的HasFlag方法会将枚举装箱为Enum类型，产生性能开销</li>
+<li>Enum本身是一个引用类型，所有具体的枚举类型比如MyColor都是值类型，并且继承自Enum（特殊的继承规则，就像所有C#对象都继承自object，它也是引用类型）。当调用基类Enum的方法时，自身需要装箱成Enum，参数也需要传递给Enum flag，会进行两次装箱</li>
+<li>HasFlagFast 用泛型值类型参数替代 Enum 引用类型参数，从根源上避免了装箱。Unsafe.As 只是进一步优化了类型转换的性能，而泛型值类型参数才是避免装箱的关键</li>
+</ul>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 原生判断函数是Enum的实例方法，Enum本身是抽象类（引用类型）</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="built_in">bool</span> <span class="title">HasFlag</span>(<span class="params">Enum flag</span>)</span>&#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 替换 HasFlag 方法，避免装箱，仅适用于Int32枚举</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">bool</span> <span class="title">HasFlagFast</span>&lt;<span class="title">T</span>&gt;(<span class="params"><span class="keyword">this</span> T flags, T <span class="keyword">value</span></span>) <span class="keyword">where</span> T : <span class="keyword">struct</span>, Enum</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (Enum.GetUnderlyingType(<span class="keyword">typeof</span>(T)) != <span class="keyword">typeof</span>(<span class="built_in">int</span>))</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> ArgumentException(<span class="string">$&quot;枚举类型 <span class="subst">&#123;<span class="keyword">typeof</span>(T).Name&#125;</span> 的底层类型不是 Int32，无法使用此方法&quot;</span>, <span class="keyword">nameof</span>(T));</span><br><span class="line">    <span class="keyword">var</span> f = Unsafe.As&lt;T, <span class="built_in">int</span>&gt;(<span class="keyword">ref</span> flags);</span><br><span class="line">    <span class="keyword">var</span> v = Unsafe.As&lt;T, <span class="built_in">int</span>&gt;(<span class="keyword">ref</span> <span class="keyword">value</span>);</span><br><span class="line">    <span class="keyword">return</span> (f &amp; v) == v;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="1-2-内部发生了什么"><a href="#1-2-内部发生了什么" class="headerlink" title="1.2 内部发生了什么"></a>1.2 内部发生了什么</h4>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2026/02/01/Csharp%E6%9E%9A%E4%B8%BE%E7%B1%BB%E5%9E%8B%E7%9A%84%E8%A3%85%E6%8B%86%E7%AE%B1/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1116,108 +1221,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/07/%E5%B8%A6%E9%99%90%E5%88%B6%E7%9A%84%E6%9C%80%E7%9F%AD%E8%B7%AF/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Lizq">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Lizq的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | Lizq的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/09/07/%E5%B8%A6%E9%99%90%E5%88%B6%E7%9A%84%E6%9C%80%E7%9F%AD%E8%B7%AF/" class="post-title-link" itemprop="url">带限制的最短路</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-09-07 14:37:30" itemprop="dateCreated datePublished" datetime="2022-09-07T14:37:30+08:00">2022-09-07</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-09-19 21:59:01" itemprop="dateModified" datetime="2022-09-19T21:59:01+08:00">2022-09-19</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>919</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>3 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/cheapest-flights-within-k-stops/">带限制的最短路</a></p>
-<h2 id="错误示例（Dijkstra）"><a href="#错误示例（Dijkstra）" class="headerlink" title="错误示例（Dijkstra）"></a>错误示例（Dijkstra）</h2><p>全局的dist记录着最短距离，但它并未记录是几跳获得的。例如，到达终点的前一跳，从<code>X-&gt;dst</code>，我的代码中只限制了到达<code>X</code>最多k+1跳，此时更新了<code>dist[X]</code>，当更新到<code>dst</code>时，利用的<code>dist[X]</code>是经过k跳的<code>X</code>作为跳板，则结果是经过了<code>k+2</code>跳，超出了限制，因此结果必然是错误的。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Item</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="type">int</span> node, skip, dis;</span><br><span class="line">    <span class="built_in">Item</span>(<span class="type">int</span> a, <span class="type">int</span> b, <span class="type">int</span> c):<span class="built_in">node</span>(a),<span class="built_in">skip</span>(b),<span class="built_in">dis</span>(c)&#123;&#125;</span><br><span class="line">    <span class="type">bool</span> <span class="keyword">operator</span>&gt;(<span class="type">const</span> Item&amp; R) <span class="type">const</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>-&gt;dis &gt; R.dis;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="type">int</span> INF = <span class="number">0x3f3f3f3f</span>;</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">findCheapestPrice</span><span class="params">(<span class="type">int</span> n, vector&lt;vector&lt;<span class="type">int</span>&gt;&gt;&amp; flights, <span class="type">int</span> src, <span class="type">int</span> dst, <span class="type">int</span> k)</span> </span>&#123;</span><br><span class="line">        vector&lt;vector&lt;pair&lt;<span class="type">int</span>, <span class="type">int</span>&gt;&gt;&gt; <span class="built_in">g</span>(n);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">auto</span>&amp; e : flights) g[e[<span class="number">0</span>]].<span class="built_in">push_back</span>(&#123; e[<span class="number">1</span>], e[<span class="number">2</span>] &#125;);</span><br><span class="line">        <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">dist</span><span class="params">(n, INF)</span></span>;</span><br><span class="line">        dist[src] = <span class="number">0</span>;</span><br><span class="line">        priority_queue&lt;Item, vector&lt;Item&gt;, greater&lt;Item&gt;&gt; pq;</span><br><span class="line">        pq.<span class="built_in">emplace</span>(src, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">        <span class="keyword">while</span> (!pq.<span class="built_in">empty</span>()) &#123;</span><br><span class="line">            <span class="keyword">auto</span> cur = pq.<span class="built_in">top</span>(); pq.<span class="built_in">pop</span>();</span><br><span class="line">            <span class="type">int</span> node = cur.node;</span><br><span class="line">            <span class="type">int</span> dis = cur.dis;</span><br><span class="line">            <span class="type">int</span> skip = cur.skip;</span><br><span class="line">            <span class="keyword">if</span> (skip &gt; k) <span class="keyword">continue</span>;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">auto</span>&amp; e : g[node]) &#123;</span><br><span class="line">                <span class="type">int</span> w_node = e.first;</span><br><span class="line">                <span class="type">int</span> w_weight = e.second;</span><br><span class="line">                <span class="keyword">if</span> (dist[w_node] &gt; dist[node] + w_weight) &#123;</span><br><span class="line">                    dist[w_node] = dist[node] + w_weight;</span><br><span class="line">                    pq.<span class="built_in">emplace</span>(w_node, skip + <span class="number">1</span>, dist[w_node]);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dist[dst];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<h2 id="再次尝试Dijkstra（完全没必要）"><a href="#再次尝试Dijkstra（完全没必要）" class="headerlink" title="再次尝试Dijkstra（完全没必要）"></a>再次尝试Dijkstra（完全没必要）</h2>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/09/07/%E5%B8%A6%E9%99%90%E5%88%B6%E7%9A%84%E6%9C%80%E7%9F%AD%E8%B7%AF/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1241,13 +1244,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">80k</span>
+    <span title="站点总字数">83k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">4:50</span>
+    <span title="站点阅读时长">5:01</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动

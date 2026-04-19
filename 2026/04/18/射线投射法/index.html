@@ -29,7 +29,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://raw.githubusercontent.com/fkjkkll/OnlineSource/refs/heads/master/Image/Rasterization/RayCastingMethod.png">
 <meta property="article:published_time" content="2026-04-18T14:59:00.000Z">
-<meta property="article:modified_time" content="2026-04-18T15:11:32.487Z">
+<meta property="article:modified_time" content="2026-04-19T12:45:30.881Z">
 <meta property="article:author" content="Lizq">
 <meta property="article:tag" content="算法">
 <meta name="twitter:card" content="summary">
@@ -166,7 +166,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%84%E7%BA%BF%E6%A3%80%E6%B5%8B%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">射线检测法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%9A%E8%BF%87%E4%BA%A4%E7%82%B9"><span class="nav-number">1.1.</span> <span class="nav-text">通过交点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BD%A2%E5%BC%8F1"><span class="nav-number">1.1.1.</span> <span class="nav-text">形式1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BD%A2%E5%BC%8F2"><span class="nav-number">1.1.2.</span> <span class="nav-text">形式2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BD%A2%E5%BC%8F1%EF%BC%88%E6%97%A0%E9%99%A4%E6%B3%95%E7%89%88%E6%9C%AC%EF%BC%89"><span class="nav-number">1.1.3.</span> <span class="nav-text">形式1（无除法版本）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BD%A2%E5%BC%8F2%EF%BC%88%E6%97%A0%E9%99%A4%E6%B3%95%E7%89%88%E6%9C%AC%EF%BC%89"><span class="nav-number">1.1.4.</span> <span class="nav-text">形式2（无除法版本）</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B0%84%E7%BA%BF%E6%A3%80%E6%B5%8B%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">射线检测法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%9A%E8%BF%87%E4%BA%A4%E7%82%B9"><span class="nav-number">1.1.</span> <span class="nav-text">通过交点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BD%A2%E5%BC%8F1"><span class="nav-number">1.1.1.</span> <span class="nav-text">形式1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BD%A2%E5%BC%8F2"><span class="nav-number">1.1.2.</span> <span class="nav-text">形式2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BD%A2%E5%BC%8F3%EF%BC%88%E5%BD%A2%E5%BC%8F1%E6%97%A0%E9%99%A4%E6%B3%95%E7%89%88%E6%9C%AC%EF%BC%89"><span class="nav-number">1.1.3.</span> <span class="nav-text">形式3（形式1无除法版本）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BD%A2%E5%BC%8F3%EF%BC%88%E5%BD%A2%E5%BC%8F2%E6%97%A0%E9%99%A4%E6%B3%95%E7%89%88%E6%9C%AC%EF%BC%89"><span class="nav-number">1.1.4.</span> <span class="nav-text">形式3（形式2无除法版本）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Optimized"><span class="nav-number">1.2.</span> <span class="nav-text">Optimized</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BD%A2%E5%BC%8F3%EF%BC%88%E6%A0%87%E9%87%8F%E5%B1%95%E5%BC%80%EF%BC%89"><span class="nav-number">1.2.1.</span> <span class="nav-text">形式3（标量展开）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BD%A2%E5%BC%8F4"><span class="nav-number">1.2.2.</span> <span class="nav-text">形式4</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%88%E7%8E%87%E5%B1%95%E7%A4%BA"><span class="nav-number">1.3.</span> <span class="nav-text">效率展示</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%80%E5%90%8E"><span class="nav-number">2.</span> <span class="nav-text">最后</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -179,7 +179,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">62</span>
+          <span class="site-state-item-count">63</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -248,9 +248,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2026-04-18 22:59:00 / 修改时间：23:11:32" itemprop="dateCreated datePublished" datetime="2026-04-18T22:59:00+08:00">2026-04-18</time>
+      <time title="创建时间：2026-04-18 22:59:00" itemprop="dateCreated datePublished" datetime="2026-04-18T22:59:00+08:00">2026-04-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-04-19 20:45:30" itemprop="dateModified" datetime="2026-04-19T20:45:30+08:00">2026-04-19</time>
     </span>
 
   
@@ -260,14 +266,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>978</span>
+      <span>1.9k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>4 分钟</span>
+      <span>7 分钟</span>
     </span>
 </div>
 
@@ -277,26 +283,67 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><h2 id="射线检测法"><a href="#射线检测法" class="headerlink" title="射线检测法"></a>射线检测法</h2><p>经常用于判断点是否在多边形内部，可用于处理非凸多边形，不要求顺时针逆时针，该算法的思路十分巧妙：</p>
+    <div class="post-body" itemprop="articleBody"><h1 id="射线检测法"><a href="#射线检测法" class="headerlink" title="射线检测法"></a>射线检测法</h1><p>经常用于判断点是否在多边形内部，可用于处理非凸多边形，不要求顺时针逆时针，该算法的思路十分巧妙：</p>
 <p>从目标点向任意约定方向，通常选 <strong>右侧（X 轴正方向）</strong> 发射一条无限长的水平射线，统计这条射线与多边形边的相交次数</p>
 <ul>
 <li>奇数 → 点在多边形内部</li>
 <li>偶数 → 点在多边形外部</li>
 </ul>
 <p>不多介绍，下文主要说下算法的两个形式和优化变体。</p>
-<h3 id="通过交点"><a href="#通过交点" class="headerlink" title="通过交点"></a>通过交点</h3><p>存在顶点 $\bm{p}_i$、$\bm{p}_j$ 和待检测点 $\bm{pos}$ ，求过 $\bm{pos}$ 平行于 $x$ 轴的直线与直线 $\bm{p}_i ,\bm{p}_j$ 相交，有：<br>$$<br>\bm{p}_i + m \cdot{\bm{d}_i} &#x3D; \bm{pos} + n\cdot{\bm{R}}<br>$$<br>其中 $\bm{d}_i &#x3D; \bm{p}_j - \bm{p}_i, \bm{R} &#x3D; Vector2.right$</p>
+<h2 id="通过交点"><a href="#通过交点" class="headerlink" title="通过交点"></a>通过交点</h2><p>存在顶点 $\bm{p}_i$、$\bm{p}_j$ 和待检测点 $\bm{pos}$ ，求过 $\bm{pos}$ 平行于 $x$ 轴的直线与直线 $\bm{p}_i ,\bm{p}_j$ 相交，有：<br>$$<br>\bm{p}_i + m \cdot{\bm{d}_i} &#x3D; \bm{pos} + n\cdot{\bm{R}}<br>$$<br>其中 $\bm{d}_i &#x3D; \bm{p}_j - \bm{p}_i, \bm{R} &#x3D; Vector2.right$</p>
 <p>变量是m和n，我们可以选择叉积来约掉一个变量。</p>
-<h4 id="形式1"><a href="#形式1" class="headerlink" title="形式1"></a>形式1</h4><p>约掉n，有：<br>$$<br>D(\bm{R}, \bm{p}_i) + m\cdot{D(\bm{R}, \bm{d}_i)} &#x3D; D(\bm{R}, \bm{pos})<br>$$<br>移项：<br>$$<br>m &#x3D; \cfrac{D(\bm{R}, \bm{pos}-\bm{p}_i)}{D(\bm{R}, \bm{d}_i)}<br>&#x3D; \cfrac{D(\bm{R}, \bm{pos}-\bm{p}_i)}{D(\bm{R}, \bm{p}_j - \bm{p}_i)}<br>$$<br>由于 $\bm{R}$ 是 $Vector2.right$ 分子分母都可以简化：<br>$$<br>m &#x3D; \cfrac{pos_y - p_{iy}}{p_{jy} - p_{iy}}<br>$$<br>带入线段公式求得交点<br>$$<br>hitX &#x3D; p_{ix} + \cfrac{pos_y - p_{iy}}{p_{jy} - p_{iy}} \cdot{(p_{jx} - p_{ix})}<br>$$<br>只要hitX大于等于当前的posX就可判断相交：<br>$$<br>hitX \ge{pos_x} &#x3D;&gt; 相交<br>$$</p>
+<h3 id="形式1"><a href="#形式1" class="headerlink" title="形式1"></a>形式1</h3><p>约掉n，有：<br>$$<br>D(\bm{R}, \bm{p}_i) + m\cdot{D(\bm{R}, \bm{d}_i)} &#x3D; D(\bm{R}, \bm{pos})<br>$$<br>移项：<br>$$<br>m &#x3D; \cfrac{D(\bm{R}, \bm{pos}-\bm{p}_i)}{D(\bm{R}, \bm{d}_i)}<br>&#x3D; \cfrac{D(\bm{R}, \bm{pos}-\bm{p}_i)}{D(\bm{R}, \bm{p}_j - \bm{p}_i)}<br>$$<br>由于 $\bm{R}$ 是 $Vector2.right$ 分子分母都可以简化：<br>$$<br>m &#x3D; \cfrac{pos_y - p_{iy}}{p_{jy} - p_{iy}}<br>$$<br>带入线段公式求得交点<br>$$<br>hitX &#x3D; p_{ix} + \cfrac{pos_y - p_{iy}}{p_{jy} - p_{iy}} \cdot{(p_{jx} - p_{ix})}<br>$$<br>只要hitX大于等于当前的posX就可判断相交：<br>$$<br>hitX \ge{pos_x} &#x3D;&gt; 相交<br>$$</p>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 不要求凸</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 不要求逆/顺时针，混用都行</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 不要求顺序，跳跃处理都行</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="built_in">bool</span> <span class="title">Inside</span>(<span class="params">Vector2 pos, Polygon polygon</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> vertices = polygon.vertices;</span><br><span class="line">    <span class="keyword">var</span> length = vertices.Count;</span><br><span class="line">    <span class="keyword">var</span> inside = <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="built_in">int</span> j = <span class="number">0</span>, i = length - <span class="number">1</span>; j &lt; length; i = j++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> pi = vertices[i];</span><br><span class="line">        <span class="keyword">var</span> pj = vertices[j];</span><br><span class="line">        <span class="comment">// 在Y轴方向不存在交点的可能性</span></span><br><span class="line">        <span class="keyword">if</span> ((pi.y &gt; pos.y) == (pj.y &gt; pos.y)) <span class="keyword">continue</span>;</span><br><span class="line">        <span class="comment">// 进行香蕉判定</span></span><br><span class="line">        <span class="keyword">var</span> m = (pos.y - pi.y) / (pj.y - pi.y);</span><br><span class="line">        <span class="keyword">var</span> hitX = pi.x + m * (pj.x - pi.x);</span><br><span class="line">        <span class="keyword">if</span> (hitX &gt;= pos.x) inside = !inside;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> inside;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h4 id="形式2"><a href="#形式2" class="headerlink" title="形式2"></a>形式2</h4><p>通过叉积 $D(..)$ 约掉m，有：<br>$$<br>D(\bm{d}_i, \bm{p}_i) &#x3D; D(\bm{d}_i, \bm{pos}) + n\cdot{D(\bm{d}_i, \bm{R})}<br>$$<br>移项：<br>$$<br>n &#x3D; \cfrac{D(\bm{d}_i, \bm{p}_i-\bm{pos})}{D(\bm{d}_i, \bm{R})}<br>&#x3D; \cfrac{D(\bm{p}_j - \bm{p}_i, \bm{p}_i-\bm{pos})}{D(\bm{p}_j - \bm{p}_i, \bm{R})}<br>$$<br>由于 $\bm{R}$ 是 $Vector2.right$ 分母可以简化为标量：<br>$$<br>n &#x3D; \cfrac{D(\bm{p}_j - \bm{p}_i, \bm{p}_i-\bm{pos})}{p_{iy}-p_{jy}}<br>$$<br>n是 $\bm{pos}$ 引出的向右射线的相交时系数，因此当n大于等于0时，代表交点在右侧，也即是相交。如果n小于0，代表交点在左侧，也就代表与射线不相交。<br>$$<br>n \ge{0} &#x3D;&gt; 相交<br>$$</p>
+<h3 id="形式2"><a href="#形式2" class="headerlink" title="形式2"></a>形式2</h3><p>通过叉积 $D(..)$ 约掉m，有：<br>$$<br>D(\bm{d}_i, \bm{p}_i) &#x3D; D(\bm{d}_i, \bm{pos}) + n\cdot{D(\bm{d}_i, \bm{R})}<br>$$<br>移项：<br>$$<br>n &#x3D; \cfrac{D(\bm{d}_i, \bm{p}_i-\bm{pos})}{D(\bm{d}_i, \bm{R})}<br>&#x3D; \cfrac{D(\bm{p}_j - \bm{p}_i, \bm{p}_i-\bm{pos})}{D(\bm{p}_j - \bm{p}_i, \bm{R})}<br>$$<br>由于 $\bm{R}$ 是 $Vector2.right$ 分母可以简化为标量：<br>$$<br>n &#x3D; \cfrac{D(\bm{p}_j - \bm{p}_i, \bm{p}_i-\bm{pos})}{p_{iy}-p_{jy}}<br>$$<br>n是 $\bm{pos}$ 引出的向右射线的相交时系数，因此当n大于等于0时，代表交点在右侧，也即是相交。如果n小于0，代表交点在左侧，也就代表与射线不相交。<br>$$<br>n \ge{0} &#x3D;&gt; 相交<br>$$</p>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在Y轴方向不存在交点的可能性</span></span><br><span class="line"><span class="keyword">if</span> ((pi.y &gt; pos.y) == (pj.y &gt; pos.y)) <span class="keyword">continue</span>;</span><br><span class="line"><span class="comment">// 进行香蕉判定</span></span><br><span class="line"><span class="keyword">var</span> n = Det(pj - pi, pi - pos) / (pi.y - pj.y);</span><br><span class="line"><span class="keyword">if</span> (n &gt;= <span class="number">0</span>) inside = !inside;</span><br></pre></td></tr></table></figure>
 
-<h4 id="形式1（无除法版本）"><a href="#形式1（无除法版本）" class="headerlink" title="形式1（无除法版本）"></a>形式1（无除法版本）</h4><p>将形式1的不等式拿过来：<br>$$<br>p_{ix} + \cfrac{pos_y - p_{iy}}{p_{jy} - p_{iy}} \cdot{(p_{jx} - p_{ix})} \ge{pos_x}<br>$$<br>两边乘以 $(p_{jy} - p_{iy})^2$，得：<br>$$<br>(pos_y - p_{iy}) \cdot{(p_{jx} - p_{ix})}<br> \ge{(pos_x  - p_{ix})\cdot{(p_{jy} - p_{iy})^2}}<br>$$<br>化为叉积形式：<br>$$<br>D(\bm{pos} - \bm{p}_i, \bm{p}_j - \bm{p}_i)\cdot{(p_{jy} - p_{iy})} \le{0}<br>$$</p>
+<h3 id="形式3（形式1无除法版本）"><a href="#形式3（形式1无除法版本）" class="headerlink" title="形式3（形式1无除法版本）"></a>形式3（形式1无除法版本）</h3><p>将形式1的不等式拿过来：<br>$$<br>p_{ix} + \cfrac{pos_y - p_{iy}}{p_{jy} - p_{iy}} \cdot{(p_{jx} - p_{ix})} \ge{pos_x}<br>$$<br>两边乘以 $(p_{jy} - p_{iy})^2$，得：<br>$$<br>(pos_y - p_{iy}) \cdot{(p_{jx} - p_{ix})}<br> \ge{(pos_x  - p_{ix})\cdot{(p_{jy} - p_{iy})^2}}<br>$$<br>化为叉积形式：<br>$$<br>D(\bm{pos} - \bm{p}_i, \bm{p}_j - \bm{p}_i)\cdot{(p_{jy} - p_{iy})} \le{0}<br>$$</p>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ((pi.y &gt; pos.y) == (pj.y &gt; pos.y)) <span class="keyword">continue</span>;</span><br><span class="line"><span class="comment">// 进行几何判定，可以内联展开避免临时创建Vector2</span></span><br><span class="line"><span class="keyword">var</span> det = Det(pos - pi, pj - pi);</span><br><span class="line"><span class="comment">// 如果担心浮点数乘法越界，可以用三目运算</span></span><br><span class="line"><span class="comment">// if ((pj.y &lt; pi.y) ? (det &lt;= 0) : (det &gt;= 0)) inside = !inside;</span></span><br><span class="line"><span class="keyword">if</span> (det * (pj.y - pi.y) &lt; <span class="number">0</span>) inside = !inside;</span><br></pre></td></tr></table></figure>
 
-<h4 id="形式2（无除法版本）"><a href="#形式2（无除法版本）" class="headerlink" title="形式2（无除法版本）"></a>形式2（无除法版本）</h4><p>将形式2的不等式拿过来：<br>$$<br>n &#x3D; \cfrac{D(\bm{p}_j - \bm{p}_i, \bm{p}_i-\bm{pos})}{p_{iy}-p_{jy}} \ge{0}<br>$$<br>两边乘以 $(p_{iy}-p_{jy})^2$，得：<br>$$<br>D(\bm{p}_j - \bm{p}_i, \bm{p}_i-\bm{pos})\cdot{(p_{iy}-p_{jy})} \ge{0}<br>$$<br>调整叉积第二个参数顺序、叉积顺序以及后面的乘法内的减法顺序，最终得到：<br>$$<br>D(\bm{pos} - \bm{p}_i, \bm{p}_j - \bm{p}_i)\cdot{(p_{jy} - p_{iy})} \le{0}<br>$$<br>这下殊途同归了</p>
+<h3 id="形式3（形式2无除法版本）"><a href="#形式3（形式2无除法版本）" class="headerlink" title="形式3（形式2无除法版本）"></a>形式3（形式2无除法版本）</h3><p>将形式2的不等式拿过来：<br>$$<br>n &#x3D; \cfrac{D(\bm{p}_j - \bm{p}_i, \bm{p}_i-\bm{pos})}{p_{iy}-p_{jy}} \ge{0}<br>$$<br>两边乘以 $(p_{iy}-p_{jy})^2$，得：<br>$$<br>D(\bm{p}_j - \bm{p}_i, \bm{p}_i-\bm{pos})\cdot{(p_{iy}-p_{jy})} \ge{0}<br>$$<br>调整叉积第二个参数顺序、叉积顺序以及后面的乘法内的减法顺序，最终得到：<br>$$<br>D(\bm{pos} - \bm{p}_i, \bm{p}_j - \bm{p}_i)\cdot{(p_{jy} - p_{iy})} \le{0}<br>$$<br>这下殊途同归了</p>
+<h2 id="Optimized"><a href="#Optimized" class="headerlink" title="Optimized"></a>Optimized</h2><h3 id="形式3（标量展开）"><a href="#形式3（标量展开）" class="headerlink" title="形式3（标量展开）"></a>形式3（标量展开）</h3><p>前面的代码都是学习用途的玩具，比如<code>Det(pj - pi, pi - pos)</code>这一句，它会调用<code>Vector2.operator-</code>生成新的Vector压栈，而且是跨程序集的，Mono可能都没法内联，更无法让 JIT 执行”结构体标量替换”（Scalar Replacement of Aggregates）——将结构体字段打散为独立标量并分配到寄存器。所以其实前文给的代码里，形式1的代码反而是最快。<strong>因此针对这种每个格子都要调用的热路径，手动展开标量运算是必要的！</strong></p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> det = (pos.x - pi.x) * (pj.y - pi.y) - (pos.y - pi.y) * (pj.x - pi.x);</span><br><span class="line"><span class="keyword">if</span> (det * (pj.y - pi.y) &lt; <span class="number">0</span>)</span><br><span class="line">    inside = !inside;</span><br></pre></td></tr></table></figure>
+
+<h3 id="形式4"><a href="#形式4" class="headerlink" title="形式4"></a>形式4</h3><p>其次就是在学习这个代码的时候，首先我们是在一行里顺序检测的，这样的话岂不是包含很多重复运算？我想了想，我们可以在做射线检测计算交点的x轴坐标，并保存与所有边相交时交点里最近的哪一个x坐标<code>nearestX</code>，返回给外部后，外部在这一行继续遍历格子时，只要小于先前计算时得到的<code>nearestX</code>就直接复用上一次计算的状态就行了，不必重复计算。</p>
+<p>这个优化形式上和扫描线填充（Scanline Fill）很相似，它是计算当前y与所有边的交点，然后对交点排序，最后在相邻交点之间填充像素（1~2交点填充，2~3不填充，3~4填充，以此类推），之前大学学习计算机图形学里大名鼎鼎的“活性边表（Active Edge Table, AET）”。而我这里的优化相当于它的一个“惰性变体”，不预计算交点，只追踪最近的那个。这对简单多边形来说效果极好。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">CoreOptimized</span>(<span class="params">MapGrid mapGrid, Polygon polygon, <span class="built_in">int</span> minX, <span class="built_in">int</span> minY, <span class="built_in">int</span> maxX, <span class="built_in">int</span> maxY, List&lt;<span class="built_in">int</span>&gt; grids</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">float</span> nearestX = <span class="built_in">float</span>.MinValue;</span><br><span class="line">    <span class="built_in">bool</span> preInside = <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> y = minY; y &lt; maxY; y++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> x = minX; x &lt; maxX; x++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> worldX = mapGrid.min.x + (x + <span class="number">0.5f</span>) * mapGrid.gridSize;</span><br><span class="line">            <span class="keyword">var</span> worldY = mapGrid.min.y + (y + <span class="number">0.5f</span>) * mapGrid.gridSize;</span><br><span class="line">            <span class="keyword">if</span> (nearestX &lt;= worldX)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">var</span> worldPos = <span class="keyword">new</span> Vector2(worldX, worldY);</span><br><span class="line">                preInside = Inside4(worldPos, polygon, <span class="keyword">out</span> nearestX);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (preInside) grids.Add(y * mapGrid.Col + x);</span><br><span class="line">        &#125;</span><br><span class="line">        nearestX = <span class="built_in">float</span>.MinValue;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 利用扫描连贯性，跳过重复计算</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="built_in">bool</span> <span class="title">Inside4</span>(<span class="params">Vector2 pos, Polygon polygon, <span class="keyword">out</span> <span class="built_in">float</span> nearestX</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    nearestX = <span class="built_in">float</span>.MaxValue;</span><br><span class="line">    <span class="keyword">var</span> vertices = polygon.vertices;</span><br><span class="line">    <span class="keyword">var</span> length = vertices.Count;</span><br><span class="line">    <span class="keyword">var</span> inside = <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="built_in">int</span> j = <span class="number">0</span>, i = length - <span class="number">1</span>; j &lt; length; i = j++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> pi = vertices[i];</span><br><span class="line">        <span class="keyword">var</span> pj = vertices[j];</span><br><span class="line">        <span class="keyword">if</span> ((pi.y &gt; pos.y) == (pj.y &gt; pos.y)) <span class="keyword">continue</span>;</span><br><span class="line">        <span class="comment">// 进行香蕉判定</span></span><br><span class="line">        <span class="keyword">var</span> m = (pos.y - pi.y) / (pj.y - pi.y);</span><br><span class="line">        <span class="keyword">var</span> hitX = pi.x + m * (pj.x - pi.x);</span><br><span class="line">        <span class="keyword">if</span> (hitX &gt;= pos.x)</span><br><span class="line">        &#123;</span><br><span class="line">            inside = !inside;</span><br><span class="line">            nearestX = nearestX &gt; hitX ? hitX : nearestX;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> inside;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="效率展示"><a href="#效率展示" class="headerlink" title="效率展示"></a>效率展示</h2><table>
+<thead>
+<tr>
+<th>形式</th>
+<th>耗时（ms）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>形式1</td>
+<td>21.8</td>
+</tr>
+<tr>
+<td>形式2（未进行标量展开）</td>
+<td>37.1</td>
+</tr>
+<tr>
+<td>形式3（未进行标量展开）</td>
+<td>35.8</td>
+</tr>
+<tr>
+<td>形式3（标量展开）</td>
+<td>20.5</td>
+</tr>
+<tr>
+<td>形式4</td>
+<td>1.70</td>
+</tr>
+</tbody></table>
+<p>测试的是一张500x500的格子地图，里面有四个凸多边形（该算法可以处理凹的），如下图所示。（下图的格子是25x25，方便看覆盖区域的，多边形一致），从结果来看：</p>
+<ul>
+<li>可能是没能成功内联导致的形式1~3，对比之下标量展开提升还是很明显的</li>
+<li>对比其他形式和形式4，多余性能都被浪费在了重复计算了，加上由于全是凸多边形，形式4的优化才能有这种效果。</li>
+</ul>
 <p><img src="https://raw.githubusercontent.com/fkjkkll/OnlineSource/refs/heads/master/Image/Rasterization/RayCastingMethod.png" alt="效果"></p>
+<h1 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h1><p>用于判定点在多边形内部十分方便，但是要获得覆盖多边形内的栅格，只通过栅格中心点来做，会漏掉许多，不太好处理。针对覆盖多边形问题，后面我会介绍另外一种方法，可以自由控制覆盖容忍度。</p>
 
     </div>
 
@@ -318,6 +365,9 @@
                 </a>
             </div>
             <div class="post-nav-item">
+                <a href="/2026/04/19/%E8%BE%B9%E5%87%BD%E6%95%B0%E5%85%89%E6%A0%85%E5%8C%96/" rel="next" title="边函数光栅化">
+                  边函数光栅化 <i class="fa fa-angle-right"></i>
+                </a>
             </div>
           </div>
     </footer>
@@ -348,13 +398,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">80k</span>
+    <span title="站点总字数">83k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">4:50</span>
+    <span title="站点阅读时长">5:01</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
