@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 8.1.1">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="迭代器方法简单写一个迭代器方法。 12345678910111213141516void Start()&#123;    foreach (var e in Iterator())    &#123;        Console.WriteLine(e);    &#125;&#125;IEnumerable&lt;int&gt; Iterator()&#123;    Console.Wri">
+<meta property="og:type" content="article">
+<meta property="og:title" content="迭代器状态机与鸭子类型">
+<meta property="og:url" content="http://example.com/2026/05/16/%E8%BF%AD%E4%BB%A3%E5%99%A8%E7%8A%B6%E6%80%81%E6%9C%BA%E4%B8%8E%E9%B8%AD%E5%AD%90%E7%B1%BB%E5%9E%8B/index.html">
+<meta property="og:site_name" content="Lizq的个人博客">
+<meta property="og:description" content="迭代器方法简单写一个迭代器方法。 12345678910111213141516void Start()&#123;    foreach (var e in Iterator())    &#123;        Console.WriteLine(e);    &#125;&#125;IEnumerable&lt;int&gt; Iterator()&#123;    Console.Wri">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-05-16T09:37:35.000Z">
+<meta property="article:modified_time" content="2026-05-16T10:00:40.023Z">
+<meta property="article:author" content="Lizq">
+<meta property="article:tag" content="C#">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2026/05/16/%E8%BF%AD%E4%BB%A3%E5%99%A8%E7%8A%B6%E6%80%81%E6%9C%BA%E4%B8%8E%E9%B8%AD%E5%AD%90%E7%B1%BB%E5%9E%8B/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2026/05/16/%E8%BF%AD%E4%BB%A3%E5%99%A8%E7%8A%B6%E6%80%81%E6%9C%BA%E4%B8%8E%E9%B8%AD%E5%AD%90%E7%B1%BB%E5%9E%8B/","path":"2026/05/16/迭代器状态机与鸭子类型/","title":"迭代器状态机与鸭子类型"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>迭代器状态机与鸭子类型 | Lizq的个人博客</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js" defer></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Lizq的个人博客</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%AD%E4%BB%A3%E5%99%A8%E6%96%B9%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">迭代器方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#yield-break-%E7%9A%84%E8%A1%8C%E4%B8%BA"><span class="nav-number">1.1.</span> <span class="nav-text">yield break 的行为</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GetEnumerator-%E4%B8%AD%E7%9A%84%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E5%A4%8D%E7%94%A8"><span class="nav-number">1.2.</span> <span class="nav-text">GetEnumerator 中的线程安全复用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Unity%E5%8D%8F%E7%A8%8B"><span class="nav-number">1.3.</span> <span class="nav-text">Unity协程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%B8%AD%E5%AD%90%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.</span> <span class="nav-text">鸭子类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#foreach"><span class="nav-number">2.1.</span> <span class="nav-text">foreach</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#foreach%E6%94%AF%E6%8C%81ref%E8%BF%94%E5%9B%9E"><span class="nav-number">2.1.1.</span> <span class="nav-text">foreach支持ref返回</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E6%9C%9F%E9%97%B4%E7%9A%84%E4%B8%8D%E5%90%8C%E7%89%88%E6%9C%AC%E5%A4%84%E7%90%86"><span class="nav-number">2.1.2.</span> <span class="nav-text">编译期间的不同版本处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#foreach%E7%9A%84%E8%A1%8C%E4%B8%BA%E5%8F%96%E5%86%B3%E4%BA%8E%E7%BC%96%E8%AF%91%E6%97%B6%E7%B1%BB%E5%9E%8B%EF%BC%8C%E8%80%8C%E4%B8%8D%E6%98%AF%E8%BF%90%E8%A1%8C%E6%97%B6%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.1.3.</span> <span class="nav-text">foreach的行为取决于编译时类型，而不是运行时类型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#await"><span class="nav-number">2.2.</span> <span class="nav-text">await</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#deconstruction%E8%A7%A3%E6%9E%84"><span class="nav-number">2.3.</span> <span class="nav-text">deconstruction解构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#using"><span class="nav-number">2.4.</span> <span class="nav-text">using</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fixed"><span class="nav-number">2.5.</span> <span class="nav-text">fixed</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Lizq</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">64</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fkjkkll" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fkjkkll" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:lzq0225@qq.com" title="E-Mail → mailto:lzq0225@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/05/16/%E8%BF%AD%E4%BB%A3%E5%99%A8%E7%8A%B6%E6%80%81%E6%9C%BA%E4%B8%8E%E9%B8%AD%E5%AD%90%E7%B1%BB%E5%9E%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Lizq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="迭代器状态机与鸭子类型 | Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          迭代器状态机与鸭子类型
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-05-16 17:37:35 / 修改时间：18:00:40" itemprop="dateCreated datePublished" datetime="2026-05-16T17:37:35+08:00">2026-05-16</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>6 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="迭代器方法"><a href="#迭代器方法" class="headerlink" title="迭代器方法"></a>迭代器方法</h2><p>简单写一个迭代器方法。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Start</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">foreach</span> (<span class="function"><span class="keyword">var</span> e <span class="keyword">in</span> <span class="title">Iterator</span>())</span></span><br><span class="line">    &#123;</span><br><span class="line">        Console.WriteLine(e);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">IEnumerable&lt;<span class="built_in">int</span>&gt; <span class="title">Iterator</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    Console.WriteLine(<span class="string">&quot;00&quot;</span>);</span><br><span class="line">    <span class="keyword">yield</span> <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    Console.WriteLine(<span class="string">&quot;11&quot;</span>);</span><br><span class="line">    <span class="keyword">yield</span> <span class="keyword">return</span> <span class="number">2</span>;</span><br><span class="line">    Console.WriteLine(<span class="string">&quot;22&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的迭代器方法，在内部，编译器会生成一个匿名类，代码如下：</p>
+<ul>
+<li>仔细观察会发现，这个匿名类同时继承IEnumerator和IEnumerable，意味着它同时负责生产迭代器和迭代。</li>
+<li>状态点数字的含义：-1代表正在执行&#x2F;当前不处于挂起点；-2代表尚未枚举或者已经Dispose；大于等于0代表各个恢复点</li>
+</ul>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Start</span>()</span></span><br><span class="line">  &#123;</span><br><span class="line">    IEnumerator&lt;<span class="built_in">int</span>&gt; enumerator = <span class="keyword">this</span>.Iterator().GetEnumerator();</span><br><span class="line">    <span class="keyword">try</span></span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">while</span> (enumerator.MoveNext())</span><br><span class="line">        Console.WriteLine(enumerator.Current);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">finally</span></span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">if</span> (enumerator != <span class="literal">null</span>)</span><br><span class="line">        enumerator.Dispose();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">    </span><br><span class="line">  [<span class="meta">NullableContext(1)</span>]</span><br><span class="line">  [<span class="meta">IteratorStateMachine(typeof (Program.&lt;Iterator&gt;d__2))</span>]</span><br><span class="line">  <span class="function"><span class="keyword">private</span> IEnumerable&lt;<span class="built_in">int</span>&gt; <span class="title">Iterator</span>()</span></span><br><span class="line">  &#123;</span><br><span class="line">    Program.&lt;Iterator&gt;d__2 iteratorD2 = <span class="keyword">new</span> Program.&lt;Iterator&gt;d__2(<span class="number">-2</span>);</span><br><span class="line">    iteratorD2.&lt;&gt;<span class="number">4</span>__this = <span class="keyword">this</span>;</span><br><span class="line">    <span class="keyword">return</span> (IEnumerable&lt;<span class="built_in">int</span>&gt;) iteratorD2;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 编译器生成的匿名类</span></span><br><span class="line">  [<span class="meta">CompilerGenerated</span>]</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">sealed</span> <span class="keyword">class</span> &lt;<span class="title">Iterator</span>&gt;<span class="title">d__2</span> : </span><br><span class="line">    <span class="title">IEnumerable</span>&lt;<span class="title">int</span>&gt;,</span><br><span class="line">    <span class="title">IEnumerable</span>,</span><br><span class="line">    <span class="title">IEnumerator</span>&lt;<span class="title">int</span>&gt;,</span><br><span class="line">    <span class="title">IEnumerator</span>,</span><br><span class="line">    <span class="title">IDisposable</span></span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">int</span> &lt;&gt;<span class="number">1</span>__state;</span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">int</span> &lt;&gt;<span class="number">2</span>__current;</span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">int</span> &lt;&gt;l__initialThreadId;</span><br><span class="line">    <span class="keyword">public</span> Program &lt;&gt;<span class="number">4</span>__this;</span><br><span class="line"></span><br><span class="line">    [<span class="meta">DebuggerHidden</span>]</span><br><span class="line">    <span class="keyword">public</span> &lt;Iterator&gt;d__2(<span class="built_in">int</span> _param1)</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">base</span>..ctor();</span><br><span class="line">      <span class="keyword">this</span>.&lt;&gt;<span class="number">1</span>__state = _param1;</span><br><span class="line">      <span class="keyword">this</span>.&lt;&gt;l__initialThreadId = Environment.CurrentManagedThreadId;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 标准Roslyn编译器里Dispose会设置state = -2，</span></span><br><span class="line">    <span class="comment">// 从而允许GetEnumerator复用当前实例（同线程且state==-2时）。</span></span><br><span class="line">    <span class="comment">// 但旧版Unity/Mono编译器里Dispose可能被编译为空，</span></span><br><span class="line">    <span class="comment">// 此时state停留在最后一个case值（如2），</span></span><br><span class="line">    <span class="comment">// GetEnumerator的复用判断永远不成立，每次foreach都会new一个新实例。</span></span><br><span class="line">    [<span class="meta">DebuggerHidden</span>]</span><br><span class="line">    <span class="keyword">void</span> IDisposable.Dispose()</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">this</span>.&lt;&gt;<span class="number">1</span>__state = <span class="number">-2</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">bool</span> IEnumerator.MoveNext()</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">switch</span> (<span class="keyword">this</span>.&lt;&gt;<span class="number">1</span>__state)</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">0</span>:</span><br><span class="line">          <span class="comment">// 防止内部逻辑异常先要设置-1  </span></span><br><span class="line">          <span class="keyword">this</span>.&lt;&gt;<span class="number">1</span>__state = <span class="number">-1</span>;</span><br><span class="line">          Console.WriteLine(<span class="string">&quot;00&quot;</span>);</span><br><span class="line">          <span class="keyword">this</span>.&lt;&gt;<span class="number">2</span>__current = <span class="number">1</span>;</span><br><span class="line">          <span class="keyword">this</span>.&lt;&gt;<span class="number">1</span>__state = <span class="number">1</span>;</span><br><span class="line">          <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">          <span class="keyword">this</span>.&lt;&gt;<span class="number">1</span>__state = <span class="number">-1</span>;</span><br><span class="line">          Console.WriteLine(<span class="string">&quot;11&quot;</span>);</span><br><span class="line">          <span class="keyword">this</span>.&lt;&gt;<span class="number">2</span>__current = <span class="number">2</span>;</span><br><span class="line">          <span class="keyword">this</span>.&lt;&gt;<span class="number">1</span>__state = <span class="number">2</span>;</span><br><span class="line">          <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">          <span class="keyword">this</span>.&lt;&gt;<span class="number">1</span>__state = <span class="number">-1</span>;</span><br><span class="line">          Console.WriteLine(<span class="string">&quot;22&quot;</span>);</span><br><span class="line">          <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="literal">default</span>:</span><br><span class="line">          <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">int</span> IEnumerator&lt;<span class="built_in">int</span>&gt;.Current</span><br><span class="line">    &#123;</span><br><span class="line">      [<span class="meta">DebuggerHidden</span>] <span class="keyword">get</span></span><br><span class="line">      &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.&lt;&gt;<span class="number">2</span>__current;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    [<span class="meta">DebuggerHidden</span>]</span><br><span class="line">    <span class="keyword">void</span> IEnumerator.Reset()</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> NotSupportedException();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">object</span> IEnumerator.Current</span><br><span class="line">    &#123;</span><br><span class="line">      [<span class="meta">DebuggerHidden</span>] <span class="keyword">get</span></span><br><span class="line">      &#123;</span><br><span class="line">        <span class="keyword">return</span> (<span class="built_in">object</span>) <span class="keyword">this</span>.&lt;&gt;<span class="number">2</span>__current;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    [<span class="meta">DebuggerHidden</span>]</span><br><span class="line">    [<span class="meta">return: Nullable(1)</span>]</span><br><span class="line">    IEnumerator&lt;<span class="built_in">int</span>&gt; IEnumerable&lt;<span class="built_in">int</span>&gt;.GetEnumerator()</span><br><span class="line">    &#123;</span><br><span class="line">      Program.&lt;Iterator&gt;d__2 enumerator;</span><br><span class="line">      <span class="keyword">if</span> (<span class="keyword">this</span>.&lt;&gt;<span class="number">1</span>__state == <span class="number">-2</span> &amp;&amp; <span class="keyword">this</span>.&lt;&gt;l__initialThreadId == Environment.CurrentManagedThreadId)</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="keyword">this</span>.&lt;&gt;<span class="number">1</span>__state = <span class="number">0</span>;</span><br><span class="line">        enumerator = <span class="keyword">this</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">else</span></span><br><span class="line">      &#123;</span><br><span class="line">        enumerator = <span class="keyword">new</span> Program.&lt;Iterator&gt;d__2(<span class="number">0</span>);</span><br><span class="line">        enumerator.&lt;&gt;<span class="number">4</span>__this = <span class="keyword">this</span>.&lt;&gt;<span class="number">4</span>__this;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> (IEnumerator&lt;<span class="built_in">int</span>&gt;) enumerator;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    [<span class="meta">DebuggerHidden</span>]</span><br><span class="line">    [<span class="meta">return: Nullable(1)</span>]</span><br><span class="line">    IEnumerator IEnumerable.GetEnumerator()</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">return</span> (IEnumerator) <span class="keyword">this</span>.System.Collections.Generic.IEnumerable&lt;System.Int32&gt;.GetEnumerator();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="yield-break-的行为"><a href="#yield-break-的行为" class="headerlink" title="yield break 的行为"></a>yield break 的行为</h3><p>如果在迭代器方法中执行yield break，MoveNext会直接return false，不会再执行后续代码：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">IEnumerable&lt;<span class="built_in">int</span>&gt; <span class="title">Demo</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">yield</span> <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">if</span> (someCondition)</span><br><span class="line">        <span class="keyword">yield</span> <span class="keyword">break</span>;   <span class="comment">// 生成一个独立的状态点，直接 return false</span></span><br><span class="line">    <span class="keyword">yield</span> <span class="keyword">return</span> <span class="number">2</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>本质上，编译器同样会为<code>yield break</code>分配一个状态点，只不过该状态点的逻辑就是直接<code>return false</code>——等价于提前走到了方法末尾。</p>
+<h3 id="GetEnumerator-中的线程安全复用"><a href="#GetEnumerator-中的线程安全复用" class="headerlink" title="GetEnumerator 中的线程安全复用"></a>GetEnumerator 中的线程安全复用</h3><p>注意上面的GetEnumerator方法里有这样一个判断：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="keyword">this</span>.&lt;&gt;<span class="number">1</span>__state == <span class="number">-2</span> &amp;&amp; <span class="keyword">this</span>.&lt;&gt;l__initialThreadId == Environment.CurrentManagedThreadId)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">this</span>.&lt;&gt;<span class="number">1</span>__state = <span class="number">0</span>;</span><br><span class="line">    enumerator = <span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>只有在state&#x3D;&#x3D;-2（已Dispose或尚未开始）且当前线程等于创建线程时，才会复用当前实例。跨线程调用时永远new新实例，避免了线程安全问题。</p>
+<h3 id="Unity协程"><a href="#Unity协程" class="headerlink" title="Unity协程"></a>Unity协程</h3><p>协程的方法体返回类型是<code>IEnumerator</code>而不是<code>IEnumerable</code>，因为它不需要重复产生枚举对象，枚举对象是一次性的，每次StartCoroutine(Cor())（<strong>Cor()的时候就已经分配</strong>）的时候都会new一个新的迭代器状态机：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">IteratorStateMachine(typeof (TempScript.&lt;Cor&gt;d__3))</span>]</span><br><span class="line"><span class="function"><span class="keyword">private</span> IEnumerator <span class="title">Cor</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    TempScript.&lt;Cor&gt;d__3 corD3 = <span class="keyword">new</span> TempScript.&lt;Cor&gt;d__3(<span class="number">0</span>);</span><br><span class="line">    corD3.&lt;&gt;<span class="number">4</span>__this = <span class="keyword">this</span>;</span><br><span class="line">    <span class="keyword">return</span> (IEnumerator) corD3;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个迭代器状态机不可缓存来复用，内部状态已经用过就污染了。但是像是<code>WaitForSeconds</code>这类<code>YieldInstruction</code>还是可以复用的，Unity协程调度器并不会改变它们内部的状态，状态由调度器自己保存。但是有些比如<code>WaitForSecondsRealtime</code>这类<code>CustomYieldInstruction</code>是会被改变内部状态的，但是它们同时拥有<code>Reset()</code>重置的功能。可以将<code>WaitForEndOfFrame, WaitForFixedUpdate, WaitForSeconds[0.1f/0.5f/1f]</code>它们作为单例去复用</p>
+<h2 id="鸭子类型"><a href="#鸭子类型" class="headerlink" title="鸭子类型"></a>鸭子类型</h2><p>编译期鸭子类型（compile-time duck typing），一种比接口更加宽松的模式匹配。</p>
+<h3 id="foreach"><a href="#foreach" class="headerlink" title="foreach"></a>foreach</h3><p>编译器尝试寻找</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GetEnumerator()</span><br></pre></td></tr></table></figure>
+<p>返回的对象内再去寻找有没有</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">bool</span> <span class="title">MoveNext</span>()</span></span><br><span class="line"><span class="function">T Current</span> &#123; <span class="keyword">get</span>; &#125;</span><br></pre></td></tr></table></figure>
+<p>只要同时满足以上条件，就可以进行foreach：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">struct</span> MyEnumerator</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">int</span> _i;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="built_in">bool</span> <span class="title">MoveNext</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        _i++;</span><br><span class="line">        <span class="keyword">return</span> _i &lt;= <span class="number">3</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span> Current =&gt; _i;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MyCollection</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> MyEnumerator <span class="title">GetEnumerator</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> MyEnumerator();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="title">Main</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 合法使用</span></span><br><span class="line">    <span class="keyword">foreach</span> (<span class="function"><span class="keyword">var</span> x <span class="keyword">in</span> <span class="keyword">new</span> <span class="title">MyCollection</span>())</span></span><br><span class="line">    &#123;</span><br><span class="line">        Console.WriteLine(x);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>C#明明是静态语言，为什么会有鸭子类型？因为C#编译器在少数语法糖里会进行模式匹配成员查找，而不是接口检查，<br>可以看作是一种特殊的编译器规则。为什么要有这些？一方面为了避免装箱，因为如果通过接口承接迭代器，迭代器如果是结构体<br>就会发生装箱。</p>
+<h4 id="foreach支持ref返回"><a href="#foreach支持ref返回" class="headerlink" title="foreach支持ref返回"></a>foreach支持ref返回</h4><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">ref</span> <span class="built_in">int</span> Current =&gt; <span class="keyword">ref</span> _current;</span><br><span class="line"><span class="keyword">foreach</span>(<span class="keyword">ref</span> <span class="keyword">var</span> x <span class="keyword">in</span> iterator);</span><br></pre></td></tr></table></figure>
+
+<h4 id="编译期间的不同版本处理"><a href="#编译期间的不同版本处理" class="headerlink" title="编译期间的不同版本处理"></a>编译期间的不同版本处理</h4><p>前面我们知道，编译器对List<T>执行foreach会进行如下代码展开：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">List&lt;T&gt;.Enumerator enumerator1 = <span class="keyword">new</span> List&lt;T&gt;.GetEnumerator();</span><br><span class="line"><span class="keyword">try</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">while</span>(enumerator1.MoveNext())</span><br><span class="line">        Handle(enumerator1.Current);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">finally</span>&#123;</span><br><span class="line">    enumerator1.Dispose();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但对数组T[]执行foreach，则会是另一种展开：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">T[] numArray = <span class="keyword">new</span> T[<span class="number">3</span>];</span><br><span class="line"><span class="keyword">for</span> (<span class="built_in">int</span> index = <span class="number">0</span>; index &lt; numArray.Length; ++index)</span><br><span class="line">  Console.WriteLine(numArray[index]);</span><br></pre></td></tr></table></figure>
+
+<h4 id="foreach的行为取决于编译时类型，而不是运行时类型"><a href="#foreach的行为取决于编译时类型，而不是运行时类型" class="headerlink" title="foreach的行为取决于编译时类型，而不是运行时类型"></a>foreach的行为取决于编译时类型，而不是运行时类型</h4><p>我们有如下代码：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    List&lt;<span class="built_in">int</span>&gt; arr = <span class="keyword">new</span> List&lt;<span class="built_in">int</span>&gt;();</span><br><span class="line">    <span class="keyword">foreach</span> (<span class="keyword">var</span> e <span class="keyword">in</span> arr)</span><br><span class="line">    &#123;</span><br><span class="line">        Console.WriteLine(e);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">&#123;</span><br><span class="line">    IList&lt;<span class="built_in">int</span>&gt; arr = <span class="keyword">new</span> List&lt;<span class="built_in">int</span>&gt;();</span><br><span class="line">    <span class="keyword">foreach</span> (<span class="keyword">var</span> e <span class="keyword">in</span> arr)</span><br><span class="line">    &#123;</span><br><span class="line">        Console.WriteLine(e);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>编译器展开后：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">List&lt;<span class="built_in">int</span>&gt;.Enumerator enumerator1 = <span class="keyword">new</span> List&lt;<span class="built_in">int</span>&gt;().GetEnumerator();</span><br><span class="line"><span class="keyword">try</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">while</span> (enumerator1.MoveNext())</span><br><span class="line">    Console.WriteLine(enumerator1.Current);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">finally</span></span><br><span class="line">&#123;</span><br><span class="line">  enumerator1.Dispose();</span><br><span class="line">&#125;</span><br><span class="line">IEnumerator&lt;<span class="built_in">int</span>&gt; enumerator2 = ((IEnumerable&lt;<span class="built_in">int</span>&gt;) <span class="keyword">new</span> List&lt;<span class="built_in">int</span>&gt;()).GetEnumerator();</span><br><span class="line"><span class="keyword">try</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">while</span> (enumerator2.MoveNext())</span><br><span class="line">    Console.WriteLine(enumerator2.Current);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">finally</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">if</span> (enumerator2 != <span class="literal">null</span>)</span><br><span class="line">    enumerator2.Dispose();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>前者，其编译期类型就是<code>List&lt;int&gt;</code>，编译器直接去匹配<code>List&lt;int&gt;.GetEnumerator()</code>，它返回的是<code>List&lt;int&gt;.Enumerator</code>，<br>这是一个结构体，直接生成代码<code>List&lt;int&gt;.Enumerator e = list.GetEnumerator();</code>，整个过程没有接口、装箱，非常干净。</li>
+<li>后者，其编译期类型是<code>IList&lt;int&gt;</code>，编译器不知道它的实际类型是什么，虽然我这简单写的就是赋值，但是代码里可能是通过一个复杂函数，<br>返回各种不同容器，比如<code>List&lt;int&gt;, int[], ReadOnlyCollection&lt;int&gt;, 自定义容器</code>等等，编译器只能按照<code>IList&lt;int&gt;</code>的类型<br>公事公办。但是<code>IList&lt;int&gt;</code>没有GetEnumerator，但是它继承自<code>IEnumerable&lt;T&gt;</code>，所以编译器只能生成<code>IEnumerator&lt;int&gt; e = ((IEnumerable&lt;int&gt;)list).GetEnumerator();</code><br>由于<code>List&lt;T&gt;.Enumerator</code>是结构体，因此赋值给接口后就会发生装箱</li>
+</ul>
+<p>根据以上描述，加深了一个印象：foreach优先进行模式匹配，其次才是走接口。</p>
+<h3 id="await"><a href="#await" class="headerlink" title="await"></a>await</h3><p>并不要求被await的一定是Task，只要求它具有</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GetAwaiter()</span><br></pre></td></tr></table></figure>
+<p>且返回值里包含：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">IsCompleted</span></span><br><span class="line"><span class="function"><span class="title">OnCompleted</span>()</span></span><br><span class="line"><span class="function"><span class="title">GetResult</span>()</span></span><br></pre></td></tr></table></figure>
+<p>任何满足上述条件的都可以被await。</p>
+<p>同样的模式也出现在<code>await foreach</code>（C# 8）：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">await</span> <span class="keyword">foreach</span> (<span class="keyword">var</span> x <span class="keyword">in</span> asyncEnumerable)</span><br></pre></td></tr></table></figure>
+<p>编译器会去找<code>GetAsyncEnumerator()</code>，返回的对象里再找<code>MoveNextAsync()</code>和<code>Current</code>。</p>
+<h3 id="deconstruction解构"><a href="#deconstruction解构" class="headerlink" title="deconstruction解构"></a>deconstruction解构</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> (x, y) = obj;</span><br></pre></td></tr></table></figure>
+<p>要求实现</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Deconstruct(<span class="keyword">out</span> ...)</span><br></pre></td></tr></table></figure>
+<h3 id="using"><a href="#using" class="headerlink" title="using"></a>using</h3><p>旧版要求必须继承IDisposable，但是目前会优先进行模式匹配识别</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Dispose()</span><br></pre></td></tr></table></figure>
+
+<h3 id="fixed"><a href="#fixed" class="headerlink" title="fixed"></a>fixed</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">fixed</span>(...)</span><br></pre></td></tr></table></figure>
+<p>会找：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GetPinnableReference()</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C/" rel="tag"># C#</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2026/04/19/%E8%BE%B9%E5%87%BD%E6%95%B0%E5%85%89%E6%A0%85%E5%8C%96/" rel="prev" title="边函数光栅化">
+                  <i class="fa fa-angle-left"></i> 边函数光栅化
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Lizq</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">84k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">5:07</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

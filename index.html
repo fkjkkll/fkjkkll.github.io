@@ -171,7 +171,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">63</span>
+          <span class="site-state-item-count">64</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -202,6 +202,104 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/05/16/%E8%BF%AD%E4%BB%A3%E5%99%A8%E7%8A%B6%E6%80%81%E6%9C%BA%E4%B8%8E%E9%B8%AD%E5%AD%90%E7%B1%BB%E5%9E%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Lizq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2026/05/16/%E8%BF%AD%E4%BB%A3%E5%99%A8%E7%8A%B6%E6%80%81%E6%9C%BA%E4%B8%8E%E9%B8%AD%E5%AD%90%E7%B1%BB%E5%9E%8B/" class="post-title-link" itemprop="url">迭代器状态机与鸭子类型</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-05-16 17:37:35 / 修改时间：18:00:40" itemprop="dateCreated datePublished" datetime="2026-05-16T17:37:35+08:00">2026-05-16</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>6 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="迭代器方法"><a href="#迭代器方法" class="headerlink" title="迭代器方法"></a>迭代器方法</h2><p>简单写一个迭代器方法。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Start</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">foreach</span> (<span class="function"><span class="keyword">var</span> e <span class="keyword">in</span> <span class="title">Iterator</span>())</span></span><br><span class="line">    &#123;</span><br><span class="line">        Console.WriteLine(e);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">IEnumerable&lt;<span class="built_in">int</span>&gt; <span class="title">Iterator</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    Console.WriteLine(<span class="string">&quot;00&quot;</span>);</span><br><span class="line">    <span class="keyword">yield</span> <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    Console.WriteLine(<span class="string">&quot;11&quot;</span>);</span><br><span class="line">    <span class="keyword">yield</span> <span class="keyword">return</span> <span class="number">2</span>;</span><br><span class="line">    Console.WriteLine(<span class="string">&quot;22&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的迭代器方法，在内部，编译器会生成一个匿名类，代码如下：</p>
+<ul>
+<li>仔细观察会发现，这个匿名类同时继承IEnumerator和IEnumerable，意味着它同时负责生产迭代器和迭代。</li>
+<li>状态点数字的含义：-1代表正在执行&#x2F;当前不处于挂起点；-2代表尚未枚举或者已经Dispose；大于等于0代表各个恢复点</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2026/05/16/%E8%BF%AD%E4%BB%A3%E5%99%A8%E7%8A%B6%E6%80%81%E6%9C%BA%E4%B8%8E%E9%B8%AD%E5%AD%90%E7%B1%BB%E5%9E%8B/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1107,106 +1205,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2026/02/01/%E7%BB%99%E5%AE%9A%E8%B7%AF%E5%BE%84%E8%8A%82%E7%82%B9%E4%B8%8BNPC%E5%A6%82%E4%BD%95%E5%B9%B3%E6%BB%91%E7%A7%BB%E5%8A%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Lizq">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Lizq的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | Lizq的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2026/02/01/%E7%BB%99%E5%AE%9A%E8%B7%AF%E5%BE%84%E8%8A%82%E7%82%B9%E4%B8%8BNPC%E5%A6%82%E4%BD%95%E5%B9%B3%E6%BB%91%E7%A7%BB%E5%8A%A8/" class="post-title-link" itemprop="url">给定路径节点下NPC如何平滑移动</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2026-02-01 12:32:08" itemprop="dateCreated datePublished" datetime="2026-02-01T12:32:08+08:00">2026-02-01</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-03-22 11:12:23" itemprop="dateModified" datetime="2026-03-22T11:12:23+08:00">2026-03-22</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>800</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>3 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3 id="NPC平滑运动"><a href="#NPC平滑运动" class="headerlink" title="NPC平滑运动"></a>NPC平滑运动</h3><p>NPC被赋予一组路线比如List<vector3>，NPC按照路线行进。当遇到转角时，如果直接改变朝向，NPC会显得过于程序化，必然是不可取的。该篇博客尝试了两种方法，分别是“转角圆弧”和“惰性转向”</vector3></p>
-<h4 id="1-转角圆弧"><a href="#1-转角圆弧" class="headerlink" title="1 转角圆弧"></a>1 转角圆弧</h4><p>在转角时，根据预留量（可以设定与速度线性相关）提前脱离路径转弯，转弯的圆弧是两组边的内切圆。此时NPC的转弯角速度可以根据运动速度、预留量，转角的角度，精确求得。</p>
-<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ArcMove</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">float</span> TurnTriggerDistance = <span class="number">5f</span>;  <span class="comment">// 预先转向保留距离</span></span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">float</span> MoveSpeed = <span class="number">20f</span>;           <span class="comment">// 匀速朝向前运动</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">float</span> _angularSpeed = <span class="number">0f</span>;       <span class="comment">// 本次转向的转向速度</span></span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">float</span> _remainingTurnTime = <span class="number">0f</span>;  <span class="comment">// 本次转向的转向时间</span></span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">int</span> _currentNodeIndex = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> List&lt;Vector3&gt; _route = <span class="keyword">new</span>()</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">new</span> Vector3(<span class="number">10</span>,<span class="number">0</span>,<span class="number">-10</span>),</span><br><span class="line">        <span class="keyword">new</span> Vector3(<span class="number">-10</span>,<span class="number">0</span>,<span class="number">-10</span>),</span><br><span class="line">        <span class="keyword">new</span> Vector3(<span class="number">10</span>,<span class="number">0</span>, <span class="number">0</span>),</span><br><span class="line">        <span class="keyword">new</span> Vector3(<span class="number">10</span>,<span class="number">0</span>,<span class="number">10</span>),</span><br><span class="line">        <span class="keyword">new</span> Vector3(<span class="number">-10</span>,<span class="number">0</span>,<span class="number">10</span>),</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Start</span>()</span> =&gt; ResetState();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Update</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// ECS里的控制系统</span></span><br><span class="line">        <span class="keyword">var</span> curPos = transform.position;</span><br><span class="line">        <span class="keyword">if</span> (_remainingTurnTime &lt;= <span class="number">0</span> &amp;&amp; _currentNodeIndex == _route.Count - <span class="number">2</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> curPoint = _route[_currentNodeIndex];</span><br><span class="line">            <span class="keyword">var</span> arrivePoint = _route[_currentNodeIndex + <span class="number">1</span>];</span><br><span class="line">            <span class="keyword">if</span> (Vector3.Dot(arrivePoint - curPoint, arrivePoint - curPos) &lt; <span class="number">0</span>)</span><br><span class="line">                ResetState();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (_remainingTurnTime &gt; <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            _remainingTurnTime -= Time.deltaTime;</span><br><span class="line">            <span class="keyword">if</span> (_remainingTurnTime &lt;= <span class="number">0</span>) _angularSpeed = <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> haveNextPoint = _currentNodeIndex + <span class="number">1</span> &lt; _route.Count;</span><br><span class="line">            <span class="keyword">var</span> haveNextNextPoint = _currentNodeIndex + <span class="number">2</span> &lt; _route.Count;</span><br><span class="line">            <span class="keyword">var</span> handled = <span class="literal">false</span>;</span><br><span class="line">            <span class="keyword">if</span> (haveNextNextPoint)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">var</span> curPoint = _route[_currentNodeIndex];</span><br><span class="line">                <span class="keyword">var</span> nextPoint = _route[_currentNodeIndex + <span class="number">1</span>];</span><br><span class="line">                <span class="keyword">var</span> nextNextPoint = _route[_currentNodeIndex + <span class="number">2</span>];</span><br><span class="line">                <span class="keyword">var</span> inVector = nextPoint - curPoint;</span><br><span class="line">                <span class="keyword">var</span> outVector = nextNextPoint - nextPoint;</span><br><span class="line">                <span class="keyword">var</span> clampTurnTriggerDistance = Mathf.Min(TurnTriggerDistance, Mathf.Min(inVector.magnitude, outVector.magnitude) / <span class="number">2</span>);</span><br><span class="line">                <span class="keyword">var</span> nowRemainDist = (curPos - nextPoint).magnitude;</span><br><span class="line">                <span class="keyword">if</span> (nowRemainDist &lt;= clampTurnTriggerDistance)</span><br><span class="line">                &#123;</span><br><span class="line">                    ++_currentNodeIndex;</span><br><span class="line">                    handled = <span class="literal">true</span>;</span><br><span class="line">                    <span class="comment">// 脱离</span></span><br><span class="line">                    <span class="keyword">var</span> angle = Vector3.SignedAngle(inVector.normalized, outVector.normalized, Vector3.up);</span><br><span class="line">                    <span class="keyword">var</span> absoluteAngle = Mathf.Abs(angle);</span><br><span class="line">                    <span class="keyword">if</span> (absoluteAngle &lt; <span class="number">1f</span>) <span class="keyword">return</span>; <span class="comment">// 角度太小，Tan会很大，安全起见，直接当直线跑</span></span><br><span class="line">                    <span class="keyword">var</span> inCircleRadius = nowRemainDist / Mathf.Tan(absoluteAngle * Mathf.Deg2Rad / <span class="number">2</span>);</span><br><span class="line">                    <span class="keyword">var</span> arcLength = <span class="number">2</span> * Mathf.PI * inCircleRadius * absoluteAngle / <span class="number">360</span>;</span><br><span class="line">                    _remainingTurnTime = arcLength / MoveSpeed;</span><br><span class="line">                    _angularSpeed = angle / _remainingTurnTime;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (haveNextPoint &amp;&amp; !handled)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">var</span> curDir = transform.rotation * Vector3.forward;</span><br><span class="line">                <span class="keyword">var</span> targetDir = _route[_currentNodeIndex + <span class="number">1</span>] - curPos;</span><br><span class="line">                <span class="keyword">var</span> diffAngle = Vector3.SignedAngle(curDir.normalized, targetDir.normalized, Vector3.up);</span><br><span class="line">                _angularSpeed = diffAngle * MoveSpeed; <span class="comment">// 朝向收敛与速度正相关</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// ECS里的Movement系统</span></span><br><span class="line">        transform.rotation *= Quaternion.Euler(<span class="number">0</span>, _angularSpeed * Time.deltaTime, <span class="number">0</span>);</span><br><span class="line">        transform.position = transform.position + MoveSpeed * Time.deltaTime * transform.forward;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">ResetState</span>()</span></span><br><span class="line">    &#123;</span><br><span class="line">        _currentNodeIndex = <span class="number">0</span>;</span><br><span class="line">        transform.SetPositionAndRotation(_route[_currentNodeIndex], Quaternion.LookRotation(_route[<span class="number">1</span>] - _route[<span class="number">0</span>]));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2026/02/01/%E7%BB%99%E5%AE%9A%E8%B7%AF%E5%BE%84%E8%8A%82%E7%82%B9%E4%B8%8BNPC%E5%A6%82%E4%BD%95%E5%B9%B3%E6%BB%91%E7%A7%BB%E5%8A%A8/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1230,13 +1228,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">83k</span>
+    <span title="站点总字数">84k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">5:01</span>
+    <span title="站点阅读时长">5:07</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
