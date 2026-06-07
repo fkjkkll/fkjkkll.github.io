@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 8.1.1">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="Arch ECS 学习笔记这份笔是我学习Github开源项目Arch ECS后的学习代码，通过断点调试 + 与AI交流完成碎片化记录，最终再交由AI整合完成。主要内容包含Archetype ECS结构学习，以及一些项目里用到的技巧总结。 在学习过程中发现了两处问题，一处是BitSet的Any处包含冗余的循环代码；一处是CommandBuffer部分的SparseSet里创建SparseArray时">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Arch ECS 学习笔记">
+<meta property="og:url" content="http://example.com/2026/06/07/Arch-ECS-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="Lizq的个人博客">
+<meta property="og:description" content="Arch ECS 学习笔记这份笔是我学习Github开源项目Arch ECS后的学习代码，通过断点调试 + 与AI交流完成碎片化记录，最终再交由AI整合完成。主要内容包含Archetype ECS结构学习，以及一些项目里用到的技巧总结。 在学习过程中发现了两处问题，一处是BitSet的Any处包含冗余的循环代码；一处是CommandBuffer部分的SparseSet里创建SparseArray时">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-06-07T09:19:22.000Z">
+<meta property="article:modified_time" content="2026-06-07T09:21:18.892Z">
+<meta property="article:author" content="Lizq">
+<meta property="article:tag" content="C#">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2026/06/07/Arch-ECS-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2026/06/07/Arch-ECS-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/","path":"2026/06/07/Arch-ECS-学习笔记/","title":"Arch ECS 学习笔记"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Arch ECS 学习笔记 | Lizq的个人博客</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js" defer></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Lizq的个人博客</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Arch-ECS-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0"><span class="nav-number">1.</span> <span class="nav-text">Arch ECS 学习笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E4%BD%93%E7%BB%93%E6%9E%84"><span class="nav-number">1.1.</span> <span class="nav-text">总体结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ComponentType"><span class="nav-number">1.2.</span> <span class="nav-text">ComponentType</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ComponentRegistry"><span class="nav-number">1.3.</span> <span class="nav-text">ComponentRegistry</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Component-Component-Component"><span class="nav-number">1.4.</span> <span class="nav-text">Component &#x2F; Component &#x2F; Component&lt;T0,T1&gt;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ArrayRegistry"><span class="nav-number">1.5.</span> <span class="nav-text">ArrayRegistry</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Signature"><span class="nav-number">1.6.</span> <span class="nav-text">Signature</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#QueryDescription"><span class="nav-number">1.7.</span> <span class="nav-text">QueryDescription</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BitSet"><span class="nav-number">1.8.</span> <span class="nav-text">BitSet</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Query"><span class="nav-number">1.9.</span> <span class="nav-text">Query</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Archetypes"><span class="nav-number">1.10.</span> <span class="nav-text">Archetypes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Archetype"><span class="nav-number">1.11.</span> <span class="nav-text">Archetype</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Chunks"><span class="nav-number">1.12.</span> <span class="nav-text">Chunks</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Chunk"><span class="nav-number">1.13.</span> <span class="nav-text">Chunk</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Entity-EntityData-Slot"><span class="nav-number">1.14.</span> <span class="nav-text">Entity &#x2F; EntityData &#x2F; Slot</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E5%B8%A6%E7%BB%84%E4%BB%B6%E5%AE%9E%E4%BD%93%E7%9A%84%E6%B5%81%E7%A8%8B"><span class="nav-number">1.15.</span> <span class="nav-text">创建带组件实体的流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#World-Capacity-%E7%9A%84%E5%90%AB%E4%B9%89"><span class="nav-number">1.16.</span> <span class="nav-text">World.Capacity 的含义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Query-%E6%B5%81%E7%A8%8B"><span class="nav-number">1.17.</span> <span class="nav-text">Query 流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CommandBuffer"><span class="nav-number">1.18.</span> <span class="nav-text">CommandBuffer</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E9%83%A8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-number">1.18.1.</span> <span class="nav-text">内部数据结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Register-%E2%80%94-Entity-%E6%B3%A8%E5%86%8C"><span class="nav-number">1.18.2.</span> <span class="nav-text">Register — Entity 注册</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B4%9F-ID-Entity-%E2%80%94-Create-%E7%9A%84%E7%89%B9%E6%AE%8A%E5%A4%84%E7%90%86"><span class="nav-number">1.18.3.</span> <span class="nav-text">负 ID Entity — Create 的特殊处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%84%E6%93%8D%E4%BD%9C%E7%9A%84%E8%AE%B0%E5%BD%95%E6%96%B9%E5%BC%8F"><span class="nav-number">1.18.4.</span> <span class="nav-text">各操作的记录方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Playback-%E5%9B%9E%E6%94%BE%E9%A1%BA%E5%BA%8F"><span class="nav-number">1.18.5.</span> <span class="nav-text">Playback 回放顺序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Set-%E7%9A%84%E5%85%B7%E4%BD%93%E8%BF%87%E7%A8%8B"><span class="nav-number">1.18.6.</span> <span class="nav-text">Set 的具体过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SparseSet-vs-StructuralSparseSet"><span class="nav-number">1.18.7.</span> <span class="nav-text">SparseSet vs StructuralSparseSet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8"><span class="nav-number">1.18.8.</span> <span class="nav-text">线程安全</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.18.9.</span> <span class="nav-text">使用模式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7"><span class="nav-number">1.19.</span> <span class="nav-text">使用技巧</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%B9%E6%98%93%E8%AF%AF%E8%A7%A3%E7%9A%84%E7%82%B9"><span class="nav-number">1.20.</span> <span class="nav-text">容易误解的点</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Lizq</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">65</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fkjkkll" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fkjkkll" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:lzq0225@qq.com" title="E-Mail → mailto:lzq0225@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/06/07/Arch-ECS-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Lizq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Arch ECS 学习笔记 | Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Arch ECS 学习笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-06-07 17:19:22 / 修改时间：17:21:18" itemprop="dateCreated datePublished" datetime="2026-06-07T17:19:22+08:00">2026-06-07</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.2k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>15 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="Arch-ECS-学习笔记"><a href="#Arch-ECS-学习笔记" class="headerlink" title="Arch ECS 学习笔记"></a>Arch ECS 学习笔记</h1><p>这份笔是我学习Github开源项目<a target="_blank" rel="noopener" href="https://github.com/genaray/Arch">Arch ECS</a>后的学习代码，通过断点调试 + 与AI交流完成碎片化记录，最终再交由AI整合完成。主要内容包含Archetype ECS结构学习，以及一些项目里用到的技巧总结。</p>
+<p>在学习过程中发现了两处问题，一处是BitSet的Any处包含冗余的循环代码；一处是CommandBuffer部分的SparseSet里创建SparseArray时传参错误。目前已经提交了PR。</p>
+<h2 id="总体结构"><a href="#总体结构" class="headerlink" title="总体结构"></a>总体结构</h2><p>Arch 的核心数据关系可以先记成这张图：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">World</span><br><span class="line">  ├─ ComponentRegistry              // Type -&gt; ComponentType(Id, ByteSize)</span><br><span class="line">  ├─ GroupToArchetype               // Signature hash -&gt; Archetype</span><br><span class="line">  ├─ Archetypes                     // World 中所有 Archetype 的列表</span><br><span class="line">  ├─ EntityInfoStorage              // Entity.Id -&gt; EntityData</span><br><span class="line">  └─ QueryCache                     // QueryDescription -&gt; Query</span><br><span class="line"></span><br><span class="line">Archetype                           // 一种组件组合，比如 Position + Velocity</span><br><span class="line">  ├─ Signature                      // ComponentType[]</span><br><span class="line">  ├─ BitSet                         // Signature 的 bitset 形式</span><br><span class="line">  ├─ _componentIdToArrayIndex        // ComponentType.Id -&gt; Chunk.Components 下标</span><br><span class="line">  └─ Chunks</span><br><span class="line">       ├─ Chunk</span><br><span class="line">       │    ├─ Entity[] Entities</span><br><span class="line">       │    └─ Array[] Components   // 每种组件一个数组，SoA 布局</span><br><span class="line">       └─ Chunk</span><br></pre></td></tr></table></figure>
+
+<p>一句话：<strong>World 管所有 Archetype；Archetype 管同一种组件组合的所有实体；Chunk 才是真正连续存储 Entity 和组件数组的地方。</strong></p>
+<h2 id="ComponentType"><a href="#ComponentType" class="headerlink" title="ComponentType"></a>ComponentType</h2><p><code>ComponentType</code> 代表一种组件类型的运行时元信息。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">readonly</span> <span class="keyword">record</span> <span class="title">struct</span> <span class="title">ComponentType</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">readonly</span> <span class="built_in">int</span> Id;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">readonly</span> <span class="built_in">int</span> ByteSize;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>Id</code>：组件类型的全局唯一 id，由 <code>ComponentRegistry</code> 分配。</li>
+<li><code>ByteSize</code>：组件的大小。值类型用 <code>Unsafe.SizeOf&lt;T&gt;()</code>，引用类型用 <code>IntPtr.Size</code>。</li>
+<li><code>Type</code> 属性会通过 <code>ComponentRegistry.Types[Id]</code> 反查原始 <code>System.Type</code>。</li>
+</ul>
+<p>这里的 <code>Id</code> 很关键：后续 <code>Signature</code> hash、<code>BitSet</code>、<code>Chunk</code> 的组件查找表都依赖它。</p>
+<h2 id="ComponentRegistry"><a href="#ComponentRegistry" class="headerlink" title="ComponentRegistry"></a>ComponentRegistry</h2><p><code>ComponentRegistry</code> 是全局组件类型注册表。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">ComponentRegistry</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">readonly</span> Dictionary&lt;Type, ComponentType&gt; _typeToComponentType;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Type?[] _types;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">int</span> Size &#123; <span class="keyword">get</span>; <span class="keyword">private</span> <span class="keyword">set</span>; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>主路径是：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Component&lt;T&gt;.ComponentType</span><br><span class="line">  -&gt; Component&lt;T&gt; 静态构造</span><br><span class="line">  -&gt; ComponentRegistry.Add&lt;T&gt;()</span><br><span class="line">  -&gt; new ComponentType(Size, SizeOf&lt;T&gt;())</span><br><span class="line">  -&gt; Size++</span><br></pre></td></tr></table></figure>
+
+<p>也就是说，组件类型一般是在第一次使用 <code>Component&lt;T&gt;</code> 时注册的。</p>
+<p>注意：<code>ComponentRegistry</code> 里的 <code>Size</code> 才是组件类型 id 的分配源。<code>Component</code> 非泛型类里的 <code>internal static int Id</code> 不是组件类型 id，它主要被生成的 <code>Component&lt;T0,T1,...&gt;</code> 组合缓存类使用，目前看更像内部&#x2F;遗留计数。</p>
+<h2 id="Component-Component-Component"><a href="#Component-Component-Component" class="headerlink" title="Component &#x2F; Component &#x2F; Component&lt;T0,T1&gt;"></a>Component &#x2F; Component<T> &#x2F; Component&lt;T0,T1&gt;</h2><p>这几个名字容易混。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">Component</span></span><br></pre></td></tr></table></figure>
+
+<p>非泛型 <code>Component</code> 是工具类，主要用于：</p>
+<ul>
+<li><code>GetComponentType(Type type)</code>：运行时 Type -&gt; ComponentType。</li>
+<li><code>GetHashCode(Span&lt;ComponentType&gt;)</code>：对组件组合算顺序无关的 hash。</li>
+</ul>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">Component</span>&lt;<span class="title">T</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">readonly</span> ComponentType ComponentType;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">readonly</span> Signature Signature;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>Component&lt;T&gt;</code> 是单个组件类型的静态缓存。第一次访问时注册组件，并缓存它自己的单组件 <code>Signature</code>。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">Component</span>&lt;<span class="title">T0</span>, <span class="title">T1</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">static</span> <span class="keyword">readonly</span> <span class="built_in">int</span> Id;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">readonly</span> Signature Signature;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">readonly</span> <span class="built_in">int</span> Hash;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>Component&lt;T0,T1,...&gt;</code> 是 T4 模板生成出来的「组件组合缓存」。真正有用的是 <code>Signature</code> 和 <code>Hash</code>，可以避免每次 <code>Create&lt;T0,T1&gt;</code> 都重新构造组件组合。</p>
+<h2 id="ArrayRegistry"><a href="#ArrayRegistry" class="headerlink" title="ArrayRegistry"></a>ArrayRegistry</h2><p><code>ArrayRegistry</code> 用于按组件类型创建组件数组：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Array <span class="title">GetArray</span>(<span class="params">ComponentType type, <span class="built_in">int</span> capacity</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> _createFactories.TryGetValue(type.Id, <span class="keyword">out</span> Func&lt;<span class="built_in">int</span>, Array&gt; func)</span><br><span class="line">        ? func(capacity)</span><br><span class="line">        : Array.CreateInstance(type.Type, capacity);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>它被 <code>Chunk</code> 和 <code>SparseArray</code> 使用。</p>
+<p><code>ArrayRegistry.Add&lt;T&gt;()</code> 的意图是注册 <code>new T[capacity]</code> 工厂，避免 <code>Array.CreateInstance</code> 反射创建数组。但当前主流程里基本没有自动调用它，所以默认多半会走 fallback。它更像一个预留的性能&#x2F;AOT 优化点。</p>
+<h2 id="Signature"><a href="#Signature" class="headerlink" title="Signature"></a>Signature</h2><p><code>Signature</code> 描述一组组件类型，并缓存这组组件的 hash。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">struct</span> Signature : IEquatable&lt;Signature&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">int</span> _hashCode;</span><br><span class="line">    <span class="keyword">internal</span> ComponentType[] ComponentsArray;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>它代表「组件组合」，比如：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Position + Velocity</span><br><span class="line">Position + Velocity + Sprite</span><br><span class="line">Health</span><br></pre></td></tr></table></figure>
+
+<p>特点：</p>
+<ul>
+<li>可以由 <code>ComponentType</code>、<code>ComponentType[]</code>、<code>Span&lt;ComponentType&gt;</code> 隐式转换得到。</li>
+<li>可以隐式转成 <code>BitSet</code>，用于 query 匹配。</li>
+<li>hash 是顺序无关的：<code>Position + Velocity</code> 和 <code>Velocity + Position</code> 应该得到同一个 hash。</li>
+<li><code>Signature.Add</code> &#x2F; <code>Signature.Remove</code> 会通过 <code>HashSet&lt;ComponentType&gt;</code> 合并&#x2F;删除组件。</li>
+</ul>
+<h2 id="QueryDescription"><a href="#QueryDescription" class="headerlink" title="QueryDescription"></a>QueryDescription</h2><p><code>QueryDescription</code> 是用户描述查询条件的结构。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">partial</span> <span class="keyword">struct</span> QueryDescription : IEquatable&lt;QueryDescription&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">int</span> _hashCode;</span><br><span class="line">    <span class="keyword">public</span> Signature All &#123; <span class="keyword">get</span>; <span class="keyword">private</span> <span class="keyword">set</span>; &#125;</span><br><span class="line">    <span class="keyword">public</span> Signature Any &#123; <span class="keyword">get</span>; <span class="keyword">private</span> <span class="keyword">set</span>; &#125;</span><br><span class="line">    <span class="keyword">public</span> Signature None &#123; <span class="keyword">get</span>; <span class="keyword">private</span> <span class="keyword">set</span>; &#125;</span><br><span class="line">    <span class="keyword">public</span> Signature Exclusive &#123; <span class="keyword">get</span>; <span class="keyword">private</span> <span class="keyword">set</span>; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>四种条件：</p>
+<ul>
+<li><code>All</code>：必须全部拥有。</li>
+<li><code>Any</code>：至少拥有其中一个。</li>
+<li><code>None</code>：不能拥有其中任何一个。</li>
+<li><code>Exclusive</code>：组件组合必须完全相等，不能多也不能少。</li>
+</ul>
+<p><code>WithAll / WithAny / WithNone / WithExclusive</code> 有大量模板生成的泛型重载。当前实现里每次 <code>WithXXX</code> 都会立即 <code>Build()</code>，也就是重新计算 <code>QueryDescription</code> 的 hash：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> QueryDescription()</span><br><span class="line">    .WithNone&lt;A&gt;()</span><br><span class="line">    .WithAny&lt;B&gt;()</span><br><span class="line">    .WithAll&lt;C&gt;();</span><br></pre></td></tr></table></figure>
+
+<p>这个链式调用会重复 Build 三次，前两次结果马上被覆盖。功能上没问题，但从设计上可以优化成「只把 <code>_hashCode = -1</code>，等真正 <code>GetHashCode()</code> 时再懒计算」。</p>
+<h2 id="BitSet"><a href="#BitSet" class="headerlink" title="BitSet"></a>BitSet</h2><p><code>BitSet</code> 是可扩容的 bit 集合，用于快速表达组件集合。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">sealed</span> <span class="keyword">class</span> <span class="title">BitSet</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">const</span> <span class="built_in">int</span> BitSize = (<span class="keyword">sizeof</span>(<span class="built_in">uint</span>) * <span class="number">8</span>) - <span class="number">1</span>;        <span class="comment">// 31</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">const</span> <span class="built_in">int</span> IndexSize = <span class="number">5</span>;                           <span class="comment">// log2(32)</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">readonly</span> <span class="built_in">int</span> _padding = Vector&lt;<span class="built_in">uint</span>&gt;.Count; <span class="comment">// SIMD 宽度</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">uint</span>[] _bits;</span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">int</span> _highestBit;</span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">int</span> _max;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里每个 <code>uint</code> 存 32 个 bit。组件 id 为 <code>index</code> 时：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> bucket = index &gt;&gt; <span class="number">5</span>;          <span class="comment">// index / 32</span></span><br><span class="line"><span class="keyword">var</span> offset = index &amp; <span class="number">31</span>;          <span class="comment">// index % 32</span></span><br><span class="line">_bits[bucket] |= <span class="number">1u</span> &lt;&lt; offset;</span><br></pre></td></tr></table></figure>
+
+<p><code>_padding</code> 不是业务含义上的 padding，而是 SIMD 向量宽度。<code>_bits</code> 初始长度和扩容长度都会按 <code>Vector&lt;uint&gt;.Count</code> 对齐，方便 <code>All / Any / None / Exclusive</code> 里用 <code>Vector&lt;uint&gt;</code> 一次处理多个 <code>uint</code>。</p>
+<p>方法含义：</p>
+<ul>
+<li><code>All(other)</code>：this 的所有 set bit 都必须在 other 中存在。</li>
+<li><code>Any(other)</code>：this 和 other 至少有一个 set bit 相交。</li>
+<li><code>None(other)</code>：this 和 other 没有任何 set bit 相交。</li>
+<li><code>Exclusive(other)</code>：this 和 other 的 set bit 完全相等。</li>
+</ul>
+<p>在 Query 中，通常是：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">_all.All(archetype.BitSet)</span><br><span class="line">_any.Any(archetype.BitSet)</span><br><span class="line">_none.None(archetype.BitSet)</span><br><span class="line">_exclusive.Exclusive(archetype.BitSet)</span><br></pre></td></tr></table></figure>
+
+<p>也就是用查询条件去匹配某个 archetype 的组件集合。</p>
+<h2 id="Query"><a href="#Query" class="headerlink" title="Query"></a>Query</h2><p><code>Query</code> 是一个缓存过的查询对象。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">partial</span> <span class="keyword">class</span> <span class="title">Query</span> : <span class="title">IEquatable</span>&lt;<span class="title">Query</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">readonly</span> Archetypes _allArchetypes;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">readonly</span> NetStandardList&lt;Archetype&gt; _matchingArchetypes;</span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">int</span> _allArchetypesHashCode;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">readonly</span> QueryDescription _queryDescription;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">readonly</span> BitSet _any;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">readonly</span> BitSet _all;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">readonly</span> BitSet _none;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">readonly</span> BitSet _exclusive;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">readonly</span> <span class="built_in">bool</span> _isExclusive;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>关键点：Query 不会每次都重新扫描所有 archetype。</p>
+<p><code>Archetypes</code> 容器有自己的 hash。<code>Query.Match()</code> 会比较：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> newArchetypesHashCode = _allArchetypes.GetHashCode();</span><br><span class="line"><span class="keyword">if</span> (_allArchetypesHashCode == newArchetypesHashCode)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果 World 的 archetype 列表没有新增&#x2F;删除，Query 就复用 <code>_matchingArchetypes</code>。如果列表变了，才重新扫描所有 archetype 并筛出匹配项。</p>
+<p>所以 Query 的遍历路径是：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">QueryDescription</span><br><span class="line">  -&gt; QueryCache 找 Query</span><br><span class="line">  -&gt; Query.Match 筛 Archetype</span><br><span class="line">  -&gt; 遍历匹配 Archetype 的 Chunk</span><br><span class="line">  -&gt; 遍历 Chunk 内实体行</span><br></pre></td></tr></table></figure>
+
+<h2 id="Archetypes"><a href="#Archetypes" class="headerlink" title="Archetypes"></a>Archetypes</h2><p><code>Archetypes</code> 是 <code>World</code> 中所有 <code>Archetype</code> 的容器包装。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Archetypes</span> : <span class="title">IDisposable</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">int</span> _hashCode;</span><br><span class="line">    <span class="keyword">public</span> NetStandardList&lt;Archetype&gt; Items &#123; <span class="keyword">get</span>; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>它比普通 List 多了一个缓存 hash，用来告诉 Query：「World 的 archetype 列表有没有变化」。</p>
+<p>注意：它叫 <code>Archetypes</code>，不是 ECS 概念中的 archetype 本身。它只是一个列表容器。</p>
+<h2 id="Archetype"><a href="#Archetype" class="headerlink" title="Archetype"></a>Archetype</h2><p><code>Archetype</code> 存放同一种组件组合的所有实体。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">sealed</span> <span class="keyword">partial</span> <span class="keyword">class</span> <span class="title">Archetype</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span> BaseChunkSize &#123; <span class="keyword">get</span>; &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span> ChunkSize &#123; <span class="keyword">get</span>; &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span> EntitiesPerChunk &#123; <span class="keyword">get</span>; &#125;</span><br><span class="line">    <span class="keyword">public</span> Signature Signature &#123; <span class="keyword">get</span>; &#125;</span><br><span class="line">    <span class="keyword">public</span> BitSet BitSet &#123; <span class="keyword">get</span>; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">readonly</span> <span class="built_in">int</span>[] _componentIdToArrayIndex;</span><br><span class="line">    <span class="keyword">public</span> Chunks Chunks &#123; <span class="keyword">get</span>; <span class="keyword">internal</span> <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span> Count &#123; <span class="keyword">get</span>; <span class="keyword">internal</span> <span class="keyword">set</span>; &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span> EntityCount &#123; <span class="keyword">get</span>; <span class="keyword">internal</span> <span class="keyword">set</span>; &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span> EntityCapacity =&gt; ChunkCapacity * EntitiesPerChunk;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>字段含义：</p>
+<ul>
+<li><code>BaseChunkSize</code>：World 提供的基础 chunk 大小，默认注释里对应 16KB。</li>
+<li><code>ChunkSize</code>：当前 archetype 实际 chunk 字节大小，可能是基础大小的倍数。</li>
+<li><code>EntitiesPerChunk</code>：一个 chunk 可以容纳多少个 entity，由组件组合的大小决定。</li>
+<li><code>Signature</code>：这个 archetype 的组件组合。</li>
+<li><code>BitSet</code>：Signature 的 bitset 形式，用于 query 匹配。</li>
+<li><code>_componentIdToArrayIndex</code>：组件 id 到 <code>Chunk.Components</code> 下标的查找表。</li>
+<li><code>Chunks</code>：该 archetype 拥有的 chunk 集合。</li>
+<li><code>Count</code>：当前正在使用的 chunk 下标，不是总实体数量。</li>
+<li><code>EntityCount</code>：当前 archetype 里实体总数。</li>
+<li><code>EntityCapacity</code>：当前已分配 chunk 可容纳的实体总数。</li>
+</ul>
+<p><code>Archetype.Add</code> 会把新 entity 放进当前 chunk；如果当前 chunk 满了，就移动到下一个 chunk；如果没有预分配 chunk，就创建新 chunk。</p>
+<h2 id="Chunks"><a href="#Chunks" class="headerlink" title="Chunks"></a>Chunks</h2><p><code>Chunks</code> 是 <code>Archetype</code> 里管理 <code>Chunk</code> 数组的容器。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Chunks</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> Arch.LowLevel.Array&lt;Chunk&gt; Items &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span> Count &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span> Capacity &#123; <span class="keyword">get</span>; <span class="keyword">private</span> <span class="keyword">set</span>; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意：</p>
+<ul>
+<li><code>Items</code> 是 <code>Arch.LowLevel.Array&lt;Chunk&gt;</code>，底层仍然包着 <code>Chunk[]</code>。</li>
+<li><code>Count</code> 是已经放入的 chunk 数量。</li>
+<li><code>Capacity</code> 是逻辑容量，不等于底层数组真实长度。</li>
+<li>因为 <code>ArrayPool&lt;T&gt;.Rent(1)</code> 可能返回长度 16 的数组，所以不能用 <code>Items.Length</code> 当逻辑容量。</li>
+</ul>
+<p><code>EnsureCapacity</code> 扩容时复制的是外层 <code>Chunk[]</code> 容器。<code>Chunk</code> 是 struct，所以会复制 struct 值；但 <code>Chunk</code> 内部的 <code>Entity[]</code>、<code>Array[] Components</code> 是引用，复制的是引用，不会深拷贝组件数据。这里这是期望行为。</p>
+<h2 id="Chunk"><a href="#Chunk" class="headerlink" title="Chunk"></a>Chunk</h2><p><code>Chunk</code> 是真正存实体和组件数据的地方。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">partial</span> <span class="keyword">struct</span> Chunk</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">readonly</span> Entity[] Entities;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">readonly</span> Array[] Components;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">readonly</span> <span class="built_in">int</span>[] ComponentIdToArrayIndex;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span> Count &#123; <span class="keyword">get</span>; <span class="keyword">internal</span> <span class="keyword">set</span>; &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span> Capacity &#123; <span class="keyword">get</span>; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>布局是 SoA：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Entities:    [E0, E1, E2, ...]</span><br><span class="line"></span><br><span class="line">Components:</span><br><span class="line">  [0] Position[]: [P0, P1, P2, ...]</span><br><span class="line">  [1] Velocity[]: [V0, V1, V2, ...]</span><br><span class="line">  [2] Sprite[]:   [S0, S1, S2, ...]</span><br></pre></td></tr></table></figure>
+
+<p>同一个 row index 表示同一个实体的各组件：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Entities[5]</span><br><span class="line">Position[5]</span><br><span class="line">Velocity[5]</span><br><span class="line">Sprite[5]</span><br></pre></td></tr></table></figure>
+
+<p><code>ComponentIdToArrayIndex</code> 用来把组件 id 映射到 <code>Components</code> 下标。例如：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ComponentType.Id(Position) -&gt; 0</span><br><span class="line">ComponentType.Id(Velocity) -&gt; 1</span><br></pre></td></tr></table></figure>
+
+<p>这样 <code>GetArray&lt;T&gt;()</code> 就能快速定位到对应的组件数组。</p>
+<h2 id="Entity-EntityData-Slot"><a href="#Entity-EntityData-Slot" class="headerlink" title="Entity &#x2F; EntityData &#x2F; Slot"></a>Entity &#x2F; EntityData &#x2F; Slot</h2><p><code>Entity</code> 本身只是一个句柄。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">readonly</span> <span class="keyword">struct</span> Entity</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">readonly</span> <span class="built_in">int</span> Id;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">readonly</span> <span class="built_in">byte</span> WorldId;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">readonly</span> <span class="built_in">int</span> Version;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>真正的位置存在 <code>EntityInfoStorage</code> 中：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">record</span> <span class="title">struct</span> <span class="title">Slot</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span> Index;       <span class="comment">// Entity 在 Chunk 内的 row index</span></span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span> ChunkIndex;  <span class="comment">// Chunk 在 Archetype.Chunks 内的 index</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">struct</span> EntityData</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> Archetype Archetype;</span><br><span class="line">    <span class="keyword">public</span> Slot Slot;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span> Version;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>所以根据一个 <code>Entity</code> 找组件，大体是：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Entity.Id</span><br><span class="line">  -&gt; EntityInfoStorage[Id]</span><br><span class="line">  -&gt; EntityData.Archetype</span><br><span class="line">  -&gt; EntityData.Slot</span><br><span class="line">  -&gt; Archetype.Chunks[Slot.ChunkIndex]</span><br><span class="line">  -&gt; Chunk.Components[componentIndex][Slot.Index]</span><br></pre></td></tr></table></figure>
+
+<p><code>Version</code> 用来识别旧句柄，避免 entity 被销毁后 id 复用导致旧 Entity 误操作新实体。</p>
+<h2 id="创建带组件实体的流程"><a href="#创建带组件实体的流程" class="headerlink" title="创建带组件实体的流程"></a>创建带组件实体的流程</h2><p>以批量创建为例：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">world.Create(size, transform, rotation);</span><br></pre></td></tr></table></figure>
+
+<p>核心流程：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Create</span>&lt;<span class="title">T0</span>, <span class="title">T1</span>&gt;(<span class="params"><span class="built_in">int</span> amount, <span class="keyword">in</span> T0? t0Component = <span class="literal">default</span>, <span class="keyword">in</span> T1? t1Component = <span class="literal">default</span></span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> archetype = EnsureCapacity&lt;T0, T1&gt;(amount);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">using</span> <span class="keyword">var</span> entityArray = Pool&lt;Entity&gt;.Rent(amount);</span><br><span class="line">    <span class="keyword">using</span> <span class="keyword">var</span> entityDataArray = Pool&lt;EntityData&gt;.Rent(amount);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> entities = entityArray.AsSpan();</span><br><span class="line">    <span class="keyword">var</span> entityData = entityDataArray.AsSpan();</span><br><span class="line"></span><br><span class="line">    GetOrCreateEntitiesInternal(archetype, entities, entityData, amount);</span><br><span class="line">    archetype.AddAll(entities, amount);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> firstSlot = entityData[<span class="number">0</span>].Slot;</span><br><span class="line">    <span class="keyword">var</span> lastSlot = entityData[amount - <span class="number">1</span>].Slot;</span><br><span class="line">    archetype.SetRange&lt;T0, T1&gt;(<span class="keyword">in</span> lastSlot, <span class="keyword">in</span> firstSlot, <span class="keyword">in</span> t0Component, <span class="keyword">in</span> t1Component);</span><br><span class="line"></span><br><span class="line">    AddEntityData(entities, entityData, amount);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>拆开看：</p>
+<ol>
+<li><p><code>EnsureCapacity&lt;T0,T1&gt;(amount)</code><br>根据 <code>Component&lt;T0,T1&gt;.Signature</code> 找到或创建对应 <code>Archetype</code>，并预留足够 chunk。</p>
+</li>
+<li><p><code>Pool&lt;T&gt;.Rent(amount)</code><br>从 <code>ArrayPool&lt;T&gt;</code> 租临时数组，包装成 <code>PooledArray</code>，用 <code>using var</code> 自动归还。</p>
+</li>
+<li><p><code>GetOrCreateEntitiesInternal</code><br>分配实体 id&#x2F;version，并准备每个实体对应的 <code>EntityData</code>。</p>
+</li>
+<li><p><code>archetype.AddAll</code><br>把 entity 批量写入目标 chunk 的 <code>Entities</code> 数组。</p>
+</li>
+<li><p><code>archetype.SetRange</code><br>把组件值批量写入对应组件数组。</p>
+</li>
+<li><p><code>AddEntityData</code><br>把实体定位信息写入 <code>EntityInfoStorage</code>。</p>
+</li>
+</ol>
+<h2 id="World-Capacity-的含义"><a href="#World-Capacity-的含义" class="headerlink" title="World.Capacity 的含义"></a>World.Capacity 的含义</h2><p><code>World.Capacity</code> 不是当前实体数量，而是所有 archetype 已分配 chunk 的总实体容量。</p>
+<p>大致关系是：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">World.Capacity = sum(Archetype.EntityCapacity)</span><br></pre></td></tr></table></figure>
+
+<p>所以 <code>EnsureCapacity</code> 中会先扣掉当前 archetype 的旧容量，扩容后再加回新容量：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> archetype = GetOrCreate(signature);</span><br><span class="line">Capacity -= archetype.EntityCapacity;</span><br><span class="line">archetype.EnsureEntityCapacity(archetype.EntityCount + amount);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> requiredCapacity = Capacity + archetype.EntityCapacity;</span><br><span class="line">EntityInfo.EnsureCapacity(requiredCapacity);</span><br><span class="line">Capacity = requiredCapacity;</span><br></pre></td></tr></table></figure>
+
+<p>如果不先扣旧容量，反复 Ensure 同一个 archetype 时，<code>World.Capacity</code> 会被重复累计，导致 <code>EntityInfoStorage</code> 过度扩容。</p>
+<h2 id="Query-流程"><a href="#Query-流程" class="headerlink" title="Query 流程"></a>Query 流程</h2><p>典型查询：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> query = <span class="keyword">new</span> QueryDescription().WithAll&lt;Position, Velocity&gt;();</span><br><span class="line">world.Query(<span class="keyword">in</span> query, (<span class="keyword">ref</span> Position pos, <span class="keyword">ref</span> Velocity vel) =&gt;</span><br><span class="line">&#123;</span><br><span class="line">    pos.X += vel.X;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>大致流程：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">QueryDescription</span><br><span class="line">  -&gt; World.QueryCache 查 Query</span><br><span class="line">  -&gt; Query.Match 检查 Archetypes hash 是否变化</span><br><span class="line">  -&gt; 如果变化，重新筛选匹配的 Archetype</span><br><span class="line">  -&gt; 遍历 matching Archetype</span><br><span class="line">  -&gt; 遍历 Archetype.Chunks</span><br><span class="line">  -&gt; 拿到组件数组第一项 ref</span><br><span class="line">  -&gt; Unsafe.Add(ref first, rowIndex) 定位组件</span><br></pre></td></tr></table></figure>
+
+<p>核心优化点：</p>
+<ul>
+<li>Query 是按 archetype 筛，不是按 entity 一个个判断组件。</li>
+<li>同一个 archetype 里实体组件布局相同，所以一旦 archetype 匹配，里面的 chunk 可以连续遍历。</li>
+<li>组件数组是 SoA，遍历某个组件时内存连续。</li>
+</ul>
+<h2 id="CommandBuffer"><a href="#CommandBuffer" class="headerlink" title="CommandBuffer"></a>CommandBuffer</h2><p><code>CommandBuffer</code> 是一个<strong>延迟操作缓冲区</strong>——把对 Entity 的增删改操作先记录在 buffer 里，之后调用 <code>Playback(world)</code> 一次性执行。</p>
+<p>这在以下场景很有用：</p>
+<ul>
+<li>遍历 Query 时不能直接修改 World（会破坏迭代器的稳定性），需要延迟修改。</li>
+<li>多线程 job 里记录操作，主线程统一回放。</li>
+<li>批量操作后再统一提交，减少中间态。</li>
+</ul>
+<h3 id="内部数据结构"><a href="#内部数据结构" class="headerlink" title="内部数据结构"></a>内部数据结构</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">sealed</span> <span class="keyword">partial</span> <span class="keyword">class</span> <span class="title">CommandBuffer</span> : <span class="title">IDisposable</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">internal</span> PooledList&lt;Entity&gt; Entities;                          <span class="comment">// 所有涉及的 Entity</span></span><br><span class="line">    <span class="keyword">internal</span> PooledDictionary&lt;<span class="built_in">int</span>, BufferedEntityInfo&gt; _info;      <span class="comment">// Entity.Id -&gt; 索引信息</span></span><br><span class="line">    <span class="keyword">internal</span> PooledList&lt;CreateCommand&gt; Creates;                    <span class="comment">// 待创建的 Entity</span></span><br><span class="line">    <span class="keyword">internal</span> SparseSet Sets;                                       <span class="comment">// 待 Set 的组件值</span></span><br><span class="line">    <span class="keyword">internal</span> StructuralSparseSet Adds;                             <span class="comment">// 待 Add 的组件类型</span></span><br><span class="line">    <span class="keyword">internal</span> StructuralSparseSet Removes;                          <span class="comment">// 待 Remove 的组件类型</span></span><br><span class="line">    <span class="keyword">internal</span> PooledList&lt;<span class="built_in">int</span>&gt; Destroys;                             <span class="comment">// 待 Destroy 的 Entity</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>BufferedEntityInfo</code> 存储一个 Entity 在 buffer 各数组中的位置：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">readonly</span> <span class="keyword">record</span> <span class="title">struct</span> <span class="title">BufferedEntityInfo</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">int</span> Index;        <span class="comment">// Entities 列表中的位置</span></span><br><span class="line">    <span class="built_in">int</span> SetIndex;     <span class="comment">// SparseSet 中的行号</span></span><br><span class="line">    <span class="built_in">int</span> AddIndex;     <span class="comment">// StructuralSparseSet 中的行号</span></span><br><span class="line">    <span class="built_in">int</span> RemoveIndex;  <span class="comment">// StructuralSparseSet 中的行号</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Register-—-Entity-注册"><a href="#Register-—-Entity-注册" class="headerlink" title="Register — Entity 注册"></a>Register — Entity 注册</h3><p>对已有 Entity 的首次操作会触发 <code>Register</code>：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">internal</span> <span class="keyword">void</span> <span class="title">Register</span>(<span class="params"><span class="keyword">in</span> Entity entity, <span class="keyword">out</span> BufferedEntityInfo info</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> setIndex   = Sets.Create(<span class="keyword">in</span> entity);       <span class="comment">// SparseSet 分配一行</span></span><br><span class="line">    <span class="keyword">var</span> addIndex   = Adds.Create(<span class="keyword">in</span> entity);       <span class="comment">// StructuralSparseSet 分配一行</span></span><br><span class="line">    <span class="keyword">var</span> removeIndex = Removes.Create(<span class="keyword">in</span> entity);   <span class="comment">// StructuralSparseSet 分配一行</span></span><br><span class="line"></span><br><span class="line">    info = <span class="keyword">new</span> BufferedEntityInfo(Size, setIndex, addIndex, removeIndex);</span><br><span class="line">    Entities.Add(entity);</span><br><span class="line">    _info.Add(entity.Id, info);</span><br><span class="line">    Size++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>三套 SparseSet 都会为这个 Entity 预先分配一个行号，之后对该 Entity 的 Set&#x2F;Add&#x2F;Remove 都通过这个行号去定位。</p>
+<h3 id="负-ID-Entity-—-Create-的特殊处理"><a href="#负-ID-Entity-—-Create-的特殊处理" class="headerlink" title="负 ID Entity — Create 的特殊处理"></a>负 ID Entity — Create 的特殊处理</h3><p><code>CommandBuffer.Create(types)</code> 不会立即创建实体，而是返回一个<strong>负 ID 的占位 Entity</strong>：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Entity <span class="title">Create</span>(<span class="params">ComponentType[] types</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> entity = <span class="keyword">new</span> Entity(-(Size + <span class="number">1</span>), <span class="number">-1</span>);   <span class="comment">// 负 ID，表示 &quot;尚未创建&quot;</span></span><br><span class="line">    Register(entity, <span class="keyword">out</span> _);</span><br><span class="line">    Creates.Add(<span class="keyword">new</span> CreateCommand(Size - <span class="number">1</span>, types));</span><br><span class="line">    <span class="keyword">return</span> entity;   <span class="comment">// 用户拿着这个占位 entity 去 Set/Add/Remove</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>负 ID 的作用：此时实体还不存在于 World 中，不能直接用正 ID。但用户可以用返回的占位 entity 做后续 Set&#x2F;Add 等操作，这些操作会被记录到 buffer 的行里。</p>
+<p><code>Playback</code> 时通过 <code>Resolve</code> 把负 ID 映射回真正创建的 Entity：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">internal</span> Entity <span class="title">Resolve</span>(<span class="params">Entity entity</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> entityIndex = _info[entity.Id].Index;</span><br><span class="line">    <span class="keyword">return</span> Entities[entityIndex];   <span class="comment">// Playback 时 Entities[Index] 已被更新为真实 Entity</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="各操作的记录方式"><a href="#各操作的记录方式" class="headerlink" title="各操作的记录方式"></a>各操作的记录方式</h3><p><strong>Set</strong> — 记录组件值（SparseSet）：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Sets.Set&lt;T&gt;(info.SetIndex, component)</span><br><span class="line">  -&gt; 确保 Components 中有 T 类型的 SparseArray</span><br><span class="line">  -&gt; 在该 SparseArray 中为 info.SetIndex 这一行写入 component 值</span><br></pre></td></tr></table></figure>
+
+<p>SparseArray 内部是一个 <code>T[]</code> 数组 + <code>int[] Entities</code> 索引表。通过 index 找到组件数组中的位置，直接写入值。</p>
+<p><strong>Add</strong> — 记录组件类型 + 初始值（StructuralSparseSet + SparseSet）：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Adds.Set&lt;T&gt;(info.AddIndex)        // 标记 &quot;要添加 T 类型&quot;</span><br><span class="line">Sets.Set(info.SetIndex, component) // 同时存储初始值（如果有）</span><br></pre></td></tr></table></figure>
+
+<p>StructuralSparseSet 只记录「这个 entity 要添加哪些类型」，不存值。值还是走 SparseSet。</p>
+<p><strong>Remove</strong> — 仅记录组件类型（StructuralSparseSet）：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Removes.Set&lt;T&gt;(info.RemoveIndex)  // 标记 &quot;要移除 T 类型&quot;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Destroy</strong> — 仅记录 entity 在 buffer 内的索引：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Destroys.Add(info.Index)</span><br></pre></td></tr></table></figure>
+
+<h3 id="Playback-回放顺序"><a href="#Playback-回放顺序" class="headerlink" title="Playback 回放顺序"></a>Playback 回放顺序</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Playback</span>(<span class="params">World world, <span class="built_in">bool</span> dispose = <span class="literal">true</span></span>)</span></span><br></pre></td></tr></table></figure>
+
+<p>执行顺序是<strong>严格有序</strong>的：</p>
+<figure class="highlight basic"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>. Create  — 把 Creates 中的 entity 逐个 world.Create(types)，并更新 Entities 数组</span><br><span class="line"><span class="number">2</span>. Add     — 对每个 entity，收集它要添加的组件类型，调用 world.AddRange</span><br><span class="line"><span class="number">3</span>. Set     — 对每个 entity，遍历 SparseSet 中该 entity 的所有组件，Array.Copy 到 chunk</span><br><span class="line"><span class="number">4</span>. <span class="comment">Remove  — 对每个 entity，收集它要移除的组件类型，调用 world.RemoveRange</span></span><br><span class="line"><span class="number">5</span>. Destroy — 对 Destroys 中的每个 entity 执行 world.Destroy</span><br><span class="line"><span class="number">6</span>. <span class="keyword">Clear</span>   — 如果 dispose=true，清空所有 buffer</span><br></pre></td></tr></table></figure>
+
+<p>这个顺序保证了：先创建实体 → 再添加&#x2F;设置组件 → 再移除组件 → 最后销毁。同一个 entity 如果在 buffer 中被 Destroy 又被 Add，顺序仍然保持在最后一步才销毁。</p>
+<h3 id="Set-的具体过程"><a href="#Set-的具体过程" class="headerlink" title="Set 的具体过程"></a>Set 的具体过程</h3><p>Set 是 Playback 中最复杂的步骤：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">遍历 Sets.Entities（每个 entity 一行）</span><br><span class="line">  -&gt; Resolve 负 ID 为真实 Entity</span><br><span class="line">  -&gt; 从 EntityInfoStorage 找到 entity 所在的 Archetype 和 Chunk</span><br><span class="line">  -&gt; 遍历 Sets.Used（所有涉及到的组件类型 ID）</span><br><span class="line">      -&gt; 如果该 entity 在这个组件类型的 SparseArray 中有数据</span><br><span class="line">      -&gt; Array.Copy(sparseArray[i], chunkArray, 1)  把值拷进 chunk</span><br></pre></td></tr></table></figure>
+
+<p>关键：Set 是直接 <code>Array.Copy</code> 到 chunk 的组件数组里，不走 World.Set 的完整路径（不移 archetype）。所以 Set 只能修改 entity 已有的组件，不能添加新类型。</p>
+<h3 id="SparseSet-vs-StructuralSparseSet"><a href="#SparseSet-vs-StructuralSparseSet" class="headerlink" title="SparseSet vs StructuralSparseSet"></a>SparseSet vs StructuralSparseSet</h3><table>
+<thead>
+<tr>
+<th>特性</th>
+<th>SparseSet (<code>Sets</code>)</th>
+<th>StructuralSparseSet (<code>Adds</code> &#x2F; <code>Removes</code>)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>存什么</td>
+<td>组件<strong>值</strong></td>
+<td>组件<strong>类型</strong>（有没有这回事）</td>
+</tr>
+<tr>
+<td>内部数组</td>
+<td><code>SparseArray</code>（含 <code>T[]</code> + <code>Entities</code> 索引）</td>
+<td><code>StructuralSparseArray</code>（仅 <code>Entities</code> 索引，无值数组）</td>
+</tr>
+<tr>
+<td>用途</td>
+<td>Set 操作的值暂存</td>
+<td>Add&#x2F;Remove 的类型标记</td>
+</tr>
+<tr>
+<td><code>Set&lt;T&gt;</code> 行为</td>
+<td>写入 <code>T</code> 类型的组件值</td>
+<td>仅标记该 index 关联了类型 T</td>
+</tr>
+</tbody></table>
+<h3 id="线程安全"><a href="#线程安全" class="headerlink" title="线程安全"></a>线程安全</h3><p>所有公开方法都有 <code>lock (this)</code>，内部 SparseArray 操作也有自己的 <code>lock</code>。所以 <strong>多线程可以向同一个 CommandBuffer 写入操作</strong>。但 <code>Playback</code> 必须在主线程调用。</p>
+<h3 id="使用模式"><a href="#使用模式" class="headerlink" title="使用模式"></a>使用模式</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> commandBuffer = <span class="keyword">new</span> CommandBuffer();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 1. 操作已有 entity</span></span><br><span class="line">commandBuffer.Set(entity, <span class="keyword">new</span> Position &#123; X = <span class="number">10</span>, Y = <span class="number">10</span> &#125;);</span><br><span class="line">commandBuffer.Add&lt;Velocity&gt;(entity);</span><br><span class="line">commandBuffer.Remove&lt;Health&gt;(entity);</span><br><span class="line">commandBuffer.Destroy(entity);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2. 创建新 entity</span></span><br><span class="line"><span class="keyword">var</span> placeholder = commandBuffer.Create([<span class="keyword">typeof</span>(Position), <span class="keyword">typeof</span>(Velocity)]);</span><br><span class="line">commandBuffer.Set(placeholder, <span class="keyword">new</span> Position &#123; X = <span class="number">5</span>, Y = <span class="number">5</span> &#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 3. 回放</span></span><br><span class="line">commandBuffer.Playback(world);</span><br></pre></td></tr></table></figure>
+
+<p>也可以在 <code>Playback(world, dispose: false)</code> 后复用 buffer，但通常用 <code>using</code> 释放。</p>
+<h2 id="使用技巧"><a href="#使用技巧" class="headerlink" title="使用技巧"></a>使用技巧</h2><ul>
+<li>如果对同一个实体多次访问组件，可以先拿 <code>EntityData</code> 和 <code>Chunk</code>，避免每次重复从 <code>EntityInfoStorage</code> 查找。</li>
+<li>热路径里尽量用泛型 API，例如 <code>Get&lt;T&gt;</code>、<code>Query&lt;T0,T1&gt;</code>，少走 <code>object</code> &#x2F; <code>Type</code> 反射路径。</li>
+<li>批量创建优先用 <code>Create(amount, ...)</code>，比循环单个 <code>Create</code> 更少扩容和查找。</li>
+<li>QueryDescription 可以缓存起来复用，不必每帧重复 new。</li>
+<li>高性能遍历可以关注 InlineQuery &#x2F; job 相关 API，减少 lambda&#x2F;委托开销。</li>
+</ul>
+<h2 id="容易误解的点"><a href="#容易误解的点" class="headerlink" title="容易误解的点"></a>容易误解的点</h2><ul>
+<li><code>ArrayPool&lt;T&gt;.Rent(n)</code> 返回的是「至少 n 长度」的数组，真实长度可能更大。</li>
+<li><code>Chunks.Capacity</code> 是逻辑容量，不是 <code>ArrayPool</code> 返回数组的真实长度。</li>
+<li><code>Chunk[]</code> 扩容复制是浅拷贝：Chunk struct 被复制，内部数组引用不会深拷贝。</li>
+<li><code>Span&lt;T&gt;</code> 作为参数通常不用 <code>ref</code>；除非方法要修改调用者手里的 Span 变量本身。</li>
+<li><code>Component.Id</code> 不是组件类型 id；组件类型 id 来自 <code>ComponentRegistry.Size</code>。</li>
+<li><code>ArrayRegistry.Add&lt;T&gt;()</code> 当前主流程基本没接上；<code>ArrayRegistry.GetArray</code> 才是实际使用点。</li>
+<li><code>QueryDescription.WithXXX</code> 当前每次都会 Build，链式调用会重复计算 hash，但功能正确。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C/" rel="tag"># C#</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2026/05/16/%E8%BF%AD%E4%BB%A3%E5%99%A8%E7%8A%B6%E6%80%81%E6%9C%BA%E4%B8%8E%E9%B8%AD%E5%AD%90%E7%B1%BB%E5%9E%8B/" rel="prev" title="迭代器状态机与鸭子类型">
+                  <i class="fa fa-angle-left"></i> 迭代器状态机与鸭子类型
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Lizq</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">89k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">5:22</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

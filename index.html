@@ -171,7 +171,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">64</span>
+          <span class="site-state-item-count">65</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -202,6 +202,100 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/06/07/Arch-ECS-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Lizq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2026/06/07/Arch-ECS-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">Arch ECS 学习笔记</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-06-07 17:19:22 / 修改时间：17:21:18" itemprop="dateCreated datePublished" datetime="2026-06-07T17:19:22+08:00">2026-06-07</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.2k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>15 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="Arch-ECS-学习笔记"><a href="#Arch-ECS-学习笔记" class="headerlink" title="Arch ECS 学习笔记"></a>Arch ECS 学习笔记</h1><p>这份笔是我学习Github开源项目<a target="_blank" rel="noopener" href="https://github.com/genaray/Arch">Arch ECS</a>后的学习代码，通过断点调试 + 与AI交流完成碎片化记录，最终再交由AI整合完成。主要内容包含Archetype ECS结构学习，以及一些项目里用到的技巧总结。</p>
+<p>在学习过程中发现了两处问题，一处是BitSet的Any处包含冗余的循环代码；一处是CommandBuffer部分的SparseSet里创建SparseArray时传参错误。目前已经提交了PR。</p>
+<h2 id="总体结构"><a href="#总体结构" class="headerlink" title="总体结构"></a>总体结构</h2><p>Arch 的核心数据关系可以先记成这张图：</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2026/06/07/Arch-ECS-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1105,106 +1199,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2026/02/01/%E7%8E%A9%E5%AE%B6%E6%8E%A7%E5%88%B6%E9%95%9C%E5%A4%B4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Lizq">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Lizq的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | Lizq的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2026/02/01/%E7%8E%A9%E5%AE%B6%E6%8E%A7%E5%88%B6%E9%95%9C%E5%A4%B4/" class="post-title-link" itemprop="url">玩家控制镜头</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2026-02-01 13:35:25" itemprop="dateCreated datePublished" datetime="2026-02-01T13:35:25+08:00">2026-02-01</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-02-14 00:26:29" itemprop="dateModified" datetime="2026-02-14T00:26:29+08:00">2026-02-14</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.2k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>4 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3 id="视角移动和缩放"><a href="#视角移动和缩放" class="headerlink" title="视角移动和缩放"></a>视角移动和缩放</h3><p>假如你的游戏场景是在XZ平面的，而你的相机是俯视角的，你希望玩家可以拖动屏幕来移动视角，双指交互可以缩放视角。针对这个需求，在FGUI里，包含用户输入的组件：SwipeGesture和PinchGesture。拖动相机分成两个阶段：第一阶段，手指按下并拖动，此时要求场景完全跟随手指移动（跟手）；第二阶段，当手指松开后，根据松开前delta阈值，低于阈值则不进行惯性操作，否则需要根据松开前的速度进行惯性制动位移。</p>
-<h4 id="正交相机"><a href="#正交相机" class="headerlink" title="正交相机"></a>正交相机</h4><p>正交相机的orthographicSize代表相机高度的一半对应的世界距离，将它乘以2再除以屏幕高度，就可以得到单位像素对应的世界距离。FGUI屏幕delta可以转化为unity屏幕像素delta，最终对应世界空间的delta。<br>通过这种映射关系，移动视角的第一阶段，可以算出世界空间的delta；移动视角的第二阶段，可以算出世界空间的velocity。</p>
-<h4 id="透视相机"><a href="#透视相机" class="headerlink" title="透视相机"></a>透视相机</h4>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2026/02/01/%E7%8E%A9%E5%AE%B6%E6%8E%A7%E5%88%B6%E9%95%9C%E5%A4%B4/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1228,13 +1222,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">84k</span>
+    <span title="站点总字数">89k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">5:07</span>
+    <span title="站点阅读时长">5:22</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
