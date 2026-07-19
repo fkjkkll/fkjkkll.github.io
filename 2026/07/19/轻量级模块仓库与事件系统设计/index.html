@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 8.1.1">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="轻量级模块仓库与事件系统设计设计目标在 Unity 项目中提供一套轻量级的全局模块仓库和事件系统。模块的生命周期与游戏进程一致：启动后按需创建或显式注册，在游戏运行期间持续存活，并在游戏关闭时统一释放。 业务代码通过以下接口使用系统： 123456ModuleRepository.Get&lt;T&gt;();ModuleRepository.Register(myModule);EventMod">
+<meta property="og:type" content="article">
+<meta property="og:title" content="轻量级模块仓库与事件系统设计">
+<meta property="og:url" content="http://example.com/2026/07/19/%E8%BD%BB%E9%87%8F%E7%BA%A7%E6%A8%A1%E5%9D%97%E4%BB%93%E5%BA%93%E4%B8%8E%E4%BA%8B%E4%BB%B6%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/index.html">
+<meta property="og:site_name" content="Lizq的个人博客">
+<meta property="og:description" content="轻量级模块仓库与事件系统设计设计目标在 Unity 项目中提供一套轻量级的全局模块仓库和事件系统。模块的生命周期与游戏进程一致：启动后按需创建或显式注册，在游戏运行期间持续存活，并在游戏关闭时统一释放。 业务代码通过以下接口使用系统： 123456ModuleRepository.Get&lt;T&gt;();ModuleRepository.Register(myModule);EventMod">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-07-19T03:19:24.000Z">
+<meta property="article:modified_time" content="2026-07-19T03:26:37.619Z">
+<meta property="article:author" content="Lizq">
+<meta property="article:tag" content="C#">
+<meta property="article:tag" content="Unity">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2026/07/19/%E8%BD%BB%E9%87%8F%E7%BA%A7%E6%A8%A1%E5%9D%97%E4%BB%93%E5%BA%93%E4%B8%8E%E4%BA%8B%E4%BB%B6%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2026/07/19/%E8%BD%BB%E9%87%8F%E7%BA%A7%E6%A8%A1%E5%9D%97%E4%BB%93%E5%BA%93%E4%B8%8E%E4%BA%8B%E4%BB%B6%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/","path":"2026/07/19/轻量级模块仓库与事件系统设计/","title":"轻量级模块仓库与事件系统设计"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>轻量级模块仓库与事件系统设计 | Lizq的个人博客</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js" defer></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Lizq的个人博客</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BD%BB%E9%87%8F%E7%BA%A7%E6%A8%A1%E5%9D%97%E4%BB%93%E5%BA%93%E4%B8%8E%E4%BA%8B%E4%BB%B6%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1"><span class="nav-number">1.</span> <span class="nav-text">轻量级模块仓库与事件系统设计</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E8%AE%A1%E7%9B%AE%E6%A0%87"><span class="nav-number">1.1.</span> <span class="nav-text">设计目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E4%BD%93%E7%BB%93%E6%9E%84"><span class="nav-number">1.2.</span> <span class="nav-text">总体结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%9D%97%E5%A5%91%E7%BA%A6"><span class="nav-number">1.3.</span> <span class="nav-text">模块契约</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ModuleRepository"><span class="nav-number">1.4.</span> <span class="nav-text">ModuleRepository</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%A8%E5%86%8C%E4%B8%8E%E6%9F%A5%E8%AF%A2"><span class="nav-number">1.4.1.</span> <span class="nav-text">注册与查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%BF%80%E6%B4%BB%E4%B8%8E%E6%9B%B4%E6%96%B0"><span class="nav-number">1.4.2.</span> <span class="nav-text">激活与更新</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9B%B4%E6%96%B0%E5%BC%82%E5%B8%B8"><span class="nav-number">1.4.3.</span> <span class="nav-text">更新异常</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E9%97%AD"><span class="nav-number">1.4.4.</span> <span class="nav-text">关闭</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%92%AD%E6%94%BE%E4%BC%9A%E8%AF%9D%E9%87%8D%E7%BD%AE"><span class="nav-number">1.4.5.</span> <span class="nav-text">播放会话重置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6%E7%B1%BB%E5%9E%8B%E4%B8%8E%E5%85%AC%E5%BC%80%E6%8E%A5%E5%8F%A3"><span class="nav-number">1.5.</span> <span class="nav-text">事件类型与公开接口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#EventChannel"><span class="nav-number">1.6.</span> <span class="nav-text">EventChannel</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B4%BE%E5%8F%91%E6%9C%9F%E9%97%B4%E7%9A%84%E8%AE%A2%E9%98%85%E5%8F%98%E6%9B%B4"><span class="nav-number">1.6.1.</span> <span class="nav-text">派发期间的订阅变更</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E7%94%A8C-%E7%9A%84event"><span class="nav-number">1.6.2.</span> <span class="nav-text">为什么不用C#的event</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BB%B6%E8%BF%9F%E4%BA%8B%E4%BB%B6%E6%B4%BE%E5%8F%91"><span class="nav-number">1.7.</span> <span class="nav-text">延迟事件派发</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ModuleRepositoryDriver"><span class="nav-number">1.8.</span> <span class="nav-text">ModuleRepositoryDriver</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84"><span class="nav-number">1.9.</span> <span class="nav-text">项目结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E9%A1%BA%E5%BA%8F"><span class="nav-number">1.10.</span> <span class="nav-text">实现顺序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%AA%8C%E8%AF%81%E8%A6%81%E6%B1%82"><span class="nav-number">1.11.</span> <span class="nav-text">验证要求</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Lizq</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">66</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/fkjkkll" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;fkjkkll" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:lzq0225@qq.com" title="E-Mail → mailto:lzq0225@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/07/19/%E8%BD%BB%E9%87%8F%E7%BA%A7%E6%A8%A1%E5%9D%97%E4%BB%93%E5%BA%93%E4%B8%8E%E4%BA%8B%E4%BB%B6%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Lizq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="轻量级模块仓库与事件系统设计 | Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          轻量级模块仓库与事件系统设计
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-07-19 11:19:24 / 修改时间：11:26:37" itemprop="dateCreated datePublished" datetime="2026-07-19T11:19:24+08:00">2026-07-19</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.9k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>10 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="轻量级模块仓库与事件系统设计"><a href="#轻量级模块仓库与事件系统设计" class="headerlink" title="轻量级模块仓库与事件系统设计"></a>轻量级模块仓库与事件系统设计</h1><h2 id="设计目标"><a href="#设计目标" class="headerlink" title="设计目标"></a>设计目标</h2><p>在 Unity 项目中提供一套轻量级的<a target="_blank" rel="noopener" href="https://github.com/fkjkkll/UnityScratch/tree/master/Assets/Scripts/BaseFramework">全局模块仓库和事件系统</a>。模块的生命周期与游戏进程一致：启动后按需创建或显式注册，在游戏运行期间持续存活，并在游戏关闭时统一释放。</p>
+<p>业务代码通过以下接口使用系统：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ModuleRepository.Get&lt;T&gt;();</span><br><span class="line">ModuleRepository.Register(myModule);</span><br><span class="line">EventModule.Subscribe&lt;T&gt;(callback);</span><br><span class="line">EventModule.Unsubscribe&lt;T&gt;(callback);</span><br><span class="line">eventData.Fire();</span><br><span class="line">eventData.FireDeferred(EventDispatchPhase.Update);</span><br></pre></td></tr></table></figure>
+
+<p>系统负责具体模块类型的注册、查询、帧更新和释放。</p>
+<h2 id="总体结构"><a href="#总体结构" class="headerlink" title="总体结构"></a>总体结构</h2><p>系统由三个部分组成：</p>
+<ul>
+<li><code>ModuleRepository</code> 保存模块实例，组织 <code>Update</code>、<code>LateUpdate</code> 和关闭流程。</li>
+<li><code>EventModule</code> 持有事件频道、订阅关系和延迟派发队列。</li>
+<li><code>ModuleRepositoryDriver</code> 连接 Unity 生命周期与模块仓库，并跨场景持续存在。</li>
+</ul>
+<p><code>EventModule</code> 本身也是一个模块，由 <code>ModuleRepository</code> 创建和释放。事件系统不单独维护全局生命周期。</p>
+<h2 id="模块契约"><a href="#模块契约" class="headerlink" title="模块契约"></a>模块契约</h2><p>所有模块都实现 <code>IModule</code>。<code>IModule</code> 继承 <code>IDisposable</code>，用于统一释放模块持有的资源。</p>
+<p>需要参与帧更新的模块额外实现以下接口：</p>
+<ul>
+<li><code>IUpdatableModule.Update()</code>：在 Unity 的 <code>Update</code> 阶段执行。</li>
+<li><code>ILateUpdatableModule.LateUpdate()</code>：在 Unity 的 <code>LateUpdate</code> 阶段执行。</li>
+</ul>
+<p>模块可以实现其中一个接口，也可以同时实现两个接口。模块仓库只根据接口决定模块参与哪些更新阶段，不要求业务模块继承共同基类。</p>
+<h2 id="ModuleRepository"><a href="#ModuleRepository" class="headerlink" title="ModuleRepository"></a>ModuleRepository</h2><p><code>ModuleRepository</code> 是静态的全局模块仓库。每种具体模块类型在 <code>ModuleSlot&lt;T&gt;</code> 中拥有独立的实例槽位和创建状态，因此常规查询无须遍历集合。仓库同时保存有序的 <code>ModuleRegistration&lt;T&gt;</code> 记录，用于安排更新顺序和关闭顺序。</p>
+<h3 id="注册与查询"><a href="#注册与查询" class="headerlink" title="注册与查询"></a>注册与查询</h3><ul>
+<li><code>Get&lt;T&gt;()</code> 返回已注册的模块；模块不存在时，通过 <code>new T()</code> 创建、注册并返回。</li>
+<li><code>TryGet&lt;T&gt;(out T module)</code> 只查询模块，不会隐式创建。</li>
+<li><code>Register&lt;T&gt;(module)</code> 注册已有实例。</li>
+<li>注册 <code>null</code> 时抛出 <code>ArgumentNullException</code>。</li>
+<li>同一种具体模块类型只能注册一次，重复注册时抛出 <code>InvalidOperationException</code>。</li>
+<li>模块创建期间再次请求相同类型，视为循环创建并抛出 <code>InvalidOperationException</code>。</li>
+</ul>
+<h3 id="激活与更新"><a href="#激活与更新" class="headerlink" title="激活与更新"></a>激活与更新</h3><p>新注册且实现更新接口的模块先进入待激活集合，并在下一次 <code>ModuleRepository.Update()</code> 开始时加入更新队列。</p>
+<p>该规则保证：</p>
+<ul>
+<li>模块第一次参与生命周期时一定先执行 <code>Update</code>。</li>
+<li>在 <code>Update</code> 或 <code>LateUpdate</code> 中创建的模块从下一帧开始更新。</li>
+<li>新模块不会在首次 <code>Update</code> 之前收到 <code>LateUpdate</code>。</li>
+<li><code>Update</code> 和 <code>LateUpdate</code> 的执行顺序与模块注册顺序一致。</li>
+</ul>
+<p>仓库不允许递归调用自身的 <code>Update</code> 或 <code>LateUpdate</code>。检测到递归更新时抛出 <code>InvalidOperationException</code>。</p>
+<h3 id="更新异常"><a href="#更新异常" class="headerlink" title="更新异常"></a>更新异常</h3><p>每个模块的更新调用都使用独立的 <code>try/catch</code>：</p>
+<ul>
+<li>异常通过 <code>Debug.LogException</code> 记录。</li>
+<li>发生异常的模块从 <code>Update</code>、<code>LateUpdate</code> 和待激活集合中移除，不再参与后续帧更新。</li>
+<li>模块实例仍保持注册，并在仓库关闭时执行 <code>Dispose()</code>。</li>
+<li>其他模块继续按照原有顺序更新。</li>
+</ul>
+<p>该策略避免持续故障的模块每帧产生重复异常日志，同时保留统一释放资源的能力。</p>
+<h3 id="关闭"><a href="#关闭" class="headerlink" title="关闭"></a>关闭</h3><p><code>Shutdown()</code> 是游戏生命周期中的终止操作：</p>
+<ul>
+<li>模块按注册顺序的逆序执行 <code>Dispose()</code>。</li>
+<li>单个模块释放失败时记录异常，其余模块继续释放。</li>
+<li>无论释放过程是否发生异常，模块集合、更新集合和泛型槽位都会清空。</li>
+<li>重复调用 <code>Shutdown()</code> 不产生额外效果。</li>
+<li>关闭开始后，<code>Get</code>、<code>Register</code>、<code>Update</code> 和 <code>LateUpdate</code> 拒绝访问。</li>
+<li><code>TryGet</code> 在槽位清理后返回 <code>false</code>。</li>
+</ul>
+<p>如果模块在自身的 <code>Update</code> 或 <code>LateUpdate</code> 中调用 <code>Shutdown()</code>，仓库先记录关闭请求，允许该模块的方法正常返回，然后停止执行后续模块，并从更新流程的 <code>finally</code> 路径完成关闭。</p>
+<h3 id="播放会话重置"><a href="#播放会话重置" class="headerlink" title="播放会话重置"></a>播放会话重置</h3><p><code>RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)</code> 在新的 Unity 运行会话开始时重置仓库静态状态，保证关闭 Domain Reload 的编辑器配置也能获得干净状态。</p>
+<p>该重置入口不作为业务 API 暴露。编辑模式测试通过 <code>InternalsVisibleTo(&quot;BaseFramework.Tests&quot;)</code> 调用内部的 <code>ResetForTests()</code>，使每个测试拥有相互隔离的仓库状态。</p>
+<h2 id="事件类型与公开接口"><a href="#事件类型与公开接口" class="headerlink" title="事件类型与公开接口"></a>事件类型与公开接口</h2><p>事件数据实现空接口 <code>IGameEvent</code>。事件回调使用强类型委托：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="built_in">delegate</span> <span class="keyword">void</span> <span class="title">EventCallback</span>&lt;<span class="keyword">in</span> <span class="title">T</span>&gt;(<span class="params">T eventData</span>) <span class="keyword">where</span> T : IGameEvent</span>;</span><br></pre></td></tr></table></figure>
+
+<p><code>EventModule</code> 提供统一的静态业务接口：</p>
+<ul>
+<li><code>Subscribe&lt;T&gt;(callback)</code>：订阅事件。</li>
+<li><code>Unsubscribe&lt;T&gt;(callback)</code>：取消订阅。</li>
+<li><code>Fire&lt;T&gt;(eventData)</code>：立即派发事件。</li>
+<li><code>FireDeferred&lt;T&gt;(eventData, phase)</code>：将事件加入指定阶段的延迟派发队列。</li>
+</ul>
+<p><code>EventExtensions</code> 为事件数据提供 <code>Fire()</code> 和 <code>FireDeferred()</code> 扩展方法。扩展方法只负责转发，不持有状态。</p>
+<p><code>EventModule</code> 的实例、<code>Update</code>、<code>LateUpdate</code> 和 <code>Dispose</code> 不属于业务接口。生命周期方法通过显式接口实现交给 <code>ModuleRepository</code> 调用。</p>
+<h2 id="EventChannel"><a href="#EventChannel" class="headerlink" title="EventChannel"></a>EventChannel</h2><p>每种事件类型对应一个 <code>EventChannel&lt;T&gt;</code>。<code>EventModule</code> 使用事件类型作为键保存所有频道，因此订阅关系跟随 <code>EventModule</code> 实例，在模块释放时统一清空。</p>
+<p>订阅规则如下：</p>
+<ul>
+<li>回调为 <code>null</code> 时抛出 <code>ArgumentNullException</code>。</li>
+<li>重复订阅同一个回调时抛出 <code>InvalidOperationException</code>。</li>
+<li>取消一个未订阅的回调不产生效果。</li>
+<li>回调按照订阅顺序执行。</li>
+<li>每个回调在独立的 <code>try/catch</code> 中执行；一个回调抛出异常不会阻止后续回调。</li>
+<li>没有订阅者时，<code>Fire</code> 不产生效果，也不会创建 <code>EventModule</code> 或 <code>EventChannel&lt;T&gt;</code>。</li>
+</ul>
+<p>仓库关闭后，<code>Fire</code>、<code>FireDeferred</code> 和 <code>Unsubscribe</code> 不产生效果，避免 Unity 清理阶段重新创建事件系统；<code>Subscribe</code> 则拒绝访问。</p>
+<h3 id="派发期间的订阅变更"><a href="#派发期间的订阅变更" class="headerlink" title="派发期间的订阅变更"></a>派发期间的订阅变更</h3><p><code>EventChannel&lt;T&gt;</code> 持有以下状态：</p>
+<ul>
+<li>可复用的有效订阅者列表；</li>
+<li>可复用的待处理变更列表；</li>
+<li>记录同步嵌套派发层级的深度计数器。</li>
+</ul>
+<p>没有事件正在派发时，订阅变更直接作用于有效列表。派发期间产生的订阅、取消订阅和清空操作按调用顺序写入待处理列表，并在最外层 <code>Fire</code> 的 <code>finally</code> 中统一应用。</p>
+<p>因此，在一次同步派发调用链中被取消的回调仍会收到当前事件和该调用链内嵌套触发的事件，但不会收到之后的顶层事件。重复订阅检查同时考虑有效列表和待处理变更，所以错误会在调用 <code>Subscribe</code> 时立即抛出。</p>
+<p>派发过程按索引遍历稳定的有效列表，不为每次派发或订阅变更创建数组快照。列表会保留容量，只有扩容时才产生新的内部数组分配。</p>
+<h3 id="为什么不用C-的event"><a href="#为什么不用C-的event" class="headerlink" title="为什么不用C#的event"></a>为什么不用C#的event</h3><p>例如下面，直接用event来做，还能保持语义与C#事件一致</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">internal</span> <span class="keyword">sealed</span> <span class="keyword">class</span> <span class="title">EventChannel</span>&lt;<span class="title">T</span>&gt; <span class="keyword">where</span> <span class="title">T</span> : <span class="title">IGameEvent</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">event</span> EventCallback&lt;T&gt; _callbacks;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Subscribe</span>(<span class="params">EventCallback&lt;T&gt; callback</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        _callbacks += callback;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Unsubscribe</span>(<span class="params">EventCallback&lt;T&gt; callback</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        _callbacks -= callback;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Fire</span>(<span class="params">T eventData</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">        _callbacks?.Invoke(eventData);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>之所以使用 <code>List</code> 是因为我们的事件系统包含一些额外的特性：</p>
+<ol>
+<li>每次订阅变化，内部可能会产生新的订阅列表，潜在的GC问题；而我们的只有扩容时分配，预热后无分配</li>
+<li>当前模式提供 <code>拒绝重复订阅</code> 的功能</li>
+<li>当前模式下，单个回调异常不会阻断后续的回调</li>
+<li>嵌套（递归）派发语义更加简单：任何在回调里的针对该事件的订阅变化都不会立即生效，需要最外层回调结束才会作用</li>
+</ol>
+<h2 id="延迟事件派发"><a href="#延迟事件派发" class="headerlink" title="延迟事件派发"></a>延迟事件派发</h2><p><code>EventDispatchPhase</code> 定义两个派发阶段：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="built_in">enum</span> EventDispatchPhase</span><br><span class="line">&#123;</span><br><span class="line">    Update,</span><br><span class="line">    LateUpdate,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>EventModule</code> 分别持有 <code>Update</code> 和 <code>LateUpdate</code> 两个先进先出（First In, First Out，FIFO）队列。队列元素为 <code>IDeferredEventDispatch</code>，具体实现 <code>DeferredEventDispatch&lt;T&gt;</code> 同时保存 <code>EventChannel&lt;T&gt;</code> 和事件数据，并通过 <code>Dispatch()</code> 保留强类型派发能力。</p>
+<p>每个阶段开始派发时先记录队列长度，只处理当时已经存在的元素：</p>
+<ul>
+<li>不同事件类型之间保持全局入队顺序。</li>
+<li>两个阶段的队列互不消费对方的数据。</li>
+<li>向正在派发的同一阶段再次入队时，新事件等待下一帧的对应阶段。</li>
+<li>在 <code>Update</code> 中向 <code>LateUpdate</code> 入队时，新事件可以在同一帧的 <code>LateUpdate</code> 执行。</li>
+<li>在 <code>LateUpdate</code> 中向 <code>Update</code> 入队时，新事件等待下一帧的 <code>Update</code>。</li>
+</ul>
+<p>每次 <code>FireDeferred</code> 会创建一个小型的延迟派发对象。只有性能分析确认这部分分配形成实际压力时，才引入对象池。</p>
+<h2 id="ModuleRepositoryDriver"><a href="#ModuleRepositoryDriver" class="headerlink" title="ModuleRepositoryDriver"></a>ModuleRepositoryDriver</h2><p><code>ModuleRepositoryDriver</code> 是连接 Unity 生命周期与模块仓库的唯一驱动器。</p>
+<ul>
+<li>第一个实例在 <code>Awake</code> 中成为主实例，并调用 <code>DontDestroyOnLoad</code> 跨场景保留。</li>
+<li>后续重复实例只销毁自身的 <code>GameObject</code>，不影响主实例和模块仓库。</li>
+<li>主实例在 Unity 的 <code>Update</code> 和 <code>LateUpdate</code> 中驱动仓库的对应方法。</li>
+<li><code>OnApplicationQuit</code> 和主实例的 <code>OnDestroy</code> 都会请求关闭仓库。</li>
+<li>驱动器自身使用状态字段保证只发起一次关闭；<code>ModuleRepository.Shutdown()</code> 同时提供幂等保护。</li>
+</ul>
+<p><code>ResetPrimaryInstance()</code> 使用 <code>RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)</code> 注册，在 Unity Player 启动和编辑器播放会话开始时清空静态主实例引用。它不会在切换场景、应用暂停或从后台恢复时执行。</p>
+<p>场景负责放置初始的 <code>ModuleRepositoryDriver</code>。系统不自动创建驱动器。</p>
+<h2 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h2><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">Assets/Scripts/BaseFramework/</span><br><span class="line">├── AssemblyInfo.cs</span><br><span class="line">├── BaseFramework.asmdef</span><br><span class="line">├── Module/</span><br><span class="line">│   ├── IModule.cs</span><br><span class="line">│   └── ModuleRepository.cs</span><br><span class="line">├── System/</span><br><span class="line">│   ├── IUpdatableModule.cs</span><br><span class="line">│   └── ILateUpdatableModule.cs</span><br><span class="line">└── EventBus/</span><br><span class="line">    ├── IGameEvent.cs</span><br><span class="line">    ├── EventCallback.cs</span><br><span class="line">    ├── EventChannel.cs</span><br><span class="line">    ├── DeferredEventDispatch.cs</span><br><span class="line">    ├── EventModule.cs</span><br><span class="line">    └── EventExtensions.cs</span><br><span class="line"></span><br><span class="line">Assets/Scripts/GameLogic/Logic/ModuleDriver/</span><br><span class="line">└── ModuleRepositoryDriver.cs</span><br><span class="line"></span><br><span class="line">Assets/Tests/EditMode/</span><br><span class="line">├── BaseFramework.Tests.asmdef</span><br><span class="line">├── ModuleRepositoryTests.cs</span><br><span class="line">└── EventModuleTests.cs</span><br></pre></td></tr></table></figure>
+
+<p><code>BaseFramework.asmdef</code> 隔离框架运行时代码。<code>BaseFramework.Tests.asmdef</code> 仅在编辑模式测试环境引用框架程序集和 Unity Test Framework，不进入 Player 构建。</p>
+<h2 id="实现顺序"><a href="#实现顺序" class="headerlink" title="实现顺序"></a>实现顺序</h2><p>从零实现时按照以下顺序组织工作：</p>
+<ol>
+<li>创建运行时程序集定义以及 <code>IModule</code>、<code>IUpdatableModule</code>、<code>ILateUpdatableModule</code>。</li>
+<li>实现 <code>ModuleRepository</code> 的泛型槽位、注册记录、更新调度、异常隔离和终止性关闭。</li>
+<li>实现 <code>ModuleRepositoryDriver</code>，连接 Unity 帧循环、跨场景生命周期和应用退出流程。</li>
+<li>创建 <code>IGameEvent</code>、<code>EventCallback&lt;T&gt;</code> 和实例持有的 <code>EventChannel&lt;T&gt;</code>。</li>
+<li>实现 <code>DeferredEventDispatch&lt;T&gt;</code>、双阶段 FIFO 队列、<code>EventModule</code> 静态门面和事件扩展方法。</li>
+<li>创建独立的编辑模式测试程序集，并覆盖模块生命周期与事件派发语义。</li>
+</ol>
+<h2 id="验证要求"><a href="#验证要求" class="headerlink" title="验证要求"></a>验证要求</h2><p>自动化测试覆盖以下行为：</p>
+<ul>
+<li>自动创建、显式注册、<code>null</code> 注册和重复注册；</li>
+<li>待激活机制以及稳定的 <code>Update</code>、<code>LateUpdate</code> 执行顺序；</li>
+<li>更新异常隔离、故障模块停止更新以及关闭时释放；</li>
+<li>更新期间请求关闭、逆序释放、释放异常隔离、关闭幂等性和终止后的访问拒绝；</li>
+<li>没有订阅者时安全派发，以及拒绝重复订阅；</li>
+<li>同步嵌套派发期间的稳定订阅视图和有序订阅变更；</li>
+<li>回调异常不阻断后续订阅者；</li>
+<li>不同事件类型之间的全局 FIFO 顺序；</li>
+<li><code>Update</code> 与 <code>LateUpdate</code> 队列隔离；</li>
+<li>同一阶段再次入队时推迟到下一帧；</li>
+<li>从 <code>Update</code> 向 <code>LateUpdate</code> 入队时在同一帧执行；</li>
+<li>关闭阶段的事件接口不会重新创建模块；</li>
+<li><code>EventModule</code> 释放时清空全部队列和订阅关系。</li>
+</ul>
+<p>Unity 必须能够成功编译 <code>BaseFramework</code>、<code>Assembly-CSharp</code> 和 <code>BaseFramework.Tests</code> 三个程序集。编辑模式测试全部通过后，系统才满足交付条件。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C/" rel="tag"># C#</a>
+              <a href="/tags/Unity/" rel="tag"># Unity</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2026/06/07/Arch-ECS-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="prev" title="Arch ECS 学习笔记">
+                  <i class="fa fa-angle-left"></i> Arch ECS 学习笔记
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Lizq</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">92k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">5:33</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

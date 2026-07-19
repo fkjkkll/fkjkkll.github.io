@@ -171,7 +171,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">65</span>
+          <span class="site-state-item-count">66</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -202,6 +202,110 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/31/C-priority-queue%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8E%92%E5%BA%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Lizq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/10/31/C-priority-queue%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8E%92%E5%BA%8F/" class="post-title-link" itemprop="url">C++ priority_queue自定义排序</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-10-31 10:59:35" itemprop="dateCreated datePublished" datetime="2021-10-31T10:59:35+08:00">2021-10-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-09-26 09:09:27" itemprop="dateModified" datetime="2022-09-26T09:09:27+08:00">2022-09-26</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>357</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <blockquote>
+<p><strong>C++ priority_queue自定义排序总结</strong></p>
+</blockquote>
+<h3 id="方法一：函数指针"><a href="#方法一：函数指针" class="headerlink" title="方法一：函数指针"></a>方法一：函数指针</h3><p>以下几种都可以，具体可参考《C++ Primer》</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="type">int</span> elem;</span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">cmp</span><span class="params">(elem a, elem b)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a &lt; b;</span><br><span class="line">&#125;</span><br><span class="line">priority_queue&lt;elem, vector&lt;elem&gt;, <span class="keyword">decltype</span>(&amp;cmp)&gt; <span class="built_in">q</span>(arr.<span class="built_in">begin</span>(), arr.<span class="built_in">end</span>(), cmp);</span><br><span class="line">priority_queue&lt;elem, vector&lt;elem&gt;, <span class="keyword">decltype</span>(cmp)*&gt; <span class="built_in">q</span>(arr.<span class="built_in">begin</span>(), arr.<span class="built_in">end</span>(), cmp);</span><br><span class="line">priority_queue&lt;elem, vector&lt;elem&gt;, <span class="type">bool</span>(*)(elem, elem)&gt; <span class="built_in">q</span>(arr.<span class="built_in">begin</span>(), arr.<span class="built_in">end</span>(), cmp);</span><br><span class="line"><span class="comment">// 构造函数前两个可以不填，但是必须传入cmp</span></span><br><span class="line"><span class="comment">// 前面模板只是告诉它是一个函数指针bool(*)(elem, elem)，但并没有传入函数地址（实体）</span></span><br><span class="line">priority_queue&lt;elem, vector&lt;elem&gt;, <span class="type">bool</span>(*)(elem, elem)&gt; <span class="built_in">q</span>(cmp);</span><br></pre></td></tr></table></figure>
+
+<p><strong>对于cmp和&amp;cmp你应该这样理解，cmp是函数的首地址，它的类型是bool(elem,  elem)，&amp;cmp表示一个指向函数cmp这个对象的地址，它的类型是bool(*)(elem, elem)，因此test和&amp;test所代表的地址的值是一样的，但类型不一样！</strong></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/10/31/C-priority-queue%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8E%92%E5%BA%8F/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -744,13 +848,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">89k</span>
+    <span title="站点总字数">92k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">5:22</span>
+    <span title="站点阅读时长">5:33</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
