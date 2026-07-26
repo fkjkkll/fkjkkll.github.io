@@ -20,15 +20,15 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js" defer></script>
 
-    <meta name="description" content="轻量级模块仓库与事件系统设计设计目标在 Unity 项目中提供一套轻量级的全局模块仓库和事件系统。模块的生命周期与游戏进程一致：启动后按需创建或显式注册，在游戏运行期间持续存活，并在游戏关闭时统一释放。 业务代码通过以下接口使用系统： 123456ModuleRepository.Get&lt;T&gt;();ModuleRepository.Register(myModule);EventMod">
+    <meta name="description" content="轻量级模块仓库与事件系统设计设计目标在 Unity 项目中提供一套轻量级的全局模块仓库和事件系统。模块的生命周期与游戏进程一致：启动后按需创建或显式注册，在游戏运行期间持续存活，并在游戏关闭时统一释放。 业务代码通过以下接口使用系统： 123456ModuleRepository.GetOrCreate&lt;T&gt;();ModuleRepository.Register(myModule);">
 <meta property="og:type" content="article">
 <meta property="og:title" content="轻量级模块仓库与事件系统设计">
 <meta property="og:url" content="http://example.com/2026/07/19/%E8%BD%BB%E9%87%8F%E7%BA%A7%E6%A8%A1%E5%9D%97%E4%BB%93%E5%BA%93%E4%B8%8E%E4%BA%8B%E4%BB%B6%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/index.html">
 <meta property="og:site_name" content="Lizq的个人博客">
-<meta property="og:description" content="轻量级模块仓库与事件系统设计设计目标在 Unity 项目中提供一套轻量级的全局模块仓库和事件系统。模块的生命周期与游戏进程一致：启动后按需创建或显式注册，在游戏运行期间持续存活，并在游戏关闭时统一释放。 业务代码通过以下接口使用系统： 123456ModuleRepository.Get&lt;T&gt;();ModuleRepository.Register(myModule);EventMod">
+<meta property="og:description" content="轻量级模块仓库与事件系统设计设计目标在 Unity 项目中提供一套轻量级的全局模块仓库和事件系统。模块的生命周期与游戏进程一致：启动后按需创建或显式注册，在游戏运行期间持续存活，并在游戏关闭时统一释放。 业务代码通过以下接口使用系统： 123456ModuleRepository.GetOrCreate&lt;T&gt;();ModuleRepository.Register(myModule);">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-07-19T03:19:24.000Z">
-<meta property="article:modified_time" content="2026-07-19T03:26:37.619Z">
+<meta property="article:modified_time" content="2026-07-25T16:00:00.000Z">
 <meta property="article:author" content="Lizq">
 <meta property="article:tag" content="C#">
 <meta property="article:tag" content="Unity">
@@ -165,7 +165,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BD%BB%E9%87%8F%E7%BA%A7%E6%A8%A1%E5%9D%97%E4%BB%93%E5%BA%93%E4%B8%8E%E4%BA%8B%E4%BB%B6%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1"><span class="nav-number">1.</span> <span class="nav-text">轻量级模块仓库与事件系统设计</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E8%AE%A1%E7%9B%AE%E6%A0%87"><span class="nav-number">1.1.</span> <span class="nav-text">设计目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E4%BD%93%E7%BB%93%E6%9E%84"><span class="nav-number">1.2.</span> <span class="nav-text">总体结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%9D%97%E5%A5%91%E7%BA%A6"><span class="nav-number">1.3.</span> <span class="nav-text">模块契约</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ModuleRepository"><span class="nav-number">1.4.</span> <span class="nav-text">ModuleRepository</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%A8%E5%86%8C%E4%B8%8E%E6%9F%A5%E8%AF%A2"><span class="nav-number">1.4.1.</span> <span class="nav-text">注册与查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%BF%80%E6%B4%BB%E4%B8%8E%E6%9B%B4%E6%96%B0"><span class="nav-number">1.4.2.</span> <span class="nav-text">激活与更新</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9B%B4%E6%96%B0%E5%BC%82%E5%B8%B8"><span class="nav-number">1.4.3.</span> <span class="nav-text">更新异常</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E9%97%AD"><span class="nav-number">1.4.4.</span> <span class="nav-text">关闭</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%92%AD%E6%94%BE%E4%BC%9A%E8%AF%9D%E9%87%8D%E7%BD%AE"><span class="nav-number">1.4.5.</span> <span class="nav-text">播放会话重置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6%E7%B1%BB%E5%9E%8B%E4%B8%8E%E5%85%AC%E5%BC%80%E6%8E%A5%E5%8F%A3"><span class="nav-number">1.5.</span> <span class="nav-text">事件类型与公开接口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#EventChannel"><span class="nav-number">1.6.</span> <span class="nav-text">EventChannel</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B4%BE%E5%8F%91%E6%9C%9F%E9%97%B4%E7%9A%84%E8%AE%A2%E9%98%85%E5%8F%98%E6%9B%B4"><span class="nav-number">1.6.1.</span> <span class="nav-text">派发期间的订阅变更</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E7%94%A8C-%E7%9A%84event"><span class="nav-number">1.6.2.</span> <span class="nav-text">为什么不用C#的event</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BB%B6%E8%BF%9F%E4%BA%8B%E4%BB%B6%E6%B4%BE%E5%8F%91"><span class="nav-number">1.7.</span> <span class="nav-text">延迟事件派发</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ModuleRepositoryDriver"><span class="nav-number">1.8.</span> <span class="nav-text">ModuleRepositoryDriver</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84"><span class="nav-number">1.9.</span> <span class="nav-text">项目结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E9%A1%BA%E5%BA%8F"><span class="nav-number">1.10.</span> <span class="nav-text">实现顺序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%AA%8C%E8%AF%81%E8%A6%81%E6%B1%82"><span class="nav-number">1.11.</span> <span class="nav-text">验证要求</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BD%BB%E9%87%8F%E7%BA%A7%E6%A8%A1%E5%9D%97%E4%BB%93%E5%BA%93%E4%B8%8E%E4%BA%8B%E4%BB%B6%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1"><span class="nav-number">1.</span> <span class="nav-text">轻量级模块仓库与事件系统设计</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E8%AE%A1%E7%9B%AE%E6%A0%87"><span class="nav-number">1.1.</span> <span class="nav-text">设计目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E4%BD%93%E7%BB%93%E6%9E%84"><span class="nav-number">1.2.</span> <span class="nav-text">总体结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%9D%97%E5%A5%91%E7%BA%A6"><span class="nav-number">1.3.</span> <span class="nav-text">模块契约</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ModuleRepository"><span class="nav-number">1.4.</span> <span class="nav-text">ModuleRepository</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%A8%E5%86%8C%E4%B8%8E%E6%9F%A5%E8%AF%A2"><span class="nav-number">1.4.1.</span> <span class="nav-text">注册与查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%BF%80%E6%B4%BB%E4%B8%8E%E6%9B%B4%E6%96%B0"><span class="nav-number">1.4.2.</span> <span class="nav-text">激活与更新</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9B%B4%E6%96%B0%E5%BC%82%E5%B8%B8"><span class="nav-number">1.4.3.</span> <span class="nav-text">更新异常</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E9%97%AD"><span class="nav-number">1.4.4.</span> <span class="nav-text">关闭</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%92%AD%E6%94%BE%E4%BC%9A%E8%AF%9D%E9%87%8D%E7%BD%AE"><span class="nav-number">1.4.5.</span> <span class="nav-text">播放会话重置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6%E7%B1%BB%E5%9E%8B%E4%B8%8E%E5%85%AC%E5%BC%80%E6%8E%A5%E5%8F%A3"><span class="nav-number">1.5.</span> <span class="nav-text">事件类型与公开接口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#EventBridge-%E4%B8%8E-EventChannel"><span class="nav-number">1.6.</span> <span class="nav-text">EventBridge 与 EventChannel</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B4%BE%E5%8F%91%E6%9C%9F%E9%97%B4%E7%9A%84%E8%AE%A2%E9%98%85%E5%8F%98%E6%9B%B4"><span class="nav-number">1.6.1.</span> <span class="nav-text">派发期间的订阅变更</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E7%94%A8C-%E7%9A%84event"><span class="nav-number">1.6.2.</span> <span class="nav-text">为什么不用C#的event</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BB%B6%E8%BF%9F%E4%BA%8B%E4%BB%B6%E6%B4%BE%E5%8F%91"><span class="nav-number">1.7.</span> <span class="nav-text">延迟事件派发</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ModuleRepositoryDriver"><span class="nav-number">1.8.</span> <span class="nav-text">ModuleRepositoryDriver</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84"><span class="nav-number">1.9.</span> <span class="nav-text">项目结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E9%A1%BA%E5%BA%8F"><span class="nav-number">1.10.</span> <span class="nav-text">实现顺序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%AA%8C%E8%AF%81%E8%A6%81%E7%82%B9"><span class="nav-number">1.11.</span> <span class="nav-text">验证要点</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -247,9 +247,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2026-07-19 11:19:24 / 修改时间：11:26:37" itemprop="dateCreated datePublished" datetime="2026-07-19T11:19:24+08:00">2026-07-19</time>
+      <time title="创建时间：2026-07-19 11:19:24" itemprop="dateCreated datePublished" datetime="2026-07-19T11:19:24+08:00">2026-07-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-07-26 00:00:00" itemprop="dateModified" datetime="2026-07-26T00:00:00+08:00">2026-07-26</time>
     </span>
 
   
@@ -259,14 +265,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>2.9k</span>
+      <span>3.3k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>10 分钟</span>
+      <span>12 分钟</span>
     </span>
 </div>
 
@@ -278,7 +284,7 @@
     
     <div class="post-body" itemprop="articleBody"><h1 id="轻量级模块仓库与事件系统设计"><a href="#轻量级模块仓库与事件系统设计" class="headerlink" title="轻量级模块仓库与事件系统设计"></a>轻量级模块仓库与事件系统设计</h1><h2 id="设计目标"><a href="#设计目标" class="headerlink" title="设计目标"></a>设计目标</h2><p>在 Unity 项目中提供一套轻量级的<a target="_blank" rel="noopener" href="https://github.com/fkjkkll/UnityScratch/tree/master/Assets/Scripts/BaseFramework">全局模块仓库和事件系统</a>。模块的生命周期与游戏进程一致：启动后按需创建或显式注册，在游戏运行期间持续存活，并在游戏关闭时统一释放。</p>
 <p>业务代码通过以下接口使用系统：</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ModuleRepository.Get&lt;T&gt;();</span><br><span class="line">ModuleRepository.Register(myModule);</span><br><span class="line">EventModule.Subscribe&lt;T&gt;(callback);</span><br><span class="line">EventModule.Unsubscribe&lt;T&gt;(callback);</span><br><span class="line">eventData.Fire();</span><br><span class="line">eventData.FireDeferred(EventDispatchPhase.Update);</span><br></pre></td></tr></table></figure>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ModuleRepository.GetOrCreate&lt;T&gt;();</span><br><span class="line">ModuleRepository.Register(myModule);</span><br><span class="line">EventModule.Subscribe&lt;T&gt;(callback);</span><br><span class="line">EventModule.Unsubscribe&lt;T&gt;(callback);</span><br><span class="line">eventData.Fire();</span><br><span class="line">eventData.FireDeferred(EventDispatchPhase.Update);</span><br></pre></td></tr></table></figure>
 
 <p>系统负责具体模块类型的注册、查询、帧更新和释放。</p>
 <h2 id="总体结构"><a href="#总体结构" class="headerlink" title="总体结构"></a>总体结构</h2><p>系统由三个部分组成：</p>
@@ -295,9 +301,10 @@
 <li><code>ILateUpdatableModule.LateUpdate()</code>：在 Unity 的 <code>LateUpdate</code> 阶段执行。</li>
 </ul>
 <p>模块可以实现其中一个接口，也可以同时实现两个接口。模块仓库只根据接口决定模块参与哪些更新阶段，不要求业务模块继承共同基类。</p>
-<h2 id="ModuleRepository"><a href="#ModuleRepository" class="headerlink" title="ModuleRepository"></a>ModuleRepository</h2><p><code>ModuleRepository</code> 是静态的全局模块仓库。每种具体模块类型在 <code>ModuleSlot&lt;T&gt;</code> 中拥有独立的实例槽位和创建状态，因此常规查询无须遍历集合。仓库同时保存有序的 <code>ModuleRegistration&lt;T&gt;</code> 记录，用于安排更新顺序和关闭顺序。</p>
+<h2 id="ModuleRepository"><a href="#ModuleRepository" class="headerlink" title="ModuleRepository"></a>ModuleRepository</h2><p><code>ModuleRepository</code> 是静态的全局模块仓库。每种具体模块类型都对应一个 <code>ModuleSlot&lt;T&gt;</code>：泛型静态字段保存该类型当前的 Slot 和创建状态，实例字段则保存模块本身以及预先转换好的更新接口。</p>
+<p><code>ModuleSlot&lt;T&gt;</code> 同时实现非泛型的 <code>IModuleSlot</code>。因此，按类型查询时可以直接访问泛型静态字段，无须查询字典；统一更新和关闭时，又可以把不同 <code>T</code> 的 Slot 放进同一组有序列表中遍历。静态查询、更新接口缓存、释放和槽位复位都由同一个 Slot 完成。</p>
 <h3 id="注册与查询"><a href="#注册与查询" class="headerlink" title="注册与查询"></a>注册与查询</h3><ul>
-<li><code>Get&lt;T&gt;()</code> 返回已注册的模块；模块不存在时，通过 <code>new T()</code> 创建、注册并返回。</li>
+<li><code>GetOrCreate&lt;T&gt;()</code> 返回已注册的模块；模块不存在时，通过 <code>new T()</code> 创建、注册并返回。</li>
 <li><code>TryGet&lt;T&gt;(out T module)</code> 只查询模块，不会隐式创建。</li>
 <li><code>Register&lt;T&gt;(module)</code> 注册已有实例。</li>
 <li>注册 <code>null</code> 时抛出 <code>ArgumentNullException</code>。</li>
@@ -327,12 +334,12 @@
 <li>单个模块释放失败时记录异常，其余模块继续释放。</li>
 <li>无论释放过程是否发生异常，模块集合、更新集合和泛型槽位都会清空。</li>
 <li>重复调用 <code>Shutdown()</code> 不产生额外效果。</li>
-<li>关闭开始后，<code>Get</code>、<code>Register</code>、<code>Update</code> 和 <code>LateUpdate</code> 拒绝访问。</li>
+<li>关闭开始后，<code>GetOrCreate</code>、<code>Register</code>、<code>Update</code> 和 <code>LateUpdate</code> 拒绝访问。</li>
 <li><code>TryGet</code> 在槽位清理后返回 <code>false</code>。</li>
 </ul>
 <p>如果模块在自身的 <code>Update</code> 或 <code>LateUpdate</code> 中调用 <code>Shutdown()</code>，仓库先记录关闭请求，允许该模块的方法正常返回，然后停止执行后续模块，并从更新流程的 <code>finally</code> 路径完成关闭。</p>
 <h3 id="播放会话重置"><a href="#播放会话重置" class="headerlink" title="播放会话重置"></a>播放会话重置</h3><p><code>RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)</code> 在新的 Unity 运行会话开始时重置仓库静态状态，保证关闭 Domain Reload 的编辑器配置也能获得干净状态。</p>
-<p>该重置入口不作为业务 API 暴露。编辑模式测试通过 <code>InternalsVisibleTo(&quot;BaseFramework.Tests&quot;)</code> 调用内部的 <code>ResetForTests()</code>，使每个测试拥有相互隔离的仓库状态。</p>
+<p>该重置入口不作为业务 API 暴露，也不代表运行时支持重新启动仓库。</p>
 <h2 id="事件类型与公开接口"><a href="#事件类型与公开接口" class="headerlink" title="事件类型与公开接口"></a>事件类型与公开接口</h2><p>事件数据实现空接口 <code>IGameEvent</code>。事件回调使用强类型委托：</p>
 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="built_in">delegate</span> <span class="keyword">void</span> <span class="title">EventCallback</span>&lt;<span class="keyword">in</span> <span class="title">T</span>&gt;(<span class="params">T eventData</span>) <span class="keyword">where</span> T : IGameEvent</span>;</span><br></pre></td></tr></table></figure>
 
@@ -345,7 +352,11 @@
 </ul>
 <p><code>EventExtensions</code> 为事件数据提供 <code>Fire()</code> 和 <code>FireDeferred()</code> 扩展方法。扩展方法只负责转发，不持有状态。</p>
 <p><code>EventModule</code> 的实例、<code>Update</code>、<code>LateUpdate</code> 和 <code>Dispose</code> 不属于业务接口。生命周期方法通过显式接口实现交给 <code>ModuleRepository</code> 调用。</p>
-<h2 id="EventChannel"><a href="#EventChannel" class="headerlink" title="EventChannel"></a>EventChannel</h2><p>每种事件类型对应一个 <code>EventChannel&lt;T&gt;</code>。<code>EventModule</code> 使用事件类型作为键保存所有频道，因此订阅关系跟随 <code>EventModule</code> 实例，在模块释放时统一清空。</p>
+<h2 id="EventBridge-与-EventChannel"><a href="#EventBridge-与-EventChannel" class="headerlink" title="EventBridge 与 EventChannel"></a>EventBridge 与 EventChannel</h2><p>每种事件类型对应一个 <code>EventChannel&lt;T&gt;</code>，负责保存该类型的订阅关系。频道外部再包裹一层 <code>EventBridge&lt;T&gt;</code>，用于连接泛型静态快速访问与 <code>EventModule</code> 的实例生命周期。</p>
+<p><code>EventBridge&lt;T&gt;.Current</code> 是每种事件类型独立的静态入口。即时 <code>Fire&lt;T&gt;</code> 和 <code>Unsubscribe&lt;T&gt;</code> 可以直接取得桥接和频道，不需要通过 <code>typeof(T)</code> 查询字典，也不需要把非泛型频道再强制转换回 <code>EventChannel&lt;T&gt;</code>。</p>
+<p>另一方面，所有已创建的桥接都会加入 <code>EventModule._eventBridges</code>。<code>EventModule.Dispose()</code> 遍历该列表，清空频道中的订阅关系，并将对应的静态 <code>Current</code> 复位。因此，静态入口只负责快速访问，频道的实际生命周期仍然归属于 <code>EventModule</code>。</p>
+<p>桥接创建遵循“先登记、后发布”的顺序：先把新桥接加入 <code>EventModule</code> 的实例列表，成功后再赋值给静态 <code>Current</code>。这样即使创建过程失败，也不会留下无法被生命周期系统清理的静态频道。</p>
+<p>相比字典方案，静态桥接省去了高频派发路径中的哈希查询和类型转换，但每种事件类型会额外创建一个 <code>EventBridge&lt;T&gt;</code> 对象，并由实例列表保存。这是用少量常驻对象换取更直接的热路径访问。</p>
 <p>订阅规则如下：</p>
 <ul>
 <li>回调为 <code>null</code> 时抛出 <code>ArgumentNullException</code>。</li>
@@ -378,7 +389,7 @@
 <h2 id="延迟事件派发"><a href="#延迟事件派发" class="headerlink" title="延迟事件派发"></a>延迟事件派发</h2><p><code>EventDispatchPhase</code> 定义两个派发阶段：</p>
 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="built_in">enum</span> EventDispatchPhase</span><br><span class="line">&#123;</span><br><span class="line">    Update,</span><br><span class="line">    LateUpdate,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p><code>EventModule</code> 分别持有 <code>Update</code> 和 <code>LateUpdate</code> 两个先进先出（First In, First Out，FIFO）队列。队列元素为 <code>IDeferredEventDispatch</code>，具体实现 <code>DeferredEventDispatch&lt;T&gt;</code> 同时保存 <code>EventChannel&lt;T&gt;</code> 和事件数据，并通过 <code>Dispatch()</code> 保留强类型派发能力。</p>
+<p><code>EventModule</code> 分别持有 <code>Update</code> 和 <code>LateUpdate</code> 两个先进先出（First In, First Out，FIFO）队列。队列元素为 <code>IDeferredEventDispatch</code>，具体实现 <code>DeferredEventDispatch&lt;T&gt;</code> 在入队时通过 <code>EventBridge&lt;T&gt;</code> 取得频道，同时保存 <code>EventChannel&lt;T&gt;</code> 和事件数据，并通过 <code>Dispatch()</code> 保留强类型派发能力。</p>
 <p>每个阶段开始派发时先记录队列长度，只处理当时已经存在的元素：</p>
 <ul>
 <li>不同事件类型之间保持全局入队顺序。</li>
@@ -398,19 +409,19 @@
 </ul>
 <p><code>ResetPrimaryInstance()</code> 使用 <code>RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)</code> 注册，在 Unity Player 启动和编辑器播放会话开始时清空静态主实例引用。它不会在切换场景、应用暂停或从后台恢复时执行。</p>
 <p>场景负责放置初始的 <code>ModuleRepositoryDriver</code>。系统不自动创建驱动器。</p>
-<h2 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h2><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">Assets/Scripts/BaseFramework/</span><br><span class="line">├── AssemblyInfo.cs</span><br><span class="line">├── BaseFramework.asmdef</span><br><span class="line">├── Module/</span><br><span class="line">│   ├── IModule.cs</span><br><span class="line">│   └── ModuleRepository.cs</span><br><span class="line">├── System/</span><br><span class="line">│   ├── IUpdatableModule.cs</span><br><span class="line">│   └── ILateUpdatableModule.cs</span><br><span class="line">└── EventBus/</span><br><span class="line">    ├── IGameEvent.cs</span><br><span class="line">    ├── EventCallback.cs</span><br><span class="line">    ├── EventChannel.cs</span><br><span class="line">    ├── DeferredEventDispatch.cs</span><br><span class="line">    ├── EventModule.cs</span><br><span class="line">    └── EventExtensions.cs</span><br><span class="line"></span><br><span class="line">Assets/Scripts/GameLogic/Logic/ModuleDriver/</span><br><span class="line">└── ModuleRepositoryDriver.cs</span><br><span class="line"></span><br><span class="line">Assets/Tests/EditMode/</span><br><span class="line">├── BaseFramework.Tests.asmdef</span><br><span class="line">├── ModuleRepositoryTests.cs</span><br><span class="line">└── EventModuleTests.cs</span><br></pre></td></tr></table></figure>
+<h2 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h2><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">Assets/Scripts/BaseFramework/</span><br><span class="line">├── AssemblyInfo.cs</span><br><span class="line">├── BaseFramework.asmdef</span><br><span class="line">├── Module/</span><br><span class="line">│   ├── IModule.cs</span><br><span class="line">│   └── ModuleRepository.cs</span><br><span class="line">├── System/</span><br><span class="line">│   ├── IUpdatableModule.cs</span><br><span class="line">│   └── ILateUpdatableModule.cs</span><br><span class="line">└── EventBus/</span><br><span class="line">    ├── IGameEvent.cs</span><br><span class="line">    ├── EventCallback.cs</span><br><span class="line">    ├── EventChannel.cs</span><br><span class="line">    ├── DeferredEventDispatch.cs</span><br><span class="line">    ├── EventModule.cs</span><br><span class="line">    └── EventExtensions.cs</span><br><span class="line"></span><br><span class="line">Assets/Scripts/GameLogic/Logic/ModuleDriver/</span><br><span class="line">└── ModuleRepositoryDriver.cs</span><br></pre></td></tr></table></figure>
 
-<p><code>BaseFramework.asmdef</code> 隔离框架运行时代码。<code>BaseFramework.Tests.asmdef</code> 仅在编辑模式测试环境引用框架程序集和 Unity Test Framework，不进入 Player 构建。</p>
+<p><code>BaseFramework.asmdef</code> 用于隔离框架运行时代码，游戏逻辑程序集只需要引用该程序集即可使用模块仓库和事件系统。</p>
 <h2 id="实现顺序"><a href="#实现顺序" class="headerlink" title="实现顺序"></a>实现顺序</h2><p>从零实现时按照以下顺序组织工作：</p>
 <ol>
 <li>创建运行时程序集定义以及 <code>IModule</code>、<code>IUpdatableModule</code>、<code>ILateUpdatableModule</code>。</li>
-<li>实现 <code>ModuleRepository</code> 的泛型槽位、注册记录、更新调度、异常隔离和终止性关闭。</li>
+<li>实现同时承担静态查询与生命周期记录的 <code>ModuleSlot&lt;T&gt;</code>，再完成更新调度、异常隔离和终止性关闭。</li>
 <li>实现 <code>ModuleRepositoryDriver</code>，连接 Unity 帧循环、跨场景生命周期和应用退出流程。</li>
-<li>创建 <code>IGameEvent</code>、<code>EventCallback&lt;T&gt;</code> 和实例持有的 <code>EventChannel&lt;T&gt;</code>。</li>
+<li>创建 <code>IGameEvent</code>、<code>EventCallback&lt;T&gt;</code> 和保存订阅关系的 <code>EventChannel&lt;T&gt;</code>。</li>
+<li>实现 <code>EventBridge&lt;T&gt;</code>，用泛型静态入口加速频道访问，并用实例列表维持统一清理能力。</li>
 <li>实现 <code>DeferredEventDispatch&lt;T&gt;</code>、双阶段 FIFO 队列、<code>EventModule</code> 静态门面和事件扩展方法。</li>
-<li>创建独立的编辑模式测试程序集，并覆盖模块生命周期与事件派发语义。</li>
 </ol>
-<h2 id="验证要求"><a href="#验证要求" class="headerlink" title="验证要求"></a>验证要求</h2><p>自动化测试覆盖以下行为：</p>
+<h2 id="验证要点"><a href="#验证要点" class="headerlink" title="验证要点"></a>验证要点</h2><p>实现完成后至少需要核对以下行为：</p>
 <ul>
 <li>自动创建、显式注册、<code>null</code> 注册和重复注册；</li>
 <li>待激活机制以及稳定的 <code>Update</code>、<code>LateUpdate</code> 执行顺序；</li>
@@ -426,7 +437,7 @@
 <li>关闭阶段的事件接口不会重新创建模块；</li>
 <li><code>EventModule</code> 释放时清空全部队列和订阅关系。</li>
 </ul>
-<p>Unity 必须能够成功编译 <code>BaseFramework</code>、<code>Assembly-CSharp</code> 和 <code>BaseFramework.Tests</code> 三个程序集。编辑模式测试全部通过后，系统才满足交付条件。</p>
+<p>Unity 必须能够成功编译 <code>BaseFramework</code> 和 <code>Assembly-CSharp</code> 两个程序集，并在实际播放流程中确认 Update、LateUpdate、延迟事件和关闭清理均按上述规则运行。</p>
 
     </div>
 
@@ -485,7 +496,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">5:33</span>
+    <span title="站点阅读时长">5:34</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
