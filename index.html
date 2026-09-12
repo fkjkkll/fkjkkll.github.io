@@ -171,7 +171,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">67</span>
+          <span class="site-state-item-count">68</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -202,6 +202,100 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/09/12/%E7%A1%AE%E5%AE%9A%E6%80%A7%E5%93%88%E5%B8%8C%E9%9A%8F%E6%9C%BA%E5%86%B3%E8%83%9C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Lizq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2026/09/12/%E7%A1%AE%E5%AE%9A%E6%80%A7%E5%93%88%E5%B8%8C%E9%9A%8F%E6%9C%BA%E5%86%B3%E8%83%9C/" class="post-title-link" itemprop="url">确定性哈希随机决胜</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-09-12 11:37:57 / 修改时间：11:38:55" itemprop="dateCreated datePublished" datetime="2026-09-12T11:37:57+08:00">2026-09-12</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>9 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="确定性哈希随机决胜：低成本、可复现的平局策略"><a href="#确定性哈希随机决胜：低成本、可复现的平局策略" class="headerlink" title="确定性哈希随机决胜：低成本、可复现的平局策略"></a>确定性哈希随机决胜：低成本、可复现的平局策略</h1><p>在游戏开发中，我们经常需要从一组候选项中选出“最优解”。当多个候选项的主评分完全相同时，一个容易被忽略的问题就出现了：<strong>平局时该选谁？</strong>，如果只依赖于判别时的不等号，那么结果必然是“偏置”的。</p>
+<p>我是在一次网格密度搜索中遇到这个问题的。最终采用的方案是<strong>确定性哈希随机决胜</strong>（Deterministic Hash-based Random Tie-breaking）：用一次随机取种，为每个候选项生成可复现的伪随机优先级，在不收集全部平局候选的情况下完成决胜。</p>
+<h2 id="从网格密度搜索说起"><a href="#从网格密度搜索说起" class="headerlink" title="从网格密度搜索说起"></a>从网格密度搜索说起</h2><p>假设地图由一个二维网格表示，每个格子记录该位置是否存在目标。搜索时，用一个固定尺寸的矩形窗口遍历所有合法位置，计算窗口覆盖范围内的目标数量，也就是该窗口的密度，实现中采用的就是经典的二维前缀和算法。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2026/09/12/%E7%A1%AE%E5%AE%9A%E6%80%A7%E5%93%88%E5%B8%8C%E9%9A%8F%E6%9C%BA%E5%86%B3%E8%83%9C/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1097,105 +1191,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2026/02/23/%E7%A2%B0%E6%92%9E%E6%A3%80%E6%B5%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Lizq">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Lizq的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | Lizq的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2026/02/23/%E7%A2%B0%E6%92%9E%E6%A3%80%E6%B5%8B/" class="post-title-link" itemprop="url">碰撞检测</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2026-02-23 10:17:46" itemprop="dateCreated datePublished" datetime="2026-02-23T10:17:46+08:00">2026-02-23</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-03-07 17:27:45" itemprop="dateModified" datetime="2026-03-07T17:27:45+08:00">2026-03-07</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>4.6k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>17 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="粗筛阶段（Broad-Phase）"><a href="#粗筛阶段（Broad-Phase）" class="headerlink" title="粗筛阶段（Broad Phase）"></a>粗筛阶段（Broad Phase）</h1><h2 id="SAP（扫描线算法）"><a href="#SAP（扫描线算法）" class="headerlink" title="SAP（扫描线算法）"></a>SAP（扫描线算法）</h2><p>不论碰撞体本身是圆形、OBB、多边形，都可以获得顶点集合的<code>minPoint: (minX, minZ)</code>和<code>maxPoint: (maxX, maxZ)</code>，得到最大外接矩形也就是AABB，将所有待检测对象的AABB投影到对应的轴上。每个对象在每个轴上都会得到一个线段，两个不同对象的线段如果在某一个轴上没有交集，就证明一定不存在碰撞，反之，在所有轴上都存在交集，则这两个对象的AABB一定发生了碰撞，如果对象本身就是AABB那就检测完毕，否则需要进一步判断两个对象是否实际碰撞。<br></p>
-<h2 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h2><p>先从X轴开始，遍历每个对象，投影可以产生两个端点<code>minValue, maxValue</code>，将所有对象的投影端点都放入一个数组内，并按坐标从小到大进行排序。维护两个列表：活跃列表<code>[]</code>和重叠对列表<code>[]</code>。扫描线从左到右扫描这些端点。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2026/02/23/%E7%A2%B0%E6%92%9E%E6%A3%80%E6%B5%8B/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1219,13 +1214,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">95k</span>
+    <span title="站点总字数">98k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">5:46</span>
+    <span title="站点阅读时长">5:55</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
