@@ -20,12 +20,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js" defer></script>
 
-    <meta name="description" content="数组指针和指针数组s的类型是二维数组，但是其本身也是一个一维指针（数组指针），其静态类型是char(*)[10]，每次移动是10个char长度也就是10字节。其解引用后静态类型是char*，每次移动是1个char长度也就是1字节。 值得注意的是，类似函数指针，s、*s、&amp;s其值都是一样的，都是该二维数组首个元素的地址，因此不能将数组名当成是一个值为元素首地址的常规变量！因为永远无法取得其地">
+    <meta name="description" content="数组指针和指针数组 s的类型是二维数组，但是其本身也是一个一维指针（数组指针），其静态类型是char(*)[10]，每次移动是10个char长度也就是10字节。其解引用后静态类型是char*，每次移动是1个char长度也就是1字节。 值得注意的是，类似函数指针，s、*s、&amp;s其值都是一样的，都是该二维数组首个元素的地址，因此不能将数组名当成是一个值为元素首地址的常规变量！因为永远无法取得其">
 <meta property="og:type" content="article">
 <meta property="og:title" content="数组指针与指针数组">
 <meta property="og:url" content="http://example.com/2021/09/12/%E6%95%B0%E7%BB%84%E6%8C%87%E9%92%88%E4%B8%8E%E6%8C%87%E9%92%88%E6%95%B0%E7%BB%84/index.html">
 <meta property="og:site_name" content="Lizq的个人博客">
-<meta property="og:description" content="数组指针和指针数组s的类型是二维数组，但是其本身也是一个一维指针（数组指针），其静态类型是char(*)[10]，每次移动是10个char长度也就是10字节。其解引用后静态类型是char*，每次移动是1个char长度也就是1字节。 值得注意的是，类似函数指针，s、*s、&amp;s其值都是一样的，都是该二维数组首个元素的地址，因此不能将数组名当成是一个值为元素首地址的常规变量！因为永远无法取得其地">
+<meta property="og:description" content="数组指针和指针数组 s的类型是二维数组，但是其本身也是一个一维指针（数组指针），其静态类型是char(*)[10]，每次移动是10个char长度也就是10字节。其解引用后静态类型是char*，每次移动是1个char长度也就是1字节。 值得注意的是，类似函数指针，s、*s、&amp;s其值都是一样的，都是该二维数组首个元素的地址，因此不能将数组名当成是一个值为元素首地址的常规变量！因为永远无法取得其">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-09-12T01:10:12.000Z">
 <meta property="article:modified_time" content="2022-09-26T01:13:56.869Z">
@@ -70,8 +70,7 @@
 
   
 
-  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
-<script src="/js/third-party/math/mathjax.js" defer></script>
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css" integrity="sha256-UF1fgpAiu3tPJN/uCqEUHNe7pnr+QR0SQDNfgglgtcM=" crossorigin="anonymous">
 
 
 
@@ -164,7 +163,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E7%BB%84%E6%8C%87%E9%92%88%E5%92%8C%E6%8C%87%E9%92%88%E6%95%B0%E7%BB%84"><span class="nav-number">1.</span> <span class="nav-text">数组指针和指针数组</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E7%BB%84%E6%8C%87%E9%92%88%E5%92%8C%E6%8C%87%E9%92%88%E6%95%B0%E7%BB%84"><span class="nav-text">数组指针和指针数组</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -177,7 +176,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-count">69</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -281,12 +280,12 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><h2 id="数组指针和指针数组"><a href="#数组指针和指针数组" class="headerlink" title="数组指针和指针数组"></a>数组指针和指针数组</h2><p><code>s</code>的类型是二维数组，但是其本身也是一个一维指针（数组指针），其静态类型是<code>char(*)[10]</code>，每次移动是10个char长度也就是10字节。其解引用后静态类型是<code>char*</code>，每次移动是1个char长度也就是1字节。</p>
+    <div class="post-body" itemprop="articleBody"><h2 id="数组指针和指针数组">数组指针和指针数组</h2>
+<p><code>s</code>的类型是二维数组，但是其本身也是一个一维指针（数组指针），其静态类型是<code>char(*)[10]</code>，每次移动是10个char长度也就是10字节。其解引用后静态类型是<code>char*</code>，每次移动是1个char长度也就是1字节。</p>
 <p>值得注意的是，类似函数指针，<code>s、*s、&amp;s</code>其值都是一样的，都是该二维数组首个元素的地址，因此不能将数组名当成是一个值为元素首地址的常规变量！因为永远无法取得其地址。</p>
 <p>因此，下面代码中将<code>s</code>赋值给双重指针<code>ps</code>是完全错误的；双重指针要经过两次间接跳转访问元素：比如<code>ps</code>的值为<code>0x0000ff33</code>，<code>*ps</code>首先跳转到该位置后取其值，比如说那个地址的值为<code>0x0000eedd</code>，将<code>*ps</code>当成字符串输出时，会再次跳转到地址为<code>0x0000eedd</code>的位置取出char，完全乱了。</p>
 <p><strong>而作为对比，数组指针解引用不会跳转，只会修改其步幅跨度</strong></p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> s[][<span class="number">10</span>] = &#123; <span class="string">&quot;aaa&quot;</span>, <span class="string">&quot;bbb&quot;</span>, <span class="string">&quot;ccc&quot;</span> &#125;;</span><br><span class="line"><span class="type">char</span>** ps = (<span class="type">char</span>**)s;</span><br><span class="line">cout &lt;&lt; (<span class="keyword">decltype</span>(*s))*ps &lt;&lt; endl;	<span class="comment">// OK 强行改变了类型</span></span><br><span class="line">cout &lt;&lt; *(<span class="built_in">char</span>(*)[<span class="number">10</span>])ps &lt;&lt; endl;	<span class="comment">// OK 强行改变了类型</span></span><br><span class="line">cout &lt;&lt; (<span class="built_in">char</span>(&amp;)[<span class="number">10</span>])*ps &lt;&lt; endl;	<span class="comment">// OK 强行改变了类型</span></span><br><span class="line">cout &lt;&lt; *ps &lt;&lt; endl;				<span class="comment">// ERROR! 两次跳转乱了</span></span><br></pre></td></tr></table></figure>
-
 <p>这里<code>s</code>是一个指针数组(确定类型要从内而外，从右向左)，因此可以将其赋给双重指针，他们取char都要经过两次跳转。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">char</span>* s[] = &#123; <span class="string">&quot;aaa&quot;</span>, <span class="string">&quot;bbb&quot;</span>, <span class="string">&quot;ccc&quot;</span> &#125;;</span><br><span class="line"><span class="type">char</span>** ps = (<span class="type">char</span>**)s;</span><br><span class="line">cout &lt;&lt; *ps &lt;&lt; endl;	<span class="comment">// OK</span></span><br></pre></td></tr></table></figure>
     </div>
@@ -342,13 +341,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">98k</span>
+    <span title="站点总字数">105k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">5:56</span>
+    <span title="站点阅读时长">6:23</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动

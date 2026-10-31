@@ -20,12 +20,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.26.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"language":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.json","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js" defer></script>
 
-    <meta name="description" content="0 主干网络YOLOv3采用DarkNet-53网络，结构如下图（DarkNet-53预训练于ImageNet，由于是1000类的分类，所以网络最后输出经过全连接层。但是目标检测不需要那个全连接层，因此实际上只使用了“DarkNet-52”，共52层卷积层）：   BN为批归一化层，Acti为激活函数，YOLOv3采用LeakyReLU 输入批次经过一个3X3卷积改变通道数为32，然后经过5个降残">
+    <meta name="description" content="0 主干网络 YOLOv3采用DarkNet-53网络，结构如下图（DarkNet-53预训练于ImageNet，由于是1000类的分类，所以网络最后输出经过全连接层。但是目标检测不需要那个全连接层，因此实际上只使用了“DarkNet-52”，共52层卷积层）：   BN为批归一化层，Acti为激活函数，YOLOv3采用LeakyReLU 输入批次经过一个3X3卷积改变通道数为32，然后经过5个降">
 <meta property="og:type" content="article">
 <meta property="og:title" content="YOLOv3源码理解">
 <meta property="og:url" content="http://example.com/2022/10/08/YOLOv3%E6%BA%90%E7%A0%81%E7%90%86%E8%A7%A3/index.html">
 <meta property="og:site_name" content="Lizq的个人博客">
-<meta property="og:description" content="0 主干网络YOLOv3采用DarkNet-53网络，结构如下图（DarkNet-53预训练于ImageNet，由于是1000类的分类，所以网络最后输出经过全连接层。但是目标检测不需要那个全连接层，因此实际上只使用了“DarkNet-52”，共52层卷积层）：   BN为批归一化层，Acti为激活函数，YOLOv3采用LeakyReLU 输入批次经过一个3X3卷积改变通道数为32，然后经过5个降残">
+<meta property="og:description" content="0 主干网络 YOLOv3采用DarkNet-53网络，结构如下图（DarkNet-53预训练于ImageNet，由于是1000类的分类，所以网络最后输出经过全连接层。但是目标检测不需要那个全连接层，因此实际上只使用了“DarkNet-52”，共52层卷积层）：   BN为批归一化层，Acti为激活函数，YOLOv3采用LeakyReLU 输入批次经过一个3X3卷积改变通道数为32，然后经过5个降">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://raw.githubusercontent.com/fkjkkll/OnlineSource/master/Image/object%20detection/YOLOv3_Backbone.jpg">
 <meta property="og:image" content="https://raw.githubusercontent.com/fkjkkll/OnlineSource/master/Image/object%20detection/YOLOv3_Branch.png">
@@ -73,8 +73,7 @@
 
   
 
-  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
-<script src="/js/third-party/math/mathjax.js" defer></script>
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css" integrity="sha256-UF1fgpAiu3tPJN/uCqEUHNe7pnr+QR0SQDNfgglgtcM=" crossorigin="anonymous">
 
 
 
@@ -167,7 +166,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0-%E4%B8%BB%E5%B9%B2%E7%BD%91%E7%BB%9C"><span class="nav-number">1.</span> <span class="nav-text">0 主干网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E9%A2%84%E6%B5%8B%E5%88%86%E6%94%AF%E7%BD%91%E7%BB%9C"><span class="nav-number">2.</span> <span class="nav-text">1 预测分支网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E6%95%B0%E6%8D%AE%E5%8A%A0%E8%BD%BD"><span class="nav-number">3.</span> <span class="nav-text">2 数据加载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E8%AE%AD%E7%BB%83%E7%BD%91%E7%BB%9C"><span class="nav-number">4.</span> <span class="nav-text">3 训练网络</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E8%BE%93%E5%87%BA%E5%B1%82%E7%9A%84%E8%A7%A3%E7%A0%81"><span class="nav-number">4.1.</span> <span class="nav-text">3.1 输出层的解码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-%E6%AD%A3%E8%B4%9F%E6%A0%B7%E6%9C%AC"><span class="nav-number">4.2.</span> <span class="nav-text">3.2 正负样本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0%E8%AE%A1%E7%AE%97"><span class="nav-number">4.3.</span> <span class="nav-text">3.3 损失函数计算</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E9%A2%84%E6%B5%8B%E7%BD%91%E7%BB%9C"><span class="nav-number">5.</span> <span class="nav-text">4 预测网络</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0-%E4%B8%BB%E5%B9%B2%E7%BD%91%E7%BB%9C"><span class="nav-text">0 主干网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E9%A2%84%E6%B5%8B%E5%88%86%E6%94%AF%E7%BD%91%E7%BB%9C"><span class="nav-text">1 预测分支网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E6%95%B0%E6%8D%AE%E5%8A%A0%E8%BD%BD"><span class="nav-text">2 数据加载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E8%AE%AD%E7%BB%83%E7%BD%91%E7%BB%9C"><span class="nav-text">3 训练网络</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E8%BE%93%E5%87%BA%E5%B1%82%E7%9A%84%E8%A7%A3%E7%A0%81"><span class="nav-text">3.1 输出层的解码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-%E6%AD%A3%E8%B4%9F%E6%A0%B7%E6%9C%AC"><span class="nav-text">3.2 正负样本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0%E8%AE%A1%E7%AE%97"><span class="nav-text">3.3 损失函数计算</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E9%A2%84%E6%B5%8B%E7%BD%91%E7%BB%9C"><span class="nav-text">4 预测网络</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -180,7 +179,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-count">69</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -278,37 +277,45 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><h2 id="0-主干网络"><a href="#0-主干网络" class="headerlink" title="0 主干网络"></a>0 主干网络</h2><p>YOLOv3采用DarkNet-53网络，结构如下图（DarkNet-53预训练于ImageNet，由于是1000类的分类，所以网络最后输出经过全连接层。但是目标检测不需要那个全连接层，因此实际上只使用了“DarkNet-52”，共52层卷积层）：</p>
+    <div class="post-body" itemprop="articleBody"><h2 id="0-主干网络">0 主干网络</h2>
+<p>YOLOv3采用DarkNet-53网络，结构如下图（DarkNet-53预训练于ImageNet，由于是1000类的分类，所以网络最后输出经过全连接层。但是目标检测不需要那个全连接层，因此实际上只使用了“DarkNet-52”，共52层卷积层）：</p>
 <p><img src="https://raw.githubusercontent.com/fkjkkll/OnlineSource/master/Image/object%20detection/YOLOv3_Backbone.jpg" alt="YOLOv3 Backbone"></p>
 <ul>
 <li>BN为批归一化层，Acti为激活函数，YOLOv3采用LeakyReLU</li>
 <li>输入批次经过一个3X3卷积改变通道数为32，然后经过5个降残差块。每个降残差块包含一次步幅为2的3X3卷积加上一系列残差块。每个残差块包含一次1X1卷积降低通道数，再经过一次3X3卷积提升通道数，最后和残差边进行连接。</li>
 <li>整体主干网络清晰，每经过一个降残差块，通道数翻倍，特征图宽高减半。</li>
 </ul>
-<h2 id="1-预测分支网络"><a href="#1-预测分支网络" class="headerlink" title="1 预测分支网络"></a>1 预测分支网络</h2><p>下图是YOLOv3的预测分支网络部分，是一个典型的特征金字塔结构。最后的输出通道75是假设采用VOC数据集进行20个类别的检测，因此输出的75代表<code>3*(4+1+20)</code>，3代表每个特征点3个先验框；4代表先验框x、y的偏移量以及宽高的伸缩量；1代表该先验框包含目标的置信度；20代表该数据集类别个数。</p>
+<h2 id="1-预测分支网络">1 预测分支网络</h2>
+<p>下图是YOLOv3的预测分支网络部分，是一个典型的特征金字塔结构。最后的输出通道75是假设采用VOC数据集进行20个类别的检测，因此输出的75代表<code>3*(4+1+20)</code>，3代表每个特征点3个先验框；4代表先验框x、y的偏移量以及宽高的伸缩量；1代表该先验框包含目标的置信度；20代表该数据集类别个数。</p>
 <p><img src="https://raw.githubusercontent.com/fkjkkll/OnlineSource/master/Image/object%20detection/YOLOv3_Branch.png" alt="YOLOv3 Branch"></p>
-<h2 id="2-数据加载"><a href="#2-数据加载" class="headerlink" title="2 数据加载"></a>2 数据加载</h2><ul>
+<h2 id="2-数据加载">2 数据加载</h2>
+<ul>
 <li>图片会被进行各种图像增强、添加灰条等操作，最终大小为<code>(416，416)</code>，值归一化到<code>0~1</code>，形状为<code>(B, 3, 416, 416)</code></li>
 <li>标签会被归一化<code>0~1</code>（从数据集<code>[左上右下]</code>转换为<code>[中心宽高]</code>），形状为<code>list[(GT, 4)...B个]</code></li>
 </ul>
-<h2 id="3-训练网络"><a href="#3-训练网络" class="headerlink" title="3 训练网络"></a>3 训练网络</h2><ul>
+<h2 id="3-训练网络">3 训练网络</h2>
+<ul>
 <li>网络前向传播会获得一个包含三元素的元组：<code>((bs,75,13,13),(bs,75,26,26),(bs,75,52,52))</code>，代表网络三个层的输出</li>
 <li>依次计算每个层的损失，相加之后进行反向传播</li>
 </ul>
-<h3 id="3-1-输出层的解码"><a href="#3-1-输出层的解码" class="headerlink" title="3.1 输出层的解码"></a>3.1 输出层的解码</h3><p>以<code>(bs,75,13,13)</code>为例，<code>view</code>到<code>(bs,3,13,13,25)</code>，随后通过其中包含的信息结合给该层分配的三个先验框的宽高，可以得到预测框的结果。</p>
+<h3 id="3-1-输出层的解码">3.1 输出层的解码</h3>
+<p>以<code>(bs,75,13,13)</code>为例，<code>view</code>到<code>(bs,3,13,13,25)</code>，随后通过其中包含的信息结合给该层分配的三个先验框的宽高，可以得到预测框的结果。</p>
 <ul>
 <li><code>(..., 0:2)</code>执行<code>sigmoid</code>获得该层先验框的偏移</li>
 <li><code>(..., 2:4)</code>不执行任何操作，之后用于宽高的缩放</li>
 <li><code>(..., 4)</code>执行<code>sigmoid</code>获得包含物体的置信度</li>
 <li><code>(..., 5:)</code>执行<code>sigmoid</code>获得被认为是每个类别的概率</li>
 </ul>
-<h3 id="3-2-正负样本"><a href="#3-2-正负样本" class="headerlink" title="3.2 正负样本"></a>3.2 正负样本</h3><ul>
+<h3 id="3-2-正负样本">3.2 正负样本</h3>
+<ul>
 <li>批次里的每个图片都会单独循环处理：将这些真实框与9个先验框做IOU，从而确定每个真实框由哪个大小的先验框负责。确认后，再根据真实框的中心位置，确认属于哪个特征点负责，最终即可确认由哪一个先验框（确定了哪一层）的哪个特征图（该层的哪个格子）负责，正样本既定。</li>
 <li>按理说，其他未分配真实框的预测框都是负样本，有<code>(13*13+26*26+52*52)*3 - 9 = 10647 - 9 = 10638</code>个负样本。但是作者考虑到，某些本不负责预测目标框的预测框，如果其IOU与该目标比较重合（例如大于0.5），则不能将其作为负样本，应该忽略之。因此实际的负样本应该是小于该值的。</li>
 </ul>
-<h3 id="3-3-损失函数计算"><a href="#3-3-损失函数计算" class="headerlink" title="3.3 损失函数计算"></a>3.3 损失函数计算</h3><ul>
+<h3 id="3-3-损失函数计算">3.3 损失函数计算</h3>
+<ul>
 <li>YOLOv3包含三个损失：边框回归损失、目标置信度损失、类别损失</li>
-<li>对于正样本，三项损失都要计算：<ul>
+<li>对于正样本，三项损失都要计算：
+<ul>
 <li>其中边框回归损失可以采用<code>MSELoss</code>、<code>BCELoss</code>、或者各类的<code>IOU损失</code>，例如<code>DIOU, GIOU, CIOU</code></li>
 <li>目标置信度损失直接采用<code>BCELoss</code>，可以选择和<code>Focal Loss</code>形式结合</li>
 <li>类别损失直接采用<code>BCELoss</code></li>
@@ -316,7 +323,8 @@
 </li>
 <li>对于负样本，只计算目标置信度损失，直接采用<code>BCELoss</code>，可以选择和<code>Focal Loss</code>形式结合。注意，当选择<code>Focal Loss</code>形式时，该项损失的权重系数要重新配置，一般要增大很多。而且训练结束后的预测的<code>置信度*类别</code>可能会降低，因为只学习难的，简单易判的往往损失权值极地，基本不学习，导致这种现象产生。</li>
 </ul>
-<h2 id="4-预测网络"><a href="#4-预测网络" class="headerlink" title="4 预测网络"></a>4 预测网络</h2><ul>
+<h2 id="4-预测网络">4 预测网络</h2>
+<ul>
 <li>转RGB、调整形状、添加灰条（可选）、归一化0~1、添加批次通道，最终形状：<code>(1,3,416,416)</code></li>
 <li>送入网络得到结果，一个包含三元素的元组：<code>((1,75,13,13),(1,75,26,26),(1,75,52,52))</code></li>
 <li>将结果解码：根据预测结果和先验框宽高，得到一个包含三元素的列表：<code>[(1, 3*13*13, 25), (1, 3*26*26, 25), (1, 3*52*52, 25)]</code>，最终合并为单个张量：<code>(1, 10647, 25)</code>。其中的值都被归一化为0~1了</li>
@@ -378,13 +386,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">98k</span>
+    <span title="站点总字数">105k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">5:56</span>
+    <span title="站点阅读时长">6:23</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动

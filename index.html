@@ -65,8 +65,7 @@
 
   
 
-  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
-<script src="/js/third-party/math/mathjax.js" defer></script>
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css" integrity="sha256-UF1fgpAiu3tPJN/uCqEUHNe7pnr+QR0SQDNfgglgtcM=" crossorigin="anonymous">
 
 
 
@@ -171,7 +170,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-count">69</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -202,6 +201,102 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2026/10/31/Moller-Trumbore%E5%B0%84%E7%BA%BF%E4%B8%89%E8%A7%92%E5%BD%A2%E6%B1%82%E4%BA%A4%E7%AE%97%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Lizq">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Lizq的个人博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2026/10/31/Moller-Trumbore%E5%B0%84%E7%BA%BF%E4%B8%89%E8%A7%92%E5%BD%A2%E6%B1%82%E4%BA%A4%E7%AE%97%E6%B3%95/" class="post-title-link" itemprop="url">Möller-Trumbore射线三角形求交算法</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-10-31 17:45:31 / 修改时间：17:46:26" itemprop="dateCreated datePublished" datetime="2026-10-31T17:45:31+08:00">2026-10-31</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>7.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>27 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1>射线与三角形求交：Möller–Trumbore 算法详解与证明</h1>
+<h2 id="前言">前言</h2>
+<p>这篇文章是我和 AI 一来一回聊出来的。</p>
+<p>起因只是一个很小的问题：射线与三角形求交，除了「先求射线与平面的交点、再判断点是否在三角形内」这个老办法，Möller–Trumbore 那个一口气解出 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8095em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">t</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">u</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.0359em;">v</span></span></span></span> 的做法究竟是怎么来的？结果问题越追越多——为什么这里冒出一个克莱姆法则？克莱姆法则本身为什么成立？混合积为什么能写成行列式？由于很多数学知识遗忘了，于是就这么一路问下去，把原本只会照抄公式的地方，逐个变成了能自己推出结论的地方。</p>
+<p>收获比预期大。以前看这类实现，眼里只是一串叉乘和点乘；现在知道每一步在算什么、为什么可以那样重排，以及符号最容易在哪一步翻车。怕自己忘，也怕以后只记得结论不记得原因，就把这次讨论整理成了这篇。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2026/10/31/Moller-Trumbore%E5%B0%84%E7%BA%BF%E4%B8%89%E8%A7%92%E5%BD%A2%E6%B1%82%E4%BA%A4%E7%AE%97%E6%B3%95/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -269,9 +364,11 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="确定性哈希随机决胜：低成本、可复现的平局策略"><a href="#确定性哈希随机决胜：低成本、可复现的平局策略" class="headerlink" title="确定性哈希随机决胜：低成本、可复现的平局策略"></a>确定性哈希随机决胜：低成本、可复现的平局策略</h1><p>在游戏开发中，我们经常需要从一组候选项中选出“最优解”。当多个候选项的主评分完全相同时，一个容易被忽略的问题就出现了：<strong>平局时该选谁？</strong>，如果只依赖于判别时的不等号，那么结果必然是“偏置”的。</p>
+          <h1>确定性哈希随机决胜：低成本、可复现的平局策略</h1>
+<p>在游戏开发中，我们经常需要从一组候选项中选出“最优解”。当多个候选项的主评分完全相同时，一个容易被忽略的问题就出现了：<strong>平局时该选谁？</strong>，如果只依赖于判别时的不等号，那么结果必然是“偏置”的。</p>
 <p>我是在一次网格密度搜索中遇到这个问题的。最终采用的方案是<strong>确定性哈希随机决胜</strong>（Deterministic Hash-based Random Tie-breaking）：用一次随机取种，为每个候选项生成可复现的伪随机优先级，在不收集全部平局候选的情况下完成决胜。</p>
-<h2 id="从网格密度搜索说起"><a href="#从网格密度搜索说起" class="headerlink" title="从网格密度搜索说起"></a>从网格密度搜索说起</h2><p>假设地图由一个二维网格表示，每个格子记录该位置是否存在目标。搜索时，用一个固定尺寸的矩形窗口遍历所有合法位置，计算窗口覆盖范围内的目标数量，也就是该窗口的密度，实现中采用的就是经典的二维前缀和算法。</p>
+<h2 id="从网格密度搜索说起">从网格密度搜索说起</h2>
+<p>假设地图由一个二维网格表示，每个格子记录该位置是否存在目标。搜索时，用一个固定尺寸的矩形窗口遍历所有合法位置，计算窗口覆盖范围内的目标数量，也就是该窗口的密度，实现中采用的就是经典的二维前缀和算法。</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2026/09/12/%E7%A1%AE%E5%AE%9A%E6%80%A7%E5%93%88%E5%B8%8C%E9%9A%8F%E6%9C%BA%E5%86%B3%E8%83%9C/#more" rel="contents">
@@ -369,8 +466,10 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>某些穿透型子弹弹道较粗，如果索敌模式选择最近的敌人，就会“耿直”地以最近的敌人为目标发射子弹，导致索敌看起来很呆，只命中很少的敌人。其实很多时候，目标周围有很多敌人，由于弹道较粗，只要稍微调整下发射角度就可以命中一堆敌人。</p>
-<h2 id="问题定义"><a href="#问题定义" class="headerlink" title="问题定义"></a>问题定义</h2><p>穿透型宽弹道的子弹，可以看作一个矩形弹道，子弹起点 <em>start</em> （取 XZ 平面的二维坐标），初始方向 <em>dir</em> ，子弹射程 <em>length</em> ，子弹半宽 <em>halfWidth</em> ，给定主目标 <em>targetEntity</em> ，在保证主目标包含在这个矩形区域内，调整弹道角度，期望以覆盖更多敌人。</p>
+          <h2 id="背景">背景</h2>
+<p>某些穿透型子弹弹道较粗，如果索敌模式选择最近的敌人，就会“耿直”地以最近的敌人为目标发射子弹，导致索敌看起来很呆，只命中很少的敌人。其实很多时候，目标周围有很多敌人，由于弹道较粗，只要稍微调整下发射角度就可以命中一堆敌人。</p>
+<h2 id="问题定义">问题定义</h2>
+<p>穿透型宽弹道的子弹，可以看作一个矩形弹道，子弹起点 <em>start</em> （取 XZ 平面的二维坐标），初始方向 <em>dir</em> ，子弹射程 <em>length</em> ，子弹半宽 <em>halfWidth</em> ，给定主目标 <em>targetEntity</em> ，在保证主目标包含在这个矩形区域内，调整弹道角度，期望以覆盖更多敌人。</p>
 <p>一开始会想针目标计算左右边界角度 <code>[targetMinAngle, targetMaxAngle]</code> ，然后以子弹起点为圆心，射程为半径进行怪物查询，查询后对每个目标依次求得 <code>[monsterMinAngle, monsterMaxAngle]</code> 边界，最后求得最大重叠区域的角度。但是这其中的关键点是角度，处理过程中会频繁进行角度、三角函数、反三角函数的转换，这在定点数游戏里一方面性能开销较大，另一方面多次转换后误差也会叠加。</p>
           <!--noindex-->
             <div class="post-button">
@@ -469,7 +568,9 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="轻量级模块仓库与事件系统设计"><a href="#轻量级模块仓库与事件系统设计" class="headerlink" title="轻量级模块仓库与事件系统设计"></a>轻量级模块仓库与事件系统设计</h1><h2 id="设计目标"><a href="#设计目标" class="headerlink" title="设计目标"></a>设计目标</h2><p>在 Unity 项目中提供一套轻量级的<a target="_blank" rel="noopener" href="https://github.com/fkjkkll/UnityScratch/tree/master/Assets/Scripts/BaseFramework">全局模块仓库和事件系统</a>。模块的生命周期与游戏进程一致：启动后按需创建或显式注册，在游戏运行期间持续存活，并在游戏关闭时统一释放。</p>
+          <h1>轻量级模块仓库与事件系统设计</h1>
+<h2 id="设计目标">设计目标</h2>
+<p>在 Unity 项目中提供一套轻量级的<a target="_blank" rel="noopener" href="https://github.com/fkjkkll/UnityScratch/tree/master/Assets/Scripts/BaseFramework">全局模块仓库和事件系统</a>。模块的生命周期与游戏进程一致：启动后按需创建或显式注册，在游戏运行期间持续存活，并在游戏关闭时统一释放。</p>
 <p>业务代码通过以下接口使用系统：</p>
 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ModuleRepository.GetOrCreate&lt;T&gt;();</span><br><span class="line">ModuleRepository.Register(myModule);</span><br><span class="line">EventModule.Subscribe&lt;T&gt;(callback);</span><br><span class="line">EventModule.Unsubscribe&lt;T&gt;(callback);</span><br><span class="line">eventData.Fire();</span><br><span class="line">eventData.FireDeferred(EventDispatchPhase.Update);</span><br></pre></td></tr></table></figure>
           <!--noindex-->
@@ -563,9 +664,11 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="Arch-ECS-学习笔记"><a href="#Arch-ECS-学习笔记" class="headerlink" title="Arch ECS 学习笔记"></a>Arch ECS 学习笔记</h1><p>这份笔是我学习Github开源项目<a target="_blank" rel="noopener" href="https://github.com/genaray/Arch">Arch ECS</a>后的学习代码，通过断点调试 + 与AI交流完成碎片化记录，最终再交由AI整合完成。主要内容包含Archetype ECS结构学习，以及一些项目里用到的技巧总结。</p>
+          <h1>Arch ECS 学习笔记</h1>
+<p>这份笔是我学习Github开源项目<a target="_blank" rel="noopener" href="https://github.com/genaray/Arch">Arch ECS</a>后的学习代码，通过断点调试 + 与AI交流完成碎片化记录，最终再交由AI整合完成。主要内容包含Archetype ECS结构学习，以及一些项目里用到的技巧总结。</p>
 <p>在学习过程中发现了两处问题，一处是BitSet的Any处包含冗余的循环代码；一处是CommandBuffer部分的SparseSet里创建SparseArray时传参错误。目前已经提交了PR。</p>
-<h2 id="总体结构"><a href="#总体结构" class="headerlink" title="总体结构"></a>总体结构</h2><p>Arch 的核心数据关系可以先记成这张图：</p>
+<h2 id="总体结构">总体结构</h2>
+<p>Arch 的核心数据关系可以先记成这张图：</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2026/06/07/Arch-ECS-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/#more" rel="contents">
@@ -657,12 +760,13 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2 id="迭代器方法"><a href="#迭代器方法" class="headerlink" title="迭代器方法"></a>迭代器方法</h2><p>简单写一个迭代器方法。</p>
+          <h2 id="迭代器方法">迭代器方法</h2>
+<p>简单写一个迭代器方法。</p>
 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Start</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">foreach</span> (<span class="function"><span class="keyword">var</span> e <span class="keyword">in</span> <span class="title">Iterator</span>())</span></span><br><span class="line">    &#123;</span><br><span class="line">        Console.WriteLine(e);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">IEnumerable&lt;<span class="built_in">int</span>&gt; <span class="title">Iterator</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    Console.WriteLine(<span class="string">&quot;00&quot;</span>);</span><br><span class="line">    <span class="keyword">yield</span> <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    Console.WriteLine(<span class="string">&quot;11&quot;</span>);</span><br><span class="line">    <span class="keyword">yield</span> <span class="keyword">return</span> <span class="number">2</span>;</span><br><span class="line">    Console.WriteLine(<span class="string">&quot;22&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>上面的迭代器方法，在内部，编译器会生成一个匿名类，代码如下：</p>
 <ul>
 <li>仔细观察会发现，这个匿名类同时继承IEnumerator和IEnumerable，意味着它同时负责生产迭代器和迭代。</li>
-<li>状态点数字的含义：-1代表正在执行&#x2F;当前不处于挂起点；-2代表尚未枚举或者已经Dispose；大于等于0代表各个恢复点</li>
+<li>状态点数字的含义：-1代表正在执行/当前不处于挂起点；-2代表尚未枚举或者已经Dispose；大于等于0代表各个恢复点</li>
 </ul>
           <!--noindex-->
             <div class="post-button">
@@ -755,9 +859,11 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="边函数光栅化-Edge-Function-Rasterization"><a href="#边函数光栅化-Edge-Function-Rasterization" class="headerlink" title="边函数光栅化 (Edge Function Rasterization)"></a>边函数光栅化 (Edge Function Rasterization)</h1><h2 id="算法简介"><a href="#算法简介" class="headerlink" title="算法简介"></a>算法简介</h2><p>边函数光栅化，又称 <strong>Pineda’s Algorithm</strong>，由 Juan Pineda 于 1988 年 SIGGRAPH 论文 <em>A Parallel Algorithm for Polygon Rasterization</em> 提出。它是现代 GPU 硬件光栅化的基础算法。</p>
+          <h1>边函数光栅化 (Edge Function Rasterization)</h1>
+<h2 id="算法简介">算法简介</h2>
+<p>边函数光栅化，又称 <strong>Pineda’s Algorithm</strong>，由 Juan Pineda 于 1988 年 SIGGRAPH 论文 <em>A Parallel Algorithm for Polygon Rasterization</em> 提出。它是现代 GPU 硬件光栅化的基础算法。</p>
 <p>核心思想：<strong>多边形的每条边将平面划分为两个半平面，点在多边形内部当且仅当它在所有边的内侧半平面内。</strong></p>
-<h3 id="数学本质"><a href="#数学本质" class="headerlink" title="数学本质"></a>数学本质</h3>
+<h3 id="数学本质">数学本质</h3>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2026/04/19/%E8%BE%B9%E5%87%BD%E6%95%B0%E5%85%89%E6%A0%85%E5%8C%96/#more" rel="contents">
@@ -855,7 +961,8 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="射线检测法"><a href="#射线检测法" class="headerlink" title="射线检测法"></a>射线检测法</h1><p>经常用于判断点是否在多边形内部，可用于处理非凸多边形，不要求顺时针逆时针，该算法的思路十分巧妙：</p>
+          <h1>射线检测法</h1>
+<p>经常用于判断点是否在多边形内部，可用于处理非凸多边形，不要求顺时针逆时针，该算法的思路十分巧妙：</p>
 <p>从目标点向任意约定方向，通常选 <strong>右侧（X 轴正方向）</strong> 发射一条无限长的水平射线，统计这条射线与多边形边的相交次数</p>
 <ul>
 <li>奇数 → 点在多边形内部</li>
@@ -959,14 +1066,16 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="稀疏集"><a href="#稀疏集" class="headerlink" title="稀疏集"></a>稀疏集</h1><blockquote>
+          <h1>稀疏集</h1>
+<blockquote>
 <p>SparseSet（稀疏集） 是一种专为<strong>有界整数 ID</strong>设计的高性能集合数据结构，核心优势是插入、删除、查询、清空均为 O (1) 时间复杂度，且<strong>遍历高效、缓存友好</strong>。它通过稀疏数组（sparse）+ 密集数组（dense）+ 元素计数（n） 实现，广泛用于游戏引擎（如 ECS）、编译器、图算法等场景。</p>
 </blockquote>
-<h2 id="核心结构"><a href="#核心结构" class="headerlink" title="核心结构"></a>核心结构</h2><p>SparseSet 由三部分组成：</p>
+<h2 id="核心结构">核心结构</h2>
+<p>SparseSet 由三部分组成：</p>
 <ul>
 <li>dense[]（密集数组）：按插入顺序存储集合中的<strong>实际元素值</strong>，仅包含存在的元素，内存紧凑、遍历高效。</li>
 <li>sparse[]（稀疏数组）：<strong>以元素值为索引</strong>，存储该元素在 dense 数组中的<strong>下标位置</strong>；未存在的元素对应位置值无意义。</li>
-<li>count（元素计数）：记录当前集合中元素的总数，dense[0..count-1] 为有效元素。</li>
+<li>count（元素计数）：记录当前集合中元素的总数，dense[0…count-1] 为有效元素。</li>
 </ul>
           <!--noindex-->
             <div class="post-button">
@@ -1065,110 +1174,14 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="算法图解"><a href="#算法图解" class="headerlink" title="算法图解"></a>算法图解</h1><p>ORCA避障算法，出自2011年的一篇论文<a target="_blank" rel="noopener" href="https://gamma.cs.unc.edu/ORCA/publications/ORCA.pdf">《Optimal Reciprocal Collision Avoidance》</a>。该算法的思想不算复杂，但实现上有很多细节需要注意。网上已有很多对该算法的讲解，但是大多都比较粗略，很多细节并未详解，缺少很多图解来帮助理解，因此本文着重通过图解的形式，辅以文字，来剖析该算法的思想，并对关键源码进行解释。</p>
-<h2 id="速度障碍（VO-Velocity-Obstacle）"><a href="#速度障碍（VO-Velocity-Obstacle）" class="headerlink" title="速度障碍（VO, Velocity Obstacle）"></a>速度障碍（VO, Velocity Obstacle）</h2><p>如图所示，假设存在A、B两个对象，它们以图中的速度（速度是向量，包含方向和模大小）运动。</p>
+          <h1>算法图解</h1>
+<p>ORCA避障算法，出自2011年的一篇论文<a target="_blank" rel="noopener" href="https://gamma.cs.unc.edu/ORCA/publications/ORCA.pdf">《Optimal Reciprocal Collision Avoidance》</a>。该算法的思想不算复杂，但实现上有很多细节需要注意。网上已有很多对该算法的讲解，但是大多都比较粗略，很多细节并未详解，缺少很多图解来帮助理解，因此本文着重通过图解的形式，辅以文字，来剖析该算法的思想，并对关键源码进行解释。</p>
+<h2 id="速度障碍（VO-Velocity-Obstacle）">速度障碍（VO, Velocity Obstacle）</h2>
+<p>如图所示，假设存在A、B两个对象，它们以图中的速度（速度是向量，包含方向和模大小）运动。</p>
 <p><img src="https://raw.githubusercontent.com/fkjkkll/OnlineSource/refs/heads/master/Image/CollisionAvoidance/1-two-objs.png" alt="两个即将碰撞的对象"></p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2026/03/21/ORCA%E9%81%BF%E9%9A%9C%E7%AE%97%E6%B3%95%E5%9B%BE%E8%A7%A3/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2026/03/07/Csharp-in-out-ref/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Lizq">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Lizq的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | Lizq的个人博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2026/03/07/Csharp-in-out-ref/" class="post-title-link" itemprop="url">Csharp in & out & ref</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2026-03-07 17:26:15 / 修改时间：21:10:57" itemprop="dateCreated datePublished" datetime="2026-03-07T17:26:15+08:00">2026-03-07</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.3k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>5 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="参数传递"><a href="#参数传递" class="headerlink" title="参数传递"></a>参数传递</h2><h3 id="Out参数"><a href="#Out参数" class="headerlink" title="Out参数"></a>Out参数</h3><p><strong>只用于输出结果</strong></p>
-<ul>
-<li>调用前<strong>不需要</strong>初始化</li>
-<li>方法内部<strong>必须赋值</strong></li>
-<li>引用传递</li>
-</ul>
-<h3 id="In参数"><a href="#In参数" class="headerlink" title="In参数"></a>In参数</h3>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2026/03/07/Csharp-in-out-ref/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1214,13 +1227,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">98k</span>
+    <span title="站点总字数">105k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">5:56</span>
+    <span title="站点阅读时长">6:23</span>
   </span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
