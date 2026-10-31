@@ -271,7 +271,7 @@
           <h1>射线与三角形求交：Möller–Trumbore 算法详解与证明</h1>
 <h2 id="前言">前言</h2>
 <p>这篇文章是我和 AI 一来一回聊出来的。</p>
-<p>起因只是一个很小的问题：射线与三角形求交，除了「先求射线与平面的交点、再判断点是否在三角形内」这个老办法，Möller–Trumbore 那个一口气解出 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8095em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">t</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">u</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.0359em;">v</span></span></span></span> 的做法究竟是怎么来的？结果问题越追越多——为什么这里冒出一个克莱姆法则？克莱姆法则本身为什么成立？混合积为什么能写成行列式？由于很多数学知识遗忘了，于是就这么一路问下去，把原本只会照抄公式的地方，逐个变成了能自己推出结论的地方。</p>
+<p>起因只是一个很小的问题：射线与三角形求交，除了「先求射线与平面的交点、再判断点是否在三角形内」这个老办法，Möller–Trumbore 那个一口气解出 <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8095em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">t</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">u</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span></span></span></span> 的做法究竟是怎么来的？结果问题越追越多——为什么这里冒出一个克莱姆法则？克莱姆法则本身为什么成立？混合积为什么能写成行列式？由于很多数学知识遗忘了，于是就这么一路问下去，把原本只会照抄公式的地方，逐个变成了能自己推出结论的地方。</p>
 <p>收获比预期大。以前看这类实现，眼里只是一串叉乘和点乘；现在知道每一步在算什么、为什么可以那样重排，以及符号最容易在哪一步翻车。怕自己忘，也怕以后只记得结论不记得原因，就把这次讨论整理成了这篇。</p>
           <!--noindex-->
             <div class="post-button">
